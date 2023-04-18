@@ -15,4 +15,7 @@
     /* Make your points appear as squares */
     stroke-linecap: circle;
   }
-  
+
+#cpu-usage-chart {
+    width: 75%;
+}
