@@ -1,21 +1,17 @@
 /* Use this selector to override the line style on a given series */
 .ct-series-a .ct-line {
     /* Set the colour of this series line */
-    stroke: rgba(0, 145, 255, 0.5);
+    stroke: rgba(0, 145, 255, 0.25);
     /* Control the thikness of your lines */
-    stroke-width: 5px;
+    stroke-width: 3px;
   }
   
   /* This selector overrides the points style on line charts. Points on line charts are actually just very short strokes. This allows you to customize even the point size in CSS */
   .ct-series-a .ct-point {
     /* Colour of your points */
-    stroke: rgba(0, 145, 255, 1);
+    stroke: rgba(0, 145, 255, 0.75);
     /* Size of your points */
-    stroke-width: 8px;
+    stroke-width: 4px;
     /* Make your points appear as squares */
     stroke-linecap: circle;
   }
-
-#cpu-usage-chart {
-    width: 75%;
-}
