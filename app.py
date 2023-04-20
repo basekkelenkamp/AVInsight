@@ -1,3 +1,5 @@
+import os
+
 import gpustat
 from flask import Flask, render_template
 from flask_socketio import SocketIO
@@ -113,4 +115,9 @@ def disconnect():
 
 
 if __name__ == "__main__":
-    socket_io.run(app, debug=True)
+    port = int(
+        os.environ.get("FLASK_PORT", 5000)
+    )  # Use 5000 as the default port number
+    url = f"http://localhost:{port}"
+
+    socket_io.run(app, host="0.0.0.0", port=port, debug=True)
