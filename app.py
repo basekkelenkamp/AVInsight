@@ -32,7 +32,8 @@ def get_metrics():
     while True:
         cpu_percent = psutil.cpu_percent(interval=0.1, percpu=False)
         ram_percent = psutil.virtual_memory().percent
-        
+        gpu_usage = get_gpu_usage()
+
         curr_time = time.time()
         curr_disk_io = get_disk_io_counters()
         time_diff = curr_time - prev_time
@@ -42,6 +43,7 @@ def get_metrics():
         prev_disk_io = curr_disk_io
 
         socket_io.emit("cpu-usage-chart", {"data": [cpu_percent]}, namespace="/metrics")
+        socket_io.emit("gpu-usage-chart", {"data": [gpu_usage]}, namespace="/metrics")
         socket_io.emit("ram-usage-chart", {"data": [ram_percent]}, namespace="/metrics")
         socket_io.emit("disk-read-speed-chart", {"data": disk_read_speeds}, namespace="/metrics")
 
