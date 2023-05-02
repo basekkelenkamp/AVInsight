@@ -1,43 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>AVInsight</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='chartist_dist/chartist.min.css') }}">
-    <script src="{{ url_for('static', filename='chartist_dist/chartist.min.js') }}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/charts.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1 class="title">AVInsight</h1>
+{% extends "layout.html" %}
+{% block content %}
 
-        <div class="charts-wrapper">
-            <div class="charts-row">
-                <div class="chart-container chart-container-left">
-                    <h3>CPU</h3>
-                    <div id="cpu-usage-chart" class="ct-chart ct-double-octave"></div>
-                </div>
+<div class="charts-wrapper">
+    <div class="charts-row">
+        <div class="chart-container chart-container-left">
+            <h3>CPU</h3>
+            <div id="cpu-usage-chart" class="ct-chart ct-octave"></div>
+        </div>
 
-                <div class="chart-container chart-container-middle">
-                    <h3>GPU</h3>
-                    <div id="gpu-usage-chart" class="ct-chart ct-double-octave"></div>
-                </div>
+        <div class="chart-container chart-container-middle">
+            <h3>GPU</h3>
+            <div id="gpu-usage-chart" class="ct-chart ct-octave"></div>
+        </div>
 
-                <div class="chart-container chart-container-right">
-                    <h3>RAM</h3>
-                    <div id="ram-usage-chart" class="ct-chart ct-double-octave"></div>
-                </div>
-            </div>
-            <div class="charts-row">
-                <div class="chart-container chart-container-full">
-                    <h3>Disk Read Speed</h3>
-                    <div id="disk-read-speed-chart" class="ct-chart ct-double-octave"></div>
-                </div>
-            </div>
+        <div class="chart-container chart-container-right">
+            <h3>RAM</h3>
+            <div id="ram-usage-chart" class="ct-chart ct-octave"></div>
         </div>
     </div>
-    <script src="{{ url_for('static', filename='js/draw_charts.js') }}"></script>
-</body>
-</html>
+    <div class="charts-row">
+        <div class="chart-container chart-container-full">
+            <h3>Disk Read Speed</h3>
+            <div id="disk-read-speed-chart" class="ct-chart ct-double-octave"></div>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/draw_charts.js') }}"></script>
+
+{% endblock content %}
