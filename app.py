@@ -10,66 +10,43 @@ import subprocess
 from hwinfo.pci import PCIDevice
 from hwinfo.pci.lspci import LspciNNMMParser
 
+
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "secretkey"
 socket_io = SocketIO(app)
 
 
+def get_disk_io_counters():
+    return {disk_name: disk.read_bytes for disk_name, disk in psutil.disk_io_counters(perdisk=True).items()}
+
+def calculate_disk_read_speeds(prev_disk_io, curr_disk_io, time_diff):
+    return {
+        disk_name: (curr_disk_io[disk_name] - prev_disk_io[disk_name]) / time_diff
+        for disk_name in curr_disk_io.keys()
+    }
+
 def get_metrics():
-    disk_name = "disk0"  # Replace with the disk name you want to monitor
     prev_time = time.time()
-    prev_disk_io = psutil.disk_io_counters(perdisk=True)[disk_name].read_bytes
+    prev_disk_io = get_disk_io_counters()
 
     while True:
         cpu_percent = psutil.cpu_percent(interval=0.1, percpu=False)
-        # gpu_percent = get_gpu_usage('mac')
-
-        virtual_memory = psutil.virtual_memory()
-        ram_percent = virtual_memory.percent
-        total_memory = virtual_memory.total
-        used_memory = virtual_memory.used
-
-        # Calculate disk read speed
+        ram_percent = psutil.virtual_memory().percent
+        
         curr_time = time.time()
-        curr_disk_io = psutil.disk_io_counters(perdisk=True)[disk_name].read_bytes
+        curr_disk_io = get_disk_io_counters()
         time_diff = curr_time - prev_time
-        read_bytes_diff = curr_disk_io - prev_disk_io
-        disk_read_speed = read_bytes_diff / time_diff
+        disk_read_speeds = calculate_disk_read_speeds(prev_disk_io, curr_disk_io, time_diff)
 
         prev_time = curr_time
         prev_disk_io = curr_disk_io
 
-        # available_memory = virtual_memory.available
-        # free_memory = virtual_memory.free
-
-        # Emit CPU usage to the connected clients
-        socket_io.emit(
-            "cpu-usage-chart",
-            {
-                "data": [cpu_percent],
-                "labels": [],
-            },
-            namespace="/metrics",
-        )
-        socket_io.emit(
-            "ram-usage-chart",
-            {
-                "data": [ram_percent],
-                "labels": [],
-            },
-            namespace="/metrics",
-        )
-
-        socket_io.emit(
-            "disk-read-speed-chart",
-            {
-                "data": [disk_read_speed],
-                "labels": [],
-            },
-            namespace="/metrics",
-        )
+        socket_io.emit("cpu-usage-chart", {"data": [cpu_percent]}, namespace="/metrics")
+        socket_io.emit("ram-usage-chart", {"data": [ram_percent]}, namespace="/metrics")
+        socket_io.emit("disk-read-speed-chart", {"data": disk_read_speeds}, namespace="/metrics")
 
         time.sleep(0.1)
+
 
 
 def get_gpu_usage(gpu_type="nvidia"):
