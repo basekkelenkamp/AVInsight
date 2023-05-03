@@ -11,11 +11,15 @@
 </head>
 <body>
     <header>
-        <h1 class="title">AVInsight</h1>
-        <div class="icon-container">
+        <h1 class="title"><a href="{{ url_for('index') }}">AVInsight</a></h1>
+        <div class="button-container">
+            <a class="header-link" href="{{ url_for('archive') }}">
+                <img src="{{ url_for('static', filename='imgs/archive.png') }}" alt="archive" class="icon">
+                <span class="button-text">Archive</span>
+            </a>
             <a class="header-link" href="{{ url_for('settings') }}">
-                <img src="{{ url_for('static', filename='imgs/settings.png') }}" alt="settings" class="settings-icon">
-                <span class="settings-text">Settings</span>
+                <img src="{{ url_for('static', filename='imgs/settings.png') }}" alt="settings" class="icon">
+                <span class="button-text">Settings</span>
             </a>
         </div>
     </header>

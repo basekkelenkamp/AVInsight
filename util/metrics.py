@@ -2,8 +2,13 @@ import gpustat
 import psutil
 import subprocess
 
+
 def get_disk_io_counters():
-    return {disk_name: disk.read_bytes for disk_name, disk in psutil.disk_io_counters(perdisk=True).items()}
+    return {
+        disk_name: disk.read_bytes
+        for disk_name, disk in psutil.disk_io_counters(perdisk=True).items()
+    }
+
 
 def calculate_disk_read_speeds(prev_disk_io, curr_disk_io, time_diff):
     return {
@@ -15,8 +20,10 @@ def calculate_disk_read_speeds(prev_disk_io, curr_disk_io, time_diff):
 def get_cpu_usage():
     return psutil.cpu_percent(interval=0.1, percpu=False)
 
+
 def get_ram_usage():
     return psutil.virtual_memory().percent
+
 
 def get_gpu_usage(gpu_type="nvidia"):
     if gpu_type == "nvidia":
@@ -37,4 +44,3 @@ def get_gpu_usage(gpu_type="nvidia"):
             # Handle any errors that may occur during command execution
             print("Error: Failed to get GPU usage.")
             return None
-

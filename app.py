@@ -2,12 +2,17 @@ import os
 
 from flask import Flask, render_template
 from flask_socketio import SocketIO
-import psutil
 import time
 import threading
 from hwinfo.pci import PCIDevice
 from hwinfo.pci.lspci import LspciNNMMParser
-from util.metrics import get_cpu_usage, get_disk_io_counters, calculate_disk_read_speeds, get_gpu_usage, get_ram_usage
+from util.metrics import (
+    get_cpu_usage,
+    get_disk_io_counters,
+    calculate_disk_read_speeds,
+    get_gpu_usage,
+    get_ram_usage,
+)
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "secretkey"
@@ -28,7 +33,9 @@ def get_metrics():
         curr_time = time.time()
         curr_disk_io = get_disk_io_counters()
         time_diff = curr_time - prev_time
-        disk_read_speeds = calculate_disk_read_speeds(prev_disk_io, curr_disk_io, time_diff)
+        disk_read_speeds = calculate_disk_read_speeds(
+            prev_disk_io, curr_disk_io, time_diff
+        )
 
         prev_time = curr_time
         prev_disk_io = curr_disk_io
@@ -36,7 +43,9 @@ def get_metrics():
         socket_io.emit("cpu-usage-chart", {"data": [cpu_percent]}, namespace="/metrics")
         socket_io.emit("gpu-usage-chart", {"data": [gpu_percent]}, namespace="/metrics")
         socket_io.emit("ram-usage-chart", {"data": [ram_percent]}, namespace="/metrics")
-        socket_io.emit("disk-read-speed-chart", {"data": disk_read_speeds}, namespace="/metrics")
+        socket_io.emit(
+            "disk-read-speed-chart", {"data": disk_read_speeds}, namespace="/metrics"
+        )
 
         time.sleep(0.1)
 
@@ -48,6 +57,11 @@ def index():
 
 @app.route("/settings")
 def settings():
+    return render_template("settings.html")
+
+
+@app.route("/archive")
+def archive():
     return render_template("settings.html")
 
 
