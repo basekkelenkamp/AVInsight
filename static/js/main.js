@@ -3,9 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const currentPage = window.location.pathname;
     const dashboardLink = document.getElementById('dashboard-link');
     const archiveLink = document.getElementById('archive-link');
-    const settingsLink = document.getElementById('settings-link');
-
-    console.log("current page:", currentPage)
+    const configLink = document.getElementById('config-link');
     
     if (currentPage === '/' || currentPage === '/index') {
         dashboardLink.classList.add('active');
@@ -19,9 +17,9 @@ document.addEventListener('DOMContentLoaded', function () {
         archiveLink.classList.remove('active');
     }
 
-    if (currentPage === '/settings') {
-        settingsLink.classList.add('active');
+    if (currentPage === '/config') {
+        configLink.classList.add('active');
     } else {
-        settingsLink.classList.remove('active');
+        configLink.classList.remove('active');
     }
 });

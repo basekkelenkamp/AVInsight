@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/config.css') }}">
+<div class="wraper">
+  <div class="config-form">
+    <form id="config-form">
+      {% for section, configs in config.items() %}
+      <fieldset>
+        <legend>{{ section }}</legend>
+        {% for config_item in configs %}
+          {% for key, value in config_item.items() %}
+          <div class="form-group">
+            <label for="{{ section }}-{{ key }}" class="label-text">{{ key }}</label>
+            {% if value is string %}
+              <input type="text" name="{{ section }}-{{ key }}" id="{{ section }}-{{ key }}" value="{{ value }}">
+            {% elif value is number %}
+              <input type="number" name="{{ section }}-{{ key }}" id="{{ section }}-{{ key }}" value="{{ value }}">
+            {% elif value is boolean %}
+              <label class="switch-wrap">
+                <input type="checkbox" name="{{ section }}-{{ key }}" id="{{ section }}-{{ key }}" {% if value %}checked{% endif %}>
+                <span class="switch"></span>
+              </label>
+            {% endif %}
+          </div>
+          {% endfor %}
+        {% endfor %}
+      </fieldset>
+      {% endfor %}
+      <button type="button" id="save-config" class="save-config-button">Save</button>
+    </form>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='js/config.js') }}"></script>
+{% endblock %}

@@ -17,8 +17,8 @@ def calculate_disk_read_speeds(prev_disk_io, curr_disk_io, time_diff):
     }
 
 
-def get_cpu_usage():
-    return psutil.cpu_percent(interval=0.1, percpu=False)
+def get_cpu_usage(interval):
+    return psutil.cpu_percent(interval=interval, percpu=False)
 
 
 def get_ram_usage():

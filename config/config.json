@@ -1,0 +1,21 @@
+{
+    "metrics": [
+        {
+            "disk": 1
+        },
+        {
+            "interval": 0.1
+        }
+    ],
+    "archive": [
+        {
+            "enable_archive": 0
+        },
+        {
+            "clear_archive_days": 0
+        },
+        {
+            "file_path": "/archive"
+        }
+    ]
+}
