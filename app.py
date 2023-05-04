@@ -39,7 +39,7 @@ def get_metrics():
 
         prev_time = curr_time
         prev_disk_io = curr_disk_io
-
+        
         socket_io.emit("cpu-usage-chart", {"data": [cpu_percent]}, namespace="/metrics")
         socket_io.emit("gpu-usage-chart", {"data": [gpu_percent]}, namespace="/metrics")
         socket_io.emit("ram-usage-chart", {"data": [ram_percent]}, namespace="/metrics")

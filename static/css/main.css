@@ -1,16 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 body {
     height: 100vh;
     margin: 0;
     display: flex;
     justify-content: center;
-    font-family: 'Courier New', Courier, monospace;
-    background-color: #f0f0f0;
+    font-family: 'IBM Plex Mono', monospace;
+    background-color: #2E2E3A;
 }
 
 .container {
     display: flex;
     flex-direction: column;
-    width: 95%;
+    width: 90%;
     height: 50%;
 }
 
@@ -19,66 +22,78 @@ body {
     margin-bottom: 20px;
     font-size: 48px;
     font-weight: bold;
-    color: #333;
+    color: #F2F2F3;
 }
 
 .charts-wrapper {
     display: flex;
-    flex-direction: column;
-    flex: 1;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
 }
 
-.charts-row {
+.dashboard-wrapper {
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.line-graph-container {
     flex: 1;
+    padding-right: 1rem;
+}
+
+.info-warning-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.info-container, .warning-container {
+    width: 52.5%;
+    padding: 0px;
+    box-sizing: border-box;
+    margin-bottom: 0px;
+    margin-left: 0.5rem;
 }
 
 .chart-container {
-    flex: 1;
-    padding: 0px;
-    box-sizing: border-box;
-    background-color: #e5f1ff;
-    border: 2px solid #333;
+    background-color: #323239;
+    border: 2px solid #4D4A4F;
     box-shadow: 2px 2px 0px #333;
-    margin-bottom: 0px;
+    margin-bottom: 1rem;
+    padding: 0.2rem;
+    border-radius: 4px;
 }
-
-/* .chart-container-left {
-    border-right: 2px solid #333;
-}
-
-.chart-container-right {
-    border-left: 2px solid #333;
-}
-
-.chart-container-full {
-    border-left: 0;
-    border-right: 0;
-} */
 
 .chart-container h3 {
-    /* text-align: center; */
-    font-size: 24px;
+    font-size: 18px;
     font-weight: bold;
-    color: #333;
-    margin-bottom: 0px;
+    color: #F2F2F3;
+    margin: 0;
 }
 
 .ct-chart {
     width: 100%;
-    height: 80%;
+    height: 100%;
     margin: 0 auto;
+}
+
+.info-container h3, .warning-container h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #F2F2F3;
+    margin-bottom: 1rem;
 }
 
 /* HEADER */
 header {
     width: 100%;
     height: 60px;
-    background-color: #333;
+    background-color: #1D3B58;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 0 20px;
     position: fixed;
     top: 0;
@@ -86,14 +101,14 @@ header {
 }
 
 .title {
-    color: #f0f0f0;
+    color: #F2F2F3;
     margin: 0;
 }
 
 .title a {
     color: #f0f0f0;
     text-decoration: none;
-    padding: 5px;
+    padding: 5px 10px; /* Increase horizontal padding */
     border-radius: 4px;
     transition: background-color 0.3s;
 }
@@ -101,11 +116,7 @@ header {
 .title a:hover {
     background-color: rgba(255, 255, 255, 0.3);
     cursor: pointer;
-}
-
-.button-container {
-    display: flex;
-    align-items: center;
+    padding-bottom: 0px; /* Increase padding at the bottom */
 }
 
 .header-link {
@@ -115,8 +126,13 @@ header {
     color: #f0f0f0;
     transition: background-color 0.3s;
     padding: 5px;
-    margin-left: 10px;
+    margin-left: 30px; /* Increase space between buttons */
     border-radius: 4px;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
 }
 
 .header-link:hover {
@@ -125,16 +141,40 @@ header {
 }
 
 .icon {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
 }
 
 .button-text {
     margin-left: 10px;
+    font-family: 'Roboto', sans-serif;
+    }
+    
+    .container {
+    margin-top: 72px;
+    }
+    
+    /* END OF HEADER */
+    
+    /* Footer */
+footer {
+background-color: #4D4A4F;
+width: 100%;
+padding: 20px 0;
+display: flex;
+align-items: center;
+justify-content: center;
+position: absolute;
+bottom: 0;
 }
 
-.container {
-    margin-top: 80px;
+.footer-text {
+color: #F2F2F3;
+font-size: 14px;
+font-family: 'Roboto', sans-serif;
+margin: 0;
 }
 
-/* END OF HEADER */
+    /* END OF Footer */
+    
+    

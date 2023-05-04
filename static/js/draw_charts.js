@@ -1,25 +1,27 @@
 var socket = io.connect('http://' + document.domain + ':' + location.port + '/metrics');
 
-var data = {
+let data = {
     labels: [],
     series: [[]]
 };
 
-var options = {
+let options = {
     fullWidth: true,
     showArea: true,
-    chartPadding: {
-        right: 40,
-        top: 40
-    },
+    showLabel: false,
+    chartPadding: 0,
     axisY: {
         high: 100,
         low: 0,
-        scaleMinSpace: 40
+        scaleMinSpace: 40,
+    },
+    axisX: {
+        showLabel: false,
+        offset: 4    
     }
 };
 
-let maxDiskReadSpeed = 0;
+let maxDiskReadSpeed = 100;
 
 function init() {
     let charts = document.getElementsByClassName("ct-chart");
@@ -36,12 +38,12 @@ function init() {
                 return value + '%';
             };
         }
-
+        
         let chart = new Chartist.Line('#' + c.id, data, chartOptions);
 
         socket.on(c.id, function (receivedData) {
-            var new_data_point = receivedData.data;
-            var labels = receivedData.labels;
+            let new_data_point = receivedData.data;
+            // let labels = receivedData.labels;
 
             if (c.id === 'disk-read-speed-chart') {
                 let diskReadSpeeds = Object.values(new_data_point);
@@ -51,7 +53,7 @@ function init() {
             }
 
             chart.update({
-                labels: labels,
+                labels: new_data_point,
                 series: [chart.data.series[0].concat(new_data_point)]
             });
 

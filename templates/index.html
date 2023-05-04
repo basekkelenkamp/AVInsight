@@ -1,30 +1,38 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<div class="charts-wrapper">
-    <div class="charts-row">
-        <div class="chart-container chart-container-left">
+<div class="dashboard-wrapper">
+    <div class="line-graph-container">
+        <div class="chart-container">
             <h3>CPU</h3>
             <div id="cpu-usage-chart" class="ct-chart ct-double-octave"></div>
         </div>
 
-        <div class="chart-container chart-container-middle">
+        <div class="chart-container">
             <h3>GPU</h3>
             <div id="gpu-usage-chart" class="ct-chart ct-double-octave"></div>
         </div>
 
-        <div class="chart-container chart-container-right">
+        <div class="chart-container">
             <h3>RAM</h3>
             <div id="ram-usage-chart" class="ct-chart ct-double-octave"></div>
         </div>
-    </div>
-    <div class="charts-row">
-        <div class="chart-container chart-container-full">
+
+        <div class="chart-container">
             <h3>Disk Read Speed</h3>
             <div id="disk-read-speed-chart" class="ct-chart ct-double-octave"></div>
         </div>
     </div>
-</div>
-<script src="{{ url_for('static', filename='js/draw_charts.js') }}"></script>
 
+    <div class="info-warning-container">
+        <div class="info-container">
+            <h3>Info Container</h3>
+        </div>
+
+        <div class="warning-container">
+            <h3>Warning Container</h3>
+        </div>
+    </div>
+
+<script src="{{ url_for('static', filename='js/draw_charts.js') }}"></script>
 {% endblock content %}
