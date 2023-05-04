@@ -15,19 +15,27 @@
     <header>
         <h1 class="title"><a href="{{ url_for('index') }}">AVInsight</a></h1>
         <div class="button-container">
-            <a class="header-link" href="{{ url_for('archive') }}">
+
+            <a class="header-link" href="{{ url_for('index') }}" id="dashboard-link">
+                <img src="{{ url_for('static', filename='imgs/dashboard.png') }}" alt="dashboard" class="icon">
+                <span class="button-text">Dashboard</span>
+            </a>
+            <a class="header-link" href="{{ url_for('archive') }}" id="archive-link">
                 <img src="{{ url_for('static', filename='imgs/archive.png') }}" alt="archive" class="icon">
                 <span class="button-text">Archive</span>
             </a>
-            <a class="header-link" href="{{ url_for('settings') }}">
+            <a class="header-link" href="{{ url_for('settings') }}" id="settings-link">
                 <img src="{{ url_for('static', filename='imgs/settings.png') }}" alt="settings" class="icon">
                 <span class="button-text">Settings</span>
             </a>
+            
         </div>
     </header>
 
     <div class="container">
         <div>{% block content %}{% endblock %}</div>
     </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

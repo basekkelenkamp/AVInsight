@@ -111,6 +111,7 @@ header {
     padding: 5px 10px; /* Increase horizontal padding */
     border-radius: 4px;
     transition: background-color 0.3s;
+    padding-bottom: 0px;
 }
 
 .title a:hover {
@@ -126,17 +127,26 @@ header {
     color: #f0f0f0;
     transition: background-color 0.3s;
     padding: 5px;
-    margin-left: 30px; /* Increase space between buttons */
+    margin-left: 36px; /* Increase space between buttons */
     border-radius: 4px;
 }
+
+/* Binder bookmark effect */
+.header-link.active {
+    background-color: #E63946; /* Accent red color */
+    border-bottom: 2px solid #1D3B58; /* Darker shade of primary blue */
+    margin-bottom: -2px; /* Align with other buttons */
+}
+
 
 .button-container {
     display: flex;
     align-items: center;
 }
 
-.header-link:hover {
-    background-color: rgba(255, 255, 255, 0.3);
+/* Hover effect */
+.header-link:not(.active):hover {
+    background-color: rgba(255, 255, 255, 0.2);
     cursor: pointer;
 }
 
@@ -147,6 +157,7 @@ header {
 
 .button-text {
     margin-left: 10px;
+    font-size: 20px;
     font-family: 'Roboto', sans-serif;
     }
     

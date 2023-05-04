@@ -23,6 +23,8 @@ let options = {
 
 let maxDiskReadSpeed = 100;
 
+
+
 function init() {
     let charts = document.getElementsByClassName("ct-chart");
 
