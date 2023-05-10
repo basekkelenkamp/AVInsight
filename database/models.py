@@ -2,14 +2,14 @@ from dataclasses import dataclass
 
 
 @dataclass
-class Metrics:
+class Metric:
     id: int
     type: str
 
 
 @dataclass
-class MetricValues:
-    id: str
+class MetricValue:
+    id: int
     metric_id: int
-    timestamp: int
+    timestamp: str
     value: str

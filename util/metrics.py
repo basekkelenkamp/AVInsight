@@ -44,3 +44,10 @@ def get_gpu_usage(gpu_type="nvidia"):
             # Handle any errors that may occur during command execution
             print("Error: Failed to get GPU usage.")
             return None
+
+
+def get_metric_id_by_type(metrics, metric_type):
+    for metric in metrics:
+        if metric.type == metric_type:
+            return metric.id
+    return None  # return None if no matching metric is found

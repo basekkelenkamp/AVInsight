@@ -1,17 +1,28 @@
+import json
 import sqlite3
+from datetime import datetime, timedelta
+import pytz
+from database.models import Metric, MetricValue
 
 
-def get_db_connection():
-    connection = sqlite3.connect("database/AVInsight.db")
+db_path = "database/AVInsight.db"
+
+
+def db_get_connection():
+    return sqlite3.connect(db_path, check_same_thread=False)
+
+
+def db_init_connection():
+    connection = sqlite3.connect(db_path, check_same_thread=False)
     connection.row_factory = sqlite3.Row
-
+    connection.execute("PRAGMA journal_mode=WAL")
     cursor = connection.cursor()
 
     # Check if tables exist
     cursor.execute(
         """
-    SELECT name FROM sqlite_master WHERE type='table' AND (name='metrics' OR name='metric_values');
-    """
+        SELECT name FROM sqlite_master WHERE type='table' AND (name='metrics' OR name='metric_values');
+        """
     )
     tables = cursor.fetchall()
 
@@ -28,7 +39,7 @@ def get_db_connection():
             CREATE TABLE metric_values (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             metric_id INTEGER NOT NULL,
-            timestamp INT NOT NULL,
+            timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
             value TEXT NOT NULL,
             FOREIGN KEY (metric_id) REFERENCES metrics (id))
             """
@@ -36,12 +47,13 @@ def get_db_connection():
         cursor.execute(q1)
         cursor.execute(q2)
 
+        metrics = ["CPU", "GPU", "RAM", "DISK"]
+
+        for metric in metrics:
+            insert_metric(cursor, metric)
+
         # Commit the table creation
         connection.commit()
-
-    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-    for x in cursor:
-        print(x)
 
     # set to True to reset db
     clear_db = False
@@ -54,4 +66,76 @@ def get_db_connection():
     return connection
 
 
-db = get_db_connection()
+def insert_metric(cursor: sqlite3.Cursor, type: str):
+    query_insert_metric = """
+        INSERT INTO metrics (type) VALUES (?)
+        """
+    cursor.execute(query_insert_metric, (type,))
+    return cursor.lastrowid
+
+
+def insert_metric_value(cursor: sqlite3.Cursor, metric_id: int, value: str):
+    query_insert_metric = """
+        INSERT INTO metric_values (metric_id, value) VALUES (?, ?)
+        """
+
+    cursor.execute(
+        query_insert_metric,
+        (
+            metric_id,
+            json.dumps(value),
+        ),
+    )
+    return
+
+
+def db_get_all_metrics(cursor: sqlite3.Cursor):
+    query_get_metrics = """
+        SELECT * FROM metrics 
+        """
+
+    metrics = []
+    cursor.execute(query_get_metrics)
+    results = cursor.fetchall()
+
+    for result in results:
+        metric = Metric(*result)
+        metrics.append(metric)
+
+    return metrics
+
+
+def db_get_today_metric_values(cursor: sqlite3.Cursor, custom_date: str = None):
+    berlin_tz = pytz.timezone("Europe/Berlin")
+
+    if not custom_date:
+        day = datetime.now(berlin_tz)
+    else:
+        # Example incoming str: 'YYYY-MM-DD'
+        day = datetime.strptime(custom_date, "%Y-%m-%d")
+        day = berlin_tz.localize(day)
+
+    # Define the start and end of the day in Berlin time
+    start_of_day = day.replace(hour=0, minute=0, second=0, microsecond=0)
+    end_of_day = start_of_day + timedelta(days=1)
+
+    query_get_metric_values = """
+        SELECT * FROM metric_values 
+        WHERE timestamp BETWEEN ? AND ?
+        """
+
+    cursor.execute(
+        query_get_metric_values,
+        (
+            start_of_day.strftime("%Y-%m-%d %H:%M:%S"),
+            end_of_day.strftime("%Y-%m-%d %H:%M:%S"),
+        ),
+    )
+    results = cursor.fetchall()
+
+    metric_values = []
+    for result in results:
+        metric_value = MetricValue(*result)
+        metric_values.append(metric_value)
+
+    return metric_values

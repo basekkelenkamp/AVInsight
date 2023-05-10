@@ -13,6 +13,7 @@ psutil = "^5.9.4"
 gpustat = "^1.1"
 python-hwinfo = "^0.1.6"
 pyinstaller = "^5.10.1"
+pytz = "^2023.3"
 
 
 [tool.poetry.group.dev.dependencies]

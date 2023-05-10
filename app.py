@@ -7,20 +7,37 @@ import threading
 from hwinfo.pci import PCIDevice
 from hwinfo.pci.lspci import LspciNNMMParser
 from config.load_config import get_config, update_config
+from database.db import (
+    db_get_all_metrics,
+    db_init_connection,
+    db_get_connection,
+    db_get_today_metric_values,
+    insert_metric_value,
+)
 from util.metrics import (
     get_cpu_usage,
     get_disk_io_counters,
     calculate_disk_read_speeds,
     get_gpu_usage,
     get_ram_usage,
+    get_metric_id_by_type,
 )
 
+# Init flask
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "secretkey"
 socket_io = SocketIO(app)
 
+# Load the config
+config = get_config()
 
-def get_metrics(interval=0.1):
+# Init db connection
+connection = db_init_connection()
+metrics = db_get_all_metrics(connection.cursor())
+connection.close()
+
+
+def get_metrics(interval=1):
     prev_time = time.time()
     prev_disk_io = get_disk_io_counters()
 
@@ -47,6 +64,18 @@ def get_metrics(interval=0.1):
         socket_io.emit(
             "disk-read-speed-chart", {"data": disk_read_speeds}, namespace="/metrics"
         )
+
+        # Connect to the database, write data, then close the connection
+        connection = db_get_connection()
+        cursor = connection.cursor()
+        insert_metric_value(cursor, get_metric_id_by_type(metrics, "CPU"), cpu_percent)
+        insert_metric_value(cursor, get_metric_id_by_type(metrics, "GPU"), gpu_percent)
+        insert_metric_value(cursor, get_metric_id_by_type(metrics, "RAM"), ram_percent)
+        insert_metric_value(
+            cursor, get_metric_id_by_type(metrics, "DISK"), disk_read_speeds
+        )
+        connection.commit()
+        connection.close()
 
         time.sleep(interval)
 
