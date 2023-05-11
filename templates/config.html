@@ -11,15 +11,13 @@
           {% for key, value in config_item.items() %}
           <div class="form-group">
             <label for="{{ section }}-{{ key }}" class="label-text">{{ key }}</label>
-            {% if value is string %}
-              <input type="text" name="{{ section }}-{{ key }}" id="{{ section }}-{{ key }}" value="{{ value }}">
-            {% elif value is number %}
+            {% if value is number %}
               <input type="number" name="{{ section }}-{{ key }}" id="{{ section }}-{{ key }}" value="{{ value }}">
-            {% elif value is boolean %}
-              <label class="switch-wrap">
-                <input type="checkbox" name="{{ section }}-{{ key }}" id="{{ section }}-{{ key }}" {% if value %}checked{% endif %}>
-                <span class="switch"></span>
-              </label>
+            {% elif value == "true" or value == "false" %}
+              <div class="switch">
+                <input type="checkbox" id="{{ section }}-{{ key }}" name="{{ section }}-{{ key }}" {% if value %}checked{% endif %}>
+                <label for="{{ section }}-{{ key }}" class="slider round"></label>
+              </div>
             {% endif %}
           </div>
           {% endfor %}
