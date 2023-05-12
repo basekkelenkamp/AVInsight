@@ -94,7 +94,6 @@ def config():
 @app.route("/save-config", methods=["POST"])
 def save_config():
     new_config = request.json
-    # Your update_config function should be implemented here
     try:
         update_config(new_config)
         return jsonify({"result": "success"}), 200

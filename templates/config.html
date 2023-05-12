@@ -14,8 +14,9 @@
             {% if value is number %}
               <input type="number" name="{{ section }}-{{ key }}" id="{{ section }}-{{ key }}" value="{{ value }}">
             {% elif value == "true" or value == "false" %}
-              <div class="switch">
-                <input type="checkbox" id="{{ section }}-{{ key }}" name="{{ section }}-{{ key }}" {% if value %}checked{% endif %}>
+              <div class="switch" for="checkbox">
+                <input type="hidden" name="{{ section }}-{{ key }}" value="false">
+                <input type="checkbox" id="{{ section }}-{{ key }}" name="{{ section }}-{{ key }}" {% if value == "true" %}checked{% endif %}>
                 <label for="{{ section }}-{{ key }}" class="slider round"></label>
               </div>
             {% endif %}

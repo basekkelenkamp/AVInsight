@@ -38,4 +38,14 @@ document.getElementById('save-config').addEventListener('click', function() {
       }
     });
   });
-  
+
+
+document.getElementById("config-form").addEventListener("change", function() {
+  document.getElementById("save-config").disabled = false;
+  document.getElementById("save-config").innerHTML = "Save";
+});
+
+document.getElementById("save-config").addEventListener("click", function() {
+    this.disabled = true;
+    this.innerHTML = "Saved";
+});

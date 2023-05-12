@@ -1,4 +1,4 @@
- {
+{
     "metrics": [
         {
             "disk": 1
@@ -9,7 +9,7 @@
     ],
     "archive": [
         {
-            "enable_archive": "true"
+            "enable_archive": "false"
         },
         {
             "clear_archive_days": 0

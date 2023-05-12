@@ -8,18 +8,13 @@ def get_config():
 
 
 def update_config(new_config):
-    current_config = get_config()
-
-    for key, value in new_config.items():
-        if key in current_config:
-            if isinstance(current_config[key], type(value)):
-                current_config[key] = value
-            else:
-                raise ValueError(
-                    f"Invalid value type for key '{key}'. Expected {type(current_config[key])}, but got {type(value)}."
-                )
+    for outer_key, outer_value in new_config.items():
+        for inner_dict in outer_value:
+            for key, value in inner_dict.items():
+                if isinstance(value, bool):
+                    inner_dict[key] = str(value).lower()
 
     with open("config/config.json", "w") as config:
-        config.write(json.dumps(current_config, indent=4))
+        config.write(json.dumps(new_config, indent=4))
 
     return
