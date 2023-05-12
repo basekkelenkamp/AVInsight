@@ -1,18 +1,18 @@
 {
+    "archive": [
+        {
+            "clear_archive_after_days": 0
+        },
+        {
+            "enable_archive": "true"
+        }
+    ],
     "metrics": [
         {
             "disk": 1
         },
         {
             "interval": 0.1
-        }
-    ],
-    "archive": [
-        {
-            "enable_archive": "false"
-        },
-        {
-            "clear_archive_days": 0
         }
     ]
 }
