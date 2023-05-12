@@ -6,7 +6,7 @@ import time
 import threading
 from hwinfo.pci import PCIDevice
 from hwinfo.pci.lspci import LspciNNMMParser
-from config.load_config import get_config, update_config
+from config.load_config import Config, get_config, update_config
 from database.db import (
     db_get_all_metrics,
     db_init_connection,
@@ -18,6 +18,7 @@ from util.metrics import (
     get_cpu_usage,
     get_disk_io_counters,
     calculate_disk_read_speeds,
+    get_disk_list,
     get_gpu_usage,
     get_ram_usage,
     get_metric_id_by_type,
@@ -36,12 +37,19 @@ connection = db_init_connection()
 metrics = db_get_all_metrics(connection.cursor())
 connection.close()
 
+# Global flag to control the running thread
+keep_running = True
 
-def get_metrics(interval=1):
+
+def get_metrics(config: Config):
+    interval = config.interval
+
     prev_time = time.time()
     prev_disk_io = get_disk_io_counters()
 
-    while True:
+    while keep_running:
+        print(f"enable_archive: {config.enable_archive}")
+
         # Get CPU, GPU, RAM
         cpu_percent = get_cpu_usage(interval)
         ram_percent = get_ram_usage()
@@ -87,15 +95,26 @@ def index():
 
 @app.route("/config")
 def config():
-    config_data = get_config()
-    return render_template("config.html", config=config_data)
+    config_data = get_config(no_object=True)
+    disks = get_disk_list()
+    # ['PhysicalDrive0', 'PhysicalDrive1', 'PhysicalDrive2']
+    return render_template("config.html", config=config_data, disks=disks)
 
 
 @app.route("/save-config", methods=["POST"])
 def save_config():
+    global config
+    global keep_running
     new_config = request.json
+    breakpoint()
     try:
+        stop_metrics_thread()
+
         update_config(new_config)
+        config = get_config()
+
+        start_metrics_thread()
+
         return jsonify({"result": "success"}), 200
     except Exception as e:
         print(e)
@@ -109,18 +128,39 @@ def archive():
 
 @socket_io.on("connect", namespace="/metrics")
 def connect():
+    global config
+    global keep_running
+
     """Event handler for socket.io connection"""
     print("Client connected")
     # Start a separate thread to get usage in real-time
-    thread = threading.Thread(target=get_metrics)
-    thread.daemon = True
-    thread.start()
+    start_metrics_thread()
 
 
 @socket_io.on("disconnect", namespace="/metrics")
 def disconnect():
     """Event handler for socket.io disconnection"""
     print("Client disconnected")
+
+
+# Threading
+def start_metrics_thread():
+    global config
+    global keep_running
+    # Start a separate thread to get usage in real-time
+    config = get_config()
+    keep_running = True
+    thread = threading.Thread(target=get_metrics, args=(config,))
+    thread.daemon = True
+    thread.start()
+
+
+def stop_metrics_thread():
+    global keep_running
+    global config
+    # Stop the current thread
+    keep_running = False
+    time.sleep(1)
 
 
 if __name__ == "__main__":

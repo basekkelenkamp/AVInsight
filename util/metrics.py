@@ -3,6 +3,12 @@ import psutil
 import subprocess
 
 
+def get_disk_list():
+    return [
+        disk_name for disk_name, disk in psutil.disk_io_counters(perdisk=True).items()
+    ]
+
+
 def get_disk_io_counters():
     return {
         disk_name: disk.read_bytes

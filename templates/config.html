@@ -19,6 +19,16 @@
                 <input type="checkbox" id="{{ section }}-{{ key }}" name="{{ section }}-{{ key }}" {% if value == "true" %}checked{% endif %}>
                 <label for="{{ section }}-{{ key }}" class="slider round"></label>
               </div>
+            {% elif key == "disk" %}
+              <select id="{{ section }}-{{ key }}" name="{{ section }}-{{ key }}">
+                {% for disk in disks %}
+                  {% if disk == value %}
+                    <option value="{{ disk }}" selected="selected">{{ disk }}</option>
+                  {% else %}
+                    <option value="{{ disk }}">{{ disk }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
             {% endif %}
           </div>
           {% endfor %}
