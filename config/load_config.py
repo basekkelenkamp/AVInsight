@@ -14,14 +14,19 @@ class Config:
         self.disk = disk
         self.interval = interval
 
-    def update(self, interval, disk, enable_archive, clear_archive_days):
+    def update(self, interval, disk, enable_archive, clear_archive_after_days):
         self.interval = interval
         self.disk = disk
         self.enable_archive = enable_archive
-        self.clear_archive_days = clear_archive_days
+        self.clear_archive_after_days = clear_archive_after_days
 
     def get_params(self):
-        return self.interval, self.disk, self.enable_archive, self.clear_archive_days
+        return (
+            self.interval,
+            self.disk,
+            self.enable_archive,
+            self.clear_archive_after_days,
+        )
 
 
 def get_config(no_object: bool = False):
@@ -51,7 +56,6 @@ def update_config(new_config):
                 if isinstance(value, bool):
                     inner_dict[key] = str(value).lower()
 
-    breakpoint()
     with open("config/config.json", "w") as config:
         config.write(json.dumps(new_config, indent=4, sort_keys=True))
 

@@ -9,18 +9,17 @@ def get_disk_list():
     ]
 
 
-def get_disk_io_counters():
-    return {
+def get_disk_io_counters(disk):
+    data = {
         disk_name: disk.read_bytes
         for disk_name, disk in psutil.disk_io_counters(perdisk=True).items()
     }
 
+    return data[disk]
+
 
 def calculate_disk_read_speeds(prev_disk_io, curr_disk_io, time_diff):
-    return {
-        disk_name: (curr_disk_io[disk_name] - prev_disk_io[disk_name]) / time_diff
-        for disk_name in curr_disk_io.keys()
-    }
+    return curr_disk_io - prev_disk_io / time_diff
 
 
 def get_cpu_usage(interval):
