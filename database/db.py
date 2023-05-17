@@ -39,7 +39,7 @@ def db_init_connection():
             CREATE TABLE metric_values (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             metric_id INTEGER NOT NULL,
-            timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
+            timestamp TEXT NOT NULL,
             value TEXT NOT NULL,
             FOREIGN KEY (metric_id) REFERENCES metrics (id))
             """
@@ -75,8 +75,11 @@ def insert_metric(cursor: sqlite3.Cursor, type: str):
 
 
 def insert_metric_value(cursor: sqlite3.Cursor, metric_id: int, value: str):
+    berlin_tz = pytz.timezone("Europe/Berlin")
+    current_time_berlin = datetime.now(berlin_tz)
+
     query_insert_metric = """
-        INSERT INTO metric_values (metric_id, value) VALUES (?, ?)
+        INSERT INTO metric_values (metric_id, value, timestamp) VALUES (?, ?, ?)
         """
 
     cursor.execute(
@@ -84,12 +87,13 @@ def insert_metric_value(cursor: sqlite3.Cursor, metric_id: int, value: str):
         (
             metric_id,
             json.dumps(value),
+            current_time_berlin.strftime("%Y-%m-%d %H:%M:%S.%f"),
         ),
     )
     return
 
 
-def db_get_all_metrics(cursor: sqlite3.Cursor):
+def db_get_all_metrics(cursor: sqlite3.Cursor, as_obj: bool = False):
     query_get_metrics = """
         SELECT * FROM metrics 
         """
@@ -99,13 +103,22 @@ def db_get_all_metrics(cursor: sqlite3.Cursor):
     results = cursor.fetchall()
 
     for result in results:
-        metric = Metric(*result)
+        if as_obj:
+            metric = Metric(*result)
+        else:
+            metric = {
+                "id": result[0],
+                "type": result[1],
+            }
+
         metrics.append(metric)
 
     return metrics
 
 
-def db_get_today_metric_values(cursor: sqlite3.Cursor, custom_date: str = None):
+def db_get_today_metric_values(
+    cursor: sqlite3.Cursor, custom_date: str = None, as_obj: bool = False
+):
     berlin_tz = pytz.timezone("Europe/Berlin")
 
     if not custom_date:
@@ -127,15 +140,23 @@ def db_get_today_metric_values(cursor: sqlite3.Cursor, custom_date: str = None):
     cursor.execute(
         query_get_metric_values,
         (
-            start_of_day.strftime("%Y-%m-%d %H:%M:%S"),
-            end_of_day.strftime("%Y-%m-%d %H:%M:%S"),
+            start_of_day.strftime("%Y-%m-%d %H:%M:%S.%f"),
+            end_of_day.strftime("%Y-%m-%d %H:%M:%S.%f"),
         ),
     )
     results = cursor.fetchall()
 
     metric_values = []
     for result in results:
-        metric_value = MetricValue(*result)
+        if as_obj:
+            metric_value = MetricValue(*result)
+        else:
+            metric_value = {
+                "id": result[0],
+                "metric_id": result[1],
+                "timestamp": result[2],
+                "value": result[3],
+            }
         metric_values.append(metric_value)
 
     return metric_values

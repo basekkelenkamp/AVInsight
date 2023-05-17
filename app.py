@@ -1,3 +1,4 @@
+import json
 import os
 
 from flask import Flask, render_template, jsonify, request
@@ -34,23 +35,26 @@ config = get_config()
 
 # Init db connection
 connection = db_init_connection()
-metrics = db_get_all_metrics(connection.cursor())
+metrics = db_get_all_metrics(connection.cursor(), as_obj=True)
 connection.close()
 
 # Global flag to control the running thread
 keep_running = True
 
 
-def get_metrics(config: Config):
-    interval = config.interval
-    disk = config.disk
-    enable_archive = config.enable_archive
-    archive_days = config.clear_archive_after_days
+def get_metrics(original_config: Config):
+    interval = original_config.interval
+    disk = original_config.disk
+    enable_archive = original_config.enable_archive
+    archive_days = original_config.clear_archive_after_days
 
     prev_time = time.time()
     prev_disk_io = get_disk_io_counters(disk)
 
     while keep_running:
+        if json.dumps(original_config.get_params()) != json.dumps(config.get_params()):
+            break
+
         # to keep track of function runtime speed
         start_time = time.time()
 
@@ -142,7 +146,16 @@ def save_config():
 
 @app.route("/archive")
 def archive():
-    return render_template("archive.html")
+    connection = db_get_connection()
+    cursor = connection.cursor()
+
+    data = db_get_today_metric_values(cursor)
+    metric_names = db_get_all_metrics(cursor)
+    connection.close()
+
+    return render_template(
+        "archive.html", data=json.dumps((data)), metric_names=json.dumps(metric_names)
+    )
 
 
 @socket_io.on("connect", namespace="/metrics")

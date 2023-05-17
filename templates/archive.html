@@ -3,4 +3,14 @@
 
 <h2>Archive</h2>
 
+<div hidden id="dataSelector" data-metricvalues="{{ data }}" data-metricnames="{{ metric_names }}"></div>
+
+{% for metric in metric_names %}
+    <div class="chart-container">
+        <h3>{{ metric.type }}</h3>
+        <div id="metric-chart-{{ metric.id }}" class="ct-chart ct-double-octave"></div>
+    </div>
+{% endfor %}
+
+<script src="{{ url_for('static', filename='js/draw_archive_charts.js') }}"></script>
 {% endblock content %}

@@ -9,7 +9,7 @@
     ],
     "metrics": [
         {
-            "disk": "PhysicalDrive0"
+            "disk": "PhysicalDrive1"
         },
         {
             "interval": 1
