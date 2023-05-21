@@ -34,6 +34,7 @@ if sys.argv[1] != "run":
     debug = False
     temp_dir = os.path.dirname(__file__)
     original_location = sys.argv[1]
+    db_path = os.path.join(original_location, "database")
     for dir_name in ["templates", "static"]:
         src_dir = os.path.join(original_location, dir_name)
         dst_dir = os.path.join(temp_dir, dir_name)
@@ -50,6 +51,7 @@ if sys.argv[1] != "run":
 # Init flask from poetry env
 else:
     debug = True
+    db_path = "database"
     app = Flask(__name__)
 
 app.config["SECRET_KEY"] = "secretkey"
@@ -59,7 +61,7 @@ socket_io = SocketIO(app)
 config = get_config()
 
 # Init db connection
-connection = db_init_connection()
+connection = db_init_connection(db_path=db_path)
 metrics = db_get_all_metrics(connection.cursor(), as_obj=True)
 connection.close()
 
@@ -112,7 +114,7 @@ def get_metrics(original_config: Config):
 
         # Connect to the database, write data, then close the connection
         if enable_archive:
-            connection = db_get_connection()
+            connection = db_get_connection(db_path=db_path)
             cursor = connection.cursor()
             insert_metric_value(
                 cursor, get_metric_id_by_type(metrics, "CPU"), cpu_percent
@@ -171,7 +173,7 @@ def save_config():
 
 @app.route("/archive")
 def archive():
-    connection = db_get_connection()
+    connection = db_get_connection(db_path=db_path)
     cursor = connection.cursor()
 
     data = db_get_today_metric_values(cursor)

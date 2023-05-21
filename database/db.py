@@ -3,17 +3,19 @@ import sqlite3
 from datetime import datetime, timedelta
 import pytz
 from database.models import Metric, MetricValue
+import os
+
+db_name = "AVInsight.db"
 
 
-db_path = "database/AVInsight.db"
+def db_get_connection(db_path: str):
+    return sqlite3.connect(os.path.join(db_path, db_name), check_same_thread=False)
 
 
-def db_get_connection():
-    return sqlite3.connect(db_path, check_same_thread=False)
-
-
-def db_init_connection():
-    connection = sqlite3.connect(db_path, check_same_thread=False)
+def db_init_connection(db_path: str):
+    connection = sqlite3.connect(
+        os.path.join(db_path, db_name), check_same_thread=False
+    )
     connection.row_factory = sqlite3.Row
     connection.execute("PRAGMA journal_mode=WAL")
     cursor = connection.cursor()
