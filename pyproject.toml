@@ -11,9 +11,9 @@ flask = "^2.2.3"
 flask-socketio = "^5.3.3"
 psutil = "^5.9.4"
 gpustat = "^1.1"
-python-hwinfo = "^0.1.6"
-pyinstaller = "^5.10.1"
 pytz = "^2023.3"
+nuitka = "^1.5.8"
+simple-websocket = "^0.10.0"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -1,12 +1,16 @@
 import json
 import os
+import sys
+import shutil
+
 
 from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO
 import time
 import threading
-from hwinfo.pci import PCIDevice
-from hwinfo.pci.lspci import LspciNNMMParser
+
+# from hwinfo.pci import PCIDevice
+# from hwinfo.pci.lspci import LspciNNMMParser
 from config.load_config import Config, get_config, update_config
 from database.db import (
     db_get_all_metrics,
@@ -25,8 +29,29 @@ from util.metrics import (
     get_metric_id_by_type,
 )
 
-# Init flask
-app = Flask(__name__)
+# Init Nuikta for executable
+if sys.argv[1] != "run":
+    debug = False
+    temp_dir = os.path.dirname(__file__)
+    original_location = sys.argv[1]
+    for dir_name in ["templates", "static"]:
+        src_dir = os.path.join(original_location, dir_name)
+        dst_dir = os.path.join(temp_dir, dir_name)
+
+        shutil.copytree(src_dir, dst_dir)
+
+    # Init flask
+    app = Flask(
+        __name__,
+        template_folder=os.path.join(temp_dir, "templates"),
+        static_folder=os.path.join(temp_dir, "static"),
+    )
+
+# Init flask from poetry env
+else:
+    debug = True
+    app = Flask(__name__)
+
 app.config["SECRET_KEY"] = "secretkey"
 socket_io = SocketIO(app)
 
@@ -201,4 +226,4 @@ if __name__ == "__main__":
     )  # Use 5000 as the default port number
     url = f"http://localhost:{port}"
 
-    socket_io.run(app, host="0.0.0.0", port=port, debug=True)
+    socket_io.run(app, host="0.0.0.0", port=port, debug=debug)

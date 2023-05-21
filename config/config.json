@@ -1,10 +1,10 @@
 {
     "archive": [
         {
-            "enable_archive": "true"
+            "clear_archive_after_days": 0
         },
         {
-            "clear_archive_after_days": 0
+            "enable_archive": "false"
         }
     ],
     "metrics": [
@@ -12,7 +12,7 @@
             "disk": "PhysicalDrive1"
         },
         {
-            "interval": 1
+            "interval": 0.1
         }
     ]
 }
