@@ -194,7 +194,7 @@ def save_config():
         return jsonify({"result": "error"}), 500
 
 
-@app.route("/archive", defaults={'date': None})
+@app.route("/archive", defaults={"date": None})
 @app.route("/archive/<date>")
 def archive(date):
     try:
@@ -206,15 +206,17 @@ def archive(date):
     cursor = connection.cursor()
 
     # Example date str: 'YYYY-MM-DD'
-    data, date = db_get_metric_values_from_day(cursor, date)
+    data, date, prev_date, next_date = db_get_metric_values_from_day(cursor, date)
     metric_names = db_get_all_metrics(cursor)
     connection.close()
 
     return render_template(
-        "archive.html", 
-        data=json.dumps(data), 
+        "archive.html",
+        data=json.dumps(data),
         metric_names=json.dumps(metric_names),
-        date=date
+        date=date,
+        prev_date=prev_date,
+        next_date=next_date,
     )
 
 

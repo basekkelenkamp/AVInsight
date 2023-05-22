@@ -6,3 +6,55 @@
     font-size: 12px;
     border-radius: 4px;
 }
+
+/* Add styling for the date container */
+.date-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .date-container h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #F2F2F3;
+    margin: 0;
+    margin-right: 10px;
+  }
+  
+  /* Add styling for the date buttons */
+  .date-button-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .date-button-prev,
+  .date-button-next {
+    position: relative;
+    margin-right: 10px;
+  }
+  
+  .date-button-prev a,
+  .date-button-next a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #1D3B58;
+    color: #F2F2F3;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .date-button-prev a:hover,
+  .date-button-next a:hover {
+    background-color: #0E283E;
+  }
+  
+  /* Adjust position of the next button */
+  .date-button-next {
+    position: absolute;
+    left: 20%;
+  }
+  

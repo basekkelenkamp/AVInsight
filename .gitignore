@@ -1,2 +1,4 @@
 __pycache__/
 .DS_Store
+app.build/ccache*.txt
+app.onefile-build/ccache*.txt

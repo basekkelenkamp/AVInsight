@@ -125,14 +125,20 @@ def db_get_metric_values_from_day(
 
     if not custom_date:
         day = datetime.now(berlin_tz)
+        next_date = None
     else:
         # Example incoming str: 'YYYY-MM-DD'
         day = datetime.strptime(custom_date, "%Y-%m-%d")
         day = berlin_tz.localize(day)
+        next_date = day + timedelta(days=1)
+        next_date = next_date.strftime("%Y-%m-%d")
 
     # Define the start and end of the day in Berlin time
     start_of_day = day.replace(hour=0, minute=0, second=0, microsecond=0)
     end_of_day = start_of_day + timedelta(days=1)
+
+    if start_of_day.date() == datetime.now(berlin_tz).date():
+        next_date = None
 
     query_get_metric_values = """
         SELECT * FROM metric_values 
@@ -161,4 +167,10 @@ def db_get_metric_values_from_day(
             }
         metric_values.append(metric_value)
 
-    return metric_values, day.strftime("%Y-%m-%d")
+    prev_date = day - timedelta(days=1)
+    return (
+        metric_values,
+        day.strftime("%Y-%m-%d"),
+        prev_date.strftime("%Y-%m-%d"),
+        next_date,
+    )
