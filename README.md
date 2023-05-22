@@ -1,13 +1,15 @@
 # AVInsight
 
 ## Start the application from executable (powershell)
-`.\app.exe "F:\school\jaar4\the lighthouse internship\AVInsight"`
+`.\app.exe "C:\path\to\rootfolder\AVInsight"`
+
+For me it is: `.\app.exe "F:\school\jaar4\the lighthouse internship\AVInsight"`
 
 ## Start from python environment (poetry)
 `poetry run flask run`
 
 ## Development
-### Create executable with Nuikta
+### Create executable with Nuitka
 `poetry run python -m nuitka --onefile --standalone app.py`
 
 ### Install poetry environment (manual way)

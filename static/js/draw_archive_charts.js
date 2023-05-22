@@ -1,7 +1,7 @@
 let options = {
     fullWidth: true,
     showArea: true,
-    showLabel: false,
+    showLabel: true,
     chartPadding: 0,
     axisY: {
         high: 100,
@@ -9,29 +9,31 @@ let options = {
         scaleMinSpace: 40,
     },
     axisX: {
-        showLabel: false,
-        offset: 4    
+        showLabel: true,
+        offset: 4
     }
 };
 
 function draw_chart(chart_id, chart_data, chart_labels) {
-    let chartOptions = {...options};
+    let chartOptions = { ...options };
 
-    let chart = new Chartist.Line('#' + chart_id, {
+    let data = {
         labels: chart_labels,
         series: [chart_data]
-    }, chartOptions);
+    };
+
+    let chart = new Chartist.Line('#' + chart_id, data, chartOptions);
 }
 
 function group_by(arr, key) {
-    return arr.reduce(function(rv, x) {
+    return arr.reduce(function (rv, x) {
         (rv[x[key]] = rv[x[key]] || []).push(x);
         return rv;
     }, {});
 }
 
 function sort_by(arr, key) {
-    return arr.sort(function(a, b) {
+    return arr.sort(function (a, b) {
         return new Date(a[key]) - new Date(b[key]);
     });
 }
@@ -41,9 +43,7 @@ function init() {
 
     const metric_values = JSON.parse(d.dataset.metricvalues)
     const metric_names = JSON.parse(d.dataset.metricnames)
-    
-    console.log(metric_values)
-    console.log(metric_names)
+
     let grouped_data = group_by(metric_values, 'metric_id');
     for (let metric of metric_names) {
         let metric_data = grouped_data[metric.id];
@@ -57,6 +57,7 @@ function init() {
         let chart_data = metric_data.map(d => parseFloat(d.value));
         let chart_labels = metric_data.map(d => d.timestamp);
 
+        console.log("Creating chart: ", metric.type)
         draw_chart(chart_id, chart_data, chart_labels);
     }
 }

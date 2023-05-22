@@ -29,6 +29,11 @@ from util.metrics import (
     get_metric_id_by_type,
 )
 
+
+#   ######   #
+#    INIT    #
+#   ######   #
+
 # Init Nuikta for executable
 if sys.argv[1] != "run":
     debug = False
@@ -54,7 +59,14 @@ else:
     db_path = "database"
     app = Flask(__name__)
 
+
+@app.template_filter("fromjson")
+def from_json_filter(data):
+    return json.loads(data)
+
+
 app.config["SECRET_KEY"] = "secretkey"
+app.jinja_env.filters["fromjson"] = from_json_filter
 socket_io = SocketIO(app)
 
 # Load the config
@@ -67,6 +79,11 @@ connection.close()
 
 # Global flag to control the running thread
 keep_running = True
+
+
+#   ######   #
+#   SOCKET   #
+#   ######   #
 
 
 def get_metrics(original_config: Config):
@@ -139,6 +156,11 @@ def get_metrics(original_config: Config):
             time.sleep(sleep_time)
 
 
+#   ######   #
+#   ROUTES   #
+#   ######   #
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -181,7 +203,7 @@ def archive():
     connection.close()
 
     return render_template(
-        "archive.html", data=json.dumps((data)), metric_names=json.dumps(metric_names)
+        "archive.html", data=json.dumps(data), metric_names=json.dumps(metric_names)
     )
 
 
@@ -221,6 +243,10 @@ def stop_metrics_thread():
     keep_running = False
     time.sleep(1)
 
+
+#   ######   #
+#   SERVER   #
+#   ######   #
 
 if __name__ == "__main__":
     port = int(

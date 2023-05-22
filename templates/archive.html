@@ -5,7 +5,7 @@
 
 <div hidden id="dataSelector" data-metricvalues="{{ data }}" data-metricnames="{{ metric_names }}"></div>
 
-{% for metric in metric_names %}
+{% for metric in metric_names|fromjson %}
     <div class="chart-container">
         <h3>{{ metric.type }}</h3>
         <div id="metric-chart-{{ metric.id }}" class="ct-chart ct-double-octave"></div>

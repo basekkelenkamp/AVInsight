@@ -1,18 +1,18 @@
 {
     "archive": [
         {
-            "clear_archive_after_days": 0
+            "enable_archive": "true"
         },
         {
-            "enable_archive": "false"
+            "clear_archive_after_days": 0
         }
     ],
     "metrics": [
         {
-            "disk": "PhysicalDrive1"
+            "interval": 0.1
         },
         {
-            "interval": 0.1
+            "disk": "PhysicalDrive1"
         }
     ]
 }
