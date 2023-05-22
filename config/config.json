@@ -1,7 +1,7 @@
 {
     "archive": [
         {
-            "enable_archive": "true"
+            "enable_archive": "false"
         },
         {
             "clear_archive_after_days": 0
