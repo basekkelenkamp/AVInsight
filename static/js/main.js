@@ -5,19 +5,19 @@ document.addEventListener('DOMContentLoaded', function () {
     const archiveLink = document.getElementById('archive-link');
     const configLink = document.getElementById('config-link');
     
-    if (currentPage === '/' || currentPage === '/index') {
+    if (currentPage === '/' || currentPage.startsWith('/index')) {
         dashboardLink.classList.add('active');
     } else {
         dashboardLink.classList.remove('active');
     }
 
-    if (currentPage === '/archive') {
+    if (currentPage.startsWith('/archive')) {
         archiveLink.classList.add('active');
     } else {
         archiveLink.classList.remove('active');
     }
 
-    if (currentPage === '/config') {
+    if (currentPage.startsWith('/config')) {
         configLink.classList.add('active');
     } else {
         configLink.classList.remove('active');

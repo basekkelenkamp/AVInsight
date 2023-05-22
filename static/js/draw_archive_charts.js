@@ -9,7 +9,6 @@ let options = {
         scaleMinSpace: 40,
     },
     axisX: {
-        showLabel: true,
         offset: 4
     }
 };
@@ -23,6 +22,61 @@ function draw_chart(chart_id, chart_data, chart_labels) {
     };
 
     let chart = new Chartist.Line('#' + chart_id, data, chartOptions);
+
+    let tooltipTimeout;
+    let labelElement;
+
+    chart.on('draw', function (data) {
+        if (data.type === 'point') {
+            // Increase the hover area around the point
+            let hoverArea = document.createElementNS(
+                'http://www.w3.org/2000/svg',
+                'rect'
+            );
+            hoverArea.setAttribute('x', data.x - 5);
+            hoverArea.setAttribute('y', data.y - 5);
+            hoverArea.setAttribute('width', 10);
+            hoverArea.setAttribute('height', 10);
+            hoverArea.setAttribute('style', 'opacity: 0;');
+    
+            data.group._node.appendChild(hoverArea);
+    
+            hoverArea.addEventListener('mouseenter', function (event) {
+                let labelValue = chart_labels[data.index];
+                showLabel(event.clientX, event.clientY, labelValue);
+            });
+            hoverArea.addEventListener('mouseleave', function (event) {
+                hideLabel();
+            });
+        }
+    });
+    
+    function showLabel(x, y, value) {
+        if (labelElement) {
+            labelElement.parentNode.removeChild(labelElement);
+        }
+
+        labelElement = document.createElement('div');
+        labelElement.className = 'chart-label';
+        labelElement.textContent = value.split(' ')[1];
+
+        labelElement.style.position = 'fixed';
+        labelElement.style.top = y - 30 + 'px';
+        labelElement.style.left = x + 'px';
+
+        document.body.appendChild(labelElement);
+
+        clearTimeout(tooltipTimeout);
+    }
+
+    function hideLabel() {
+        tooltipTimeout = setTimeout(function () {
+            if (labelElement) {
+                labelElement.parentNode.removeChild(labelElement);
+                labelElement = null;
+            }
+        }, 500);
+    }
 }
 
 function group_by(arr, key) {
@@ -39,10 +93,10 @@ function sort_by(arr, key) {
 }
 
 function init() {
-    let d = document.querySelector("#dataSelector")
+    let d = document.querySelector("#dataSelector");
 
-    const metric_values = JSON.parse(d.dataset.metricvalues)
-    const metric_names = JSON.parse(d.dataset.metricnames)
+    const metric_values = JSON.parse(d.dataset.metricvalues);
+    const metric_names = JSON.parse(d.dataset.metricnames);
 
     let grouped_data = group_by(metric_values, 'metric_id');
     for (let metric of metric_names) {
@@ -57,8 +111,9 @@ function init() {
         let chart_data = metric_data.map(d => parseFloat(d.value));
         let chart_labels = metric_data.map(d => d.timestamp);
 
-        console.log("Creating chart: ", metric.type)
+        console.log("Creating chart: ", metric.type);
         draw_chart(chart_id, chart_data, chart_labels);
     }
 }
+
 init();

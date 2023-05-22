@@ -33,9 +33,9 @@ PyObject *module_database$db;
 PyDictObject *moduledict_database$db;
 
 /* The declarations of module constants used, if any. */
-static PyObject *mod_consts[87];
+static PyObject *mod_consts[88];
 #ifndef __NUITKA_NO_ASSERT__
-static Py_hash_t mod_consts_hash[87];
+static Py_hash_t mod_consts_hash[88];
 #endif
 
 static PyObject *module_filename_obj = NULL;
@@ -50,7 +50,7 @@ static void createModuleConstants(void) {
         constants_created = true;
 
 #ifndef __NUITKA_NO_ASSERT__
-        for (int i = 0; i < 87; i++) {
+        for (int i = 0; i < 88; i++) {
             mod_consts_hash[i] = DEEP_HASH(mod_consts[i]);
         }
 #endif
@@ -70,7 +70,7 @@ void checkModuleConstants_database$db(void) {
     // The module may not have been used at all, then ignore this.
     if (constants_created == false) return;
 
-    for (int i = 0; i < 87; i++) {
+    for (int i = 0; i < 88; i++) {
         assert(mod_consts_hash[i] == DEEP_HASH(mod_consts[i]));
         CHECK_OBJECT_DEEP(mod_consts[i]);
     }
@@ -81,20 +81,20 @@ void checkModuleConstants_database$db(void) {
 static PyCodeObject *codeobj_fb118bb5186a35b4b5ba8cd6f8dd3c40;
 static PyCodeObject *codeobj_32ee3390eec060c6cf37bea2d4e21f95;
 static PyCodeObject *codeobj_dd7e1d1a38ad52e07468b88206bd54cf;
-static PyCodeObject *codeobj_daced97fdf8093dba2c8777dbd2d425f;
+static PyCodeObject *codeobj_2c32919bc4bf70d2ae5cd1608eba44a3;
 static PyCodeObject *codeobj_01c2759d3851b98858ccadfc6297f911;
 static PyCodeObject *codeobj_b08eb141a96714cc9f1aa0ae770c1c2c;
 static PyCodeObject *codeobj_1585bedb2a3374deba02acbea5fb75d2;
 
 static void createModuleCodeObjects(void) {
-    module_filename_obj = MAKE_RELATIVE_PATH(mod_consts[78]); CHECK_OBJECT(module_filename_obj);
-    codeobj_fb118bb5186a35b4b5ba8cd6f8dd3c40 = MAKE_CODE_OBJECT(module_filename_obj, 1, CO_NOFREE, mod_consts[79], mod_consts[79], NULL, NULL, 0, 0, 0);
-    codeobj_32ee3390eec060c6cf37bea2d4e21f95 = MAKE_CODE_OBJECT(module_filename_obj, 98, CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE, mod_consts[74], mod_consts[74], mod_consts[80], NULL, 2, 0, 0);
-    codeobj_dd7e1d1a38ad52e07468b88206bd54cf = MAKE_CODE_OBJECT(module_filename_obj, 11, CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE, mod_consts[68], mod_consts[68], mod_consts[81], NULL, 1, 0, 0);
-    codeobj_daced97fdf8093dba2c8777dbd2d425f = MAKE_CODE_OBJECT(module_filename_obj, 121, CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE, mod_consts[77], mod_consts[77], mod_consts[82], NULL, 3, 0, 0);
-    codeobj_01c2759d3851b98858ccadfc6297f911 = MAKE_CODE_OBJECT(module_filename_obj, 15, CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE, mod_consts[69], mod_consts[69], mod_consts[83], NULL, 1, 0, 0);
-    codeobj_b08eb141a96714cc9f1aa0ae770c1c2c = MAKE_CODE_OBJECT(module_filename_obj, 71, CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE, mod_consts[17], mod_consts[17], mod_consts[84], NULL, 2, 0, 0);
-    codeobj_1585bedb2a3374deba02acbea5fb75d2 = MAKE_CODE_OBJECT(module_filename_obj, 79, CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE, mod_consts[71], mod_consts[71], mod_consts[85], NULL, 3, 0, 0);
+    module_filename_obj = MAKE_RELATIVE_PATH(mod_consts[79]); CHECK_OBJECT(module_filename_obj);
+    codeobj_fb118bb5186a35b4b5ba8cd6f8dd3c40 = MAKE_CODE_OBJECT(module_filename_obj, 1, CO_NOFREE, mod_consts[80], mod_consts[80], NULL, NULL, 0, 0, 0);
+    codeobj_32ee3390eec060c6cf37bea2d4e21f95 = MAKE_CODE_OBJECT(module_filename_obj, 98, CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE, mod_consts[75], mod_consts[75], mod_consts[81], NULL, 2, 0, 0);
+    codeobj_dd7e1d1a38ad52e07468b88206bd54cf = MAKE_CODE_OBJECT(module_filename_obj, 11, CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE, mod_consts[69], mod_consts[69], mod_consts[82], NULL, 1, 0, 0);
+    codeobj_2c32919bc4bf70d2ae5cd1608eba44a3 = MAKE_CODE_OBJECT(module_filename_obj, 121, CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE, mod_consts[78], mod_consts[78], mod_consts[83], NULL, 3, 0, 0);
+    codeobj_01c2759d3851b98858ccadfc6297f911 = MAKE_CODE_OBJECT(module_filename_obj, 15, CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE, mod_consts[70], mod_consts[70], mod_consts[84], NULL, 1, 0, 0);
+    codeobj_b08eb141a96714cc9f1aa0ae770c1c2c = MAKE_CODE_OBJECT(module_filename_obj, 71, CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE, mod_consts[17], mod_consts[17], mod_consts[85], NULL, 2, 0, 0);
+    codeobj_1585bedb2a3374deba02acbea5fb75d2 = MAKE_CODE_OBJECT(module_filename_obj, 79, CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE, mod_consts[72], mod_consts[72], mod_consts[86], NULL, 3, 0, 0);
 }
 
 // The module function declarations.
@@ -116,7 +116,7 @@ static PyObject *MAKE_FUNCTION_database$db$$$function__4_insert_metric_value(PyO
 static PyObject *MAKE_FUNCTION_database$db$$$function__5_db_get_all_metrics(PyObject *defaults, PyObject *annotations);
 
 
-static PyObject *MAKE_FUNCTION_database$db$$$function__6_db_get_today_metric_values(PyObject *defaults, PyObject *annotations);
+static PyObject *MAKE_FUNCTION_database$db$$$function__6_db_get_metric_values_from_day(PyObject *defaults, PyObject *annotations);
 
 
 // The module function definitions.
@@ -2116,7 +2116,7 @@ function_return_exit:
 }
 
 
-static PyObject *impl_database$db$$$function__6_db_get_today_metric_values(struct Nuitka_FunctionObject const *self, PyObject **python_pars) {
+static PyObject *impl_database$db$$$function__6_db_get_metric_values_from_day(struct Nuitka_FunctionObject const *self, PyObject **python_pars) {
     // Preserve error status for checks
 #ifndef __NUITKA_NO_ASSERT__
     NUITKA_MAY_BE_UNUSED bool had_error = ERROR_OCCURRED();
@@ -2136,7 +2136,7 @@ static PyObject *impl_database$db$$$function__6_db_get_today_metric_values(struc
     PyObject *var_metric_value = NULL;
     PyObject *tmp_for_loop_1__for_iterator = NULL;
     PyObject *tmp_for_loop_1__iter_value = NULL;
-    struct Nuitka_FrameObject *frame_daced97fdf8093dba2c8777dbd2d425f;
+    struct Nuitka_FrameObject *frame_2c32919bc4bf70d2ae5cd1608eba44a3;
     NUITKA_MAY_BE_UNUSED char const *type_description_1 = NULL;
     PyObject *exception_type = NULL;
     PyObject *exception_value = NULL;
@@ -2149,7 +2149,7 @@ static PyObject *impl_database$db$$$function__6_db_get_today_metric_values(struc
     PyTracebackObject *exception_keeper_tb_1;
     NUITKA_MAY_BE_UNUSED int exception_keeper_lineno_1;
     PyObject *tmp_return_value = NULL;
-    static struct Nuitka_FrameObject *cache_frame_daced97fdf8093dba2c8777dbd2d425f = NULL;
+    static struct Nuitka_FrameObject *cache_frame_2c32919bc4bf70d2ae5cd1608eba44a3 = NULL;
     PyObject *exception_keeper_type_2;
     PyObject *exception_keeper_value_2;
     PyTracebackObject *exception_keeper_tb_2;
@@ -2157,31 +2157,31 @@ static PyObject *impl_database$db$$$function__6_db_get_today_metric_values(struc
 
     // Actual function body.
     // Tried code:
-    if (isFrameUnusable(cache_frame_daced97fdf8093dba2c8777dbd2d425f)) {
-        Py_XDECREF(cache_frame_daced97fdf8093dba2c8777dbd2d425f);
+    if (isFrameUnusable(cache_frame_2c32919bc4bf70d2ae5cd1608eba44a3)) {
+        Py_XDECREF(cache_frame_2c32919bc4bf70d2ae5cd1608eba44a3);
 
 #if _DEBUG_REFCOUNTS
-        if (cache_frame_daced97fdf8093dba2c8777dbd2d425f == NULL) {
+        if (cache_frame_2c32919bc4bf70d2ae5cd1608eba44a3 == NULL) {
             count_active_frame_cache_instances += 1;
         } else {
             count_released_frame_cache_instances += 1;
         }
         count_allocated_frame_cache_instances += 1;
 #endif
-        cache_frame_daced97fdf8093dba2c8777dbd2d425f = MAKE_FUNCTION_FRAME(codeobj_daced97fdf8093dba2c8777dbd2d425f, module_database$db, sizeof(void *)+sizeof(void *)+sizeof(void *)+sizeof(void *)+sizeof(void *)+sizeof(void *)+sizeof(void *)+sizeof(void *)+sizeof(void *)+sizeof(void *)+sizeof(void *)+sizeof(void *));
+        cache_frame_2c32919bc4bf70d2ae5cd1608eba44a3 = MAKE_FUNCTION_FRAME(codeobj_2c32919bc4bf70d2ae5cd1608eba44a3, module_database$db, sizeof(void *)+sizeof(void *)+sizeof(void *)+sizeof(void *)+sizeof(void *)+sizeof(void *)+sizeof(void *)+sizeof(void *)+sizeof(void *)+sizeof(void *)+sizeof(void *)+sizeof(void *));
 #if _DEBUG_REFCOUNTS
     } else {
         count_hit_frame_cache_instances += 1;
 #endif
     }
 
-    assert(cache_frame_daced97fdf8093dba2c8777dbd2d425f->m_type_description == NULL);
-    frame_daced97fdf8093dba2c8777dbd2d425f = cache_frame_daced97fdf8093dba2c8777dbd2d425f;
+    assert(cache_frame_2c32919bc4bf70d2ae5cd1608eba44a3->m_type_description == NULL);
+    frame_2c32919bc4bf70d2ae5cd1608eba44a3 = cache_frame_2c32919bc4bf70d2ae5cd1608eba44a3;
 
     // Push the new frame as the currently active one, and we should be exclusively
     // owning it.
-    pushFrameStackCompiledFrame(frame_daced97fdf8093dba2c8777dbd2d425f);
-    assert(Py_REFCNT(frame_daced97fdf8093dba2c8777dbd2d425f) == 2);
+    pushFrameStackCompiledFrame(frame_2c32919bc4bf70d2ae5cd1608eba44a3);
+    assert(Py_REFCNT(frame_2c32919bc4bf70d2ae5cd1608eba44a3) == 2);
 
     // Framed code:
     {
@@ -2203,7 +2203,7 @@ static PyObject *impl_database$db$$$function__6_db_get_today_metric_values(struc
             type_description_1 = "oooooooNoooo";
             goto frame_exception_exit_1;
         }
-        frame_daced97fdf8093dba2c8777dbd2d425f->m_frame.f_lineno = 124;
+        frame_2c32919bc4bf70d2ae5cd1608eba44a3->m_frame.f_lineno = 124;
         tmp_assign_source_1 = CALL_METHOD_WITH_SINGLE_ARG(
             tmp_called_instance_1,
             mod_consts[22],
@@ -2269,7 +2269,7 @@ static PyObject *impl_database$db$$$function__6_db_get_today_metric_values(struc
         }
         CHECK_OBJECT(var_berlin_tz);
         tmp_args_element_value_1 = var_berlin_tz;
-        frame_daced97fdf8093dba2c8777dbd2d425f->m_frame.f_lineno = 127;
+        frame_2c32919bc4bf70d2ae5cd1608eba44a3->m_frame.f_lineno = 127;
         tmp_assign_source_2 = CALL_METHOD_WITH_SINGLE_ARG(tmp_called_instance_2, mod_consts[25], tmp_args_element_value_1);
         if (tmp_assign_source_2 == NULL) {
             assert(ERROR_OCCURRED());
@@ -2310,7 +2310,7 @@ static PyObject *impl_database$db$$$function__6_db_get_today_metric_values(struc
         CHECK_OBJECT(par_custom_date);
         tmp_args_element_value_2 = par_custom_date;
         tmp_args_element_value_3 = mod_consts[40];
-        frame_daced97fdf8093dba2c8777dbd2d425f->m_frame.f_lineno = 130;
+        frame_2c32919bc4bf70d2ae5cd1608eba44a3->m_frame.f_lineno = 130;
         {
             PyObject *call_args[] = {tmp_args_element_value_2, tmp_args_element_value_3};
             tmp_assign_source_3 = CALL_METHOD_WITH_ARGS2(
@@ -2341,7 +2341,7 @@ static PyObject *impl_database$db$$$function__6_db_get_today_metric_values(struc
         tmp_called_instance_4 = var_berlin_tz;
         CHECK_OBJECT(var_day);
         tmp_args_element_value_4 = var_day;
-        frame_daced97fdf8093dba2c8777dbd2d425f->m_frame.f_lineno = 131;
+        frame_2c32919bc4bf70d2ae5cd1608eba44a3->m_frame.f_lineno = 131;
         tmp_assign_source_4 = CALL_METHOD_WITH_SINGLE_ARG(tmp_called_instance_4, mod_consts[41], tmp_args_element_value_4);
         if (tmp_assign_source_4 == NULL) {
             assert(ERROR_OCCURRED());
@@ -2379,7 +2379,7 @@ static PyObject *impl_database$db$$$function__6_db_get_today_metric_values(struc
             type_description_1 = "oooooooNoooo";
             goto frame_exception_exit_1;
         }
-        frame_daced97fdf8093dba2c8777dbd2d425f->m_frame.f_lineno = 134;
+        frame_2c32919bc4bf70d2ae5cd1608eba44a3->m_frame.f_lineno = 134;
         tmp_assign_source_5 = CALL_FUNCTION_WITH_NO_ARGS_KWSPLIT(tmp_called_value_1, &PyTuple_GET_ITEM(mod_consts[43], 0), mod_consts[44]);
         Py_DECREF(tmp_called_value_1);
         if (tmp_assign_source_5 == NULL) {
@@ -2418,7 +2418,7 @@ static PyObject *impl_database$db$$$function__6_db_get_today_metric_values(struc
             type_description_1 = "oooooooNoooo";
             goto frame_exception_exit_1;
         }
-        frame_daced97fdf8093dba2c8777dbd2d425f->m_frame.f_lineno = 135;
+        frame_2c32919bc4bf70d2ae5cd1608eba44a3->m_frame.f_lineno = 135;
         tmp_add_expr_right_1 = CALL_FUNCTION_WITH_NO_ARGS_KWSPLIT(tmp_called_value_2, &PyTuple_GET_ITEM(mod_consts[46], 0), mod_consts[47]);
         if (tmp_add_expr_right_1 == NULL) {
             assert(ERROR_OCCURRED());
@@ -2469,7 +2469,7 @@ static PyObject *impl_database$db$$$function__6_db_get_today_metric_values(struc
         tmp_args_element_value_5 = mod_consts[48];
         CHECK_OBJECT(var_start_of_day);
         tmp_called_instance_5 = var_start_of_day;
-        frame_daced97fdf8093dba2c8777dbd2d425f->m_frame.f_lineno = 145;
+        frame_2c32919bc4bf70d2ae5cd1608eba44a3->m_frame.f_lineno = 145;
         tmp_tuple_element_1 = CALL_METHOD_WITH_SINGLE_ARG(
             tmp_called_instance_5,
             mod_consts[29],
@@ -2492,7 +2492,7 @@ static PyObject *impl_database$db$$$function__6_db_get_today_metric_values(struc
             PyTuple_SET_ITEM(tmp_args_element_value_6, 0, tmp_tuple_element_1);
             CHECK_OBJECT(var_end_of_day);
             tmp_called_instance_6 = var_end_of_day;
-            frame_daced97fdf8093dba2c8777dbd2d425f->m_frame.f_lineno = 146;
+            frame_2c32919bc4bf70d2ae5cd1608eba44a3->m_frame.f_lineno = 146;
             tmp_tuple_element_1 = CALL_METHOD_WITH_SINGLE_ARG(
                 tmp_called_instance_6,
                 mod_consts[29],
@@ -2519,7 +2519,7 @@ static PyObject *impl_database$db$$$function__6_db_get_today_metric_values(struc
         goto frame_exception_exit_1;
         // Finished with no exception for tuple_build:
         tuple_build_noexception_1:;
-        frame_daced97fdf8093dba2c8777dbd2d425f->m_frame.f_lineno = 142;
+        frame_2c32919bc4bf70d2ae5cd1608eba44a3->m_frame.f_lineno = 142;
         {
             PyObject *call_args[] = {tmp_args_element_value_5, tmp_args_element_value_6};
             tmp_call_result_1 = CALL_FUNCTION_WITH_ARGS2(tmp_called_value_3, call_args);
@@ -2544,7 +2544,7 @@ static PyObject *impl_database$db$$$function__6_db_get_today_metric_values(struc
         PyObject *tmp_called_instance_7;
         CHECK_OBJECT(par_cursor);
         tmp_called_instance_7 = par_cursor;
-        frame_daced97fdf8093dba2c8777dbd2d425f->m_frame.f_lineno = 149;
+        frame_2c32919bc4bf70d2ae5cd1608eba44a3->m_frame.f_lineno = 149;
         tmp_assign_source_7 = CALL_METHOD_NO_ARGS(tmp_called_instance_7, mod_consts[11]);
         if (tmp_assign_source_7 == NULL) {
             assert(ERROR_OCCURRED());
@@ -2828,7 +2828,7 @@ static PyObject *impl_database$db$$$function__6_db_get_today_metric_values(struc
         }
         CHECK_OBJECT(var_metric_value);
         tmp_args_element_value_7 = var_metric_value;
-        frame_daced97fdf8093dba2c8777dbd2d425f->m_frame.f_lineno = 162;
+        frame_2c32919bc4bf70d2ae5cd1608eba44a3->m_frame.f_lineno = 162;
         tmp_call_result_2 = CALL_FUNCTION_WITH_SINGLE_ARG(tmp_called_value_4, tmp_args_element_value_7);
         Py_DECREF(tmp_called_value_4);
         if (tmp_call_result_2 == NULL) {
@@ -2886,21 +2886,55 @@ static PyObject *impl_database$db$$$function__6_db_get_today_metric_values(struc
     CHECK_OBJECT(tmp_for_loop_1__for_iterator);
     Py_DECREF(tmp_for_loop_1__for_iterator);
     tmp_for_loop_1__for_iterator = NULL;
-    if (var_metric_values == NULL) {
+    {
+        PyObject *tmp_tuple_element_2;
+        if (var_metric_values == NULL) {
 
-        FORMAT_UNBOUND_LOCAL_ERROR(&exception_type, &exception_value, mod_consts[55]);
-        exception_tb = NULL;
-        NORMALIZE_EXCEPTION(&exception_type, &exception_value, &exception_tb);
-        CHAIN_EXCEPTION(exception_value);
+            FORMAT_UNBOUND_LOCAL_ERROR(&exception_type, &exception_value, mod_consts[55]);
+            exception_tb = NULL;
+            NORMALIZE_EXCEPTION(&exception_type, &exception_value, &exception_tb);
+            CHAIN_EXCEPTION(exception_value);
 
-        exception_lineno = 164;
-        type_description_1 = "oooooooNoooo";
+            exception_lineno = 164;
+            type_description_1 = "oooooooNoooo";
+            goto frame_exception_exit_1;
+        }
+
+        tmp_tuple_element_2 = var_metric_values;
+        tmp_return_value = MAKE_TUPLE_EMPTY(2);
+        {
+            PyObject *tmp_called_instance_8;
+            PyTuple_SET_ITEM0(tmp_return_value, 0, tmp_tuple_element_2);
+            CHECK_OBJECT(var_day);
+            tmp_called_instance_8 = var_day;
+            frame_2c32919bc4bf70d2ae5cd1608eba44a3->m_frame.f_lineno = 164;
+            tmp_tuple_element_2 = CALL_METHOD_WITH_SINGLE_ARG(
+                tmp_called_instance_8,
+                mod_consts[29],
+                PyTuple_GET_ITEM(mod_consts[56], 0)
+            );
+
+            if (tmp_tuple_element_2 == NULL) {
+                assert(ERROR_OCCURRED());
+
+                FETCH_ERROR_OCCURRED(&exception_type, &exception_value, &exception_tb);
+
+
+                exception_lineno = 164;
+                type_description_1 = "oooooooNoooo";
+                goto tuple_build_exception_2;
+            }
+            PyTuple_SET_ITEM(tmp_return_value, 1, tmp_tuple_element_2);
+        }
+        goto tuple_build_noexception_2;
+        // Exception handling pass through code for tuple_build:
+        tuple_build_exception_2:;
+        Py_DECREF(tmp_return_value);
         goto frame_exception_exit_1;
+        // Finished with no exception for tuple_build:
+        tuple_build_noexception_2:;
+        goto frame_return_exit_1;
     }
-
-    tmp_return_value = var_metric_values;
-    Py_INCREF(tmp_return_value);
-    goto frame_return_exit_1;
 
 
     // Put the previous frame back on top.
@@ -2917,14 +2951,14 @@ static PyObject *impl_database$db$$$function__6_db_get_today_metric_values(struc
 
 
     if (exception_tb == NULL) {
-        exception_tb = MAKE_TRACEBACK(frame_daced97fdf8093dba2c8777dbd2d425f, exception_lineno);
-    } else if (exception_tb->tb_frame != &frame_daced97fdf8093dba2c8777dbd2d425f->m_frame) {
-        exception_tb = ADD_TRACEBACK(exception_tb, frame_daced97fdf8093dba2c8777dbd2d425f, exception_lineno);
+        exception_tb = MAKE_TRACEBACK(frame_2c32919bc4bf70d2ae5cd1608eba44a3, exception_lineno);
+    } else if (exception_tb->tb_frame != &frame_2c32919bc4bf70d2ae5cd1608eba44a3->m_frame) {
+        exception_tb = ADD_TRACEBACK(exception_tb, frame_2c32919bc4bf70d2ae5cd1608eba44a3, exception_lineno);
     }
 
     // Attaches locals to frame if any.
     Nuitka_Frame_AttachLocals(
-        frame_daced97fdf8093dba2c8777dbd2d425f,
+        frame_2c32919bc4bf70d2ae5cd1608eba44a3,
         type_description_1,
         par_cursor,
         par_custom_date,
@@ -2942,16 +2976,16 @@ static PyObject *impl_database$db$$$function__6_db_get_today_metric_values(struc
 
 
     // Release cached frame if used for exception.
-    if (frame_daced97fdf8093dba2c8777dbd2d425f == cache_frame_daced97fdf8093dba2c8777dbd2d425f) {
+    if (frame_2c32919bc4bf70d2ae5cd1608eba44a3 == cache_frame_2c32919bc4bf70d2ae5cd1608eba44a3) {
 #if _DEBUG_REFCOUNTS
         count_active_frame_cache_instances -= 1;
         count_released_frame_cache_instances += 1;
 #endif
-        Py_DECREF(cache_frame_daced97fdf8093dba2c8777dbd2d425f);
-        cache_frame_daced97fdf8093dba2c8777dbd2d425f = NULL;
+        Py_DECREF(cache_frame_2c32919bc4bf70d2ae5cd1608eba44a3);
+        cache_frame_2c32919bc4bf70d2ae5cd1608eba44a3 = NULL;
     }
 
-    assertFrameObject(frame_daced97fdf8093dba2c8777dbd2d425f);
+    assertFrameObject(frame_2c32919bc4bf70d2ae5cd1608eba44a3);
 
     // Put the previous frame back on top.
     popFrameStack();
@@ -3056,7 +3090,7 @@ function_return_exit:
 static PyObject *MAKE_FUNCTION_database$db$$$function__1_db_get_connection(PyObject *annotations) {
     struct Nuitka_FunctionObject *result = Nuitka_Function_New(
         impl_database$db$$$function__1_db_get_connection,
-        mod_consts[68],
+        mod_consts[69],
 #if PYTHON_VERSION >= 0x300
         NULL,
 #endif
@@ -3081,7 +3115,7 @@ static PyObject *MAKE_FUNCTION_database$db$$$function__1_db_get_connection(PyObj
 static PyObject *MAKE_FUNCTION_database$db$$$function__2_db_init_connection(PyObject *annotations) {
     struct Nuitka_FunctionObject *result = Nuitka_Function_New(
         impl_database$db$$$function__2_db_init_connection,
-        mod_consts[69],
+        mod_consts[70],
 #if PYTHON_VERSION >= 0x300
         NULL,
 #endif
@@ -3131,7 +3165,7 @@ static PyObject *MAKE_FUNCTION_database$db$$$function__3_insert_metric(PyObject 
 static PyObject *MAKE_FUNCTION_database$db$$$function__4_insert_metric_value(PyObject *annotations) {
     struct Nuitka_FunctionObject *result = Nuitka_Function_New(
         impl_database$db$$$function__4_insert_metric_value,
-        mod_consts[71],
+        mod_consts[72],
 #if PYTHON_VERSION >= 0x300
         NULL,
 #endif
@@ -3156,7 +3190,7 @@ static PyObject *MAKE_FUNCTION_database$db$$$function__4_insert_metric_value(PyO
 static PyObject *MAKE_FUNCTION_database$db$$$function__5_db_get_all_metrics(PyObject *defaults, PyObject *annotations) {
     struct Nuitka_FunctionObject *result = Nuitka_Function_New(
         impl_database$db$$$function__5_db_get_all_metrics,
-        mod_consts[74],
+        mod_consts[75],
 #if PYTHON_VERSION >= 0x300
         NULL,
 #endif
@@ -3178,14 +3212,14 @@ static PyObject *MAKE_FUNCTION_database$db$$$function__5_db_get_all_metrics(PyOb
 
 
 
-static PyObject *MAKE_FUNCTION_database$db$$$function__6_db_get_today_metric_values(PyObject *defaults, PyObject *annotations) {
+static PyObject *MAKE_FUNCTION_database$db$$$function__6_db_get_metric_values_from_day(PyObject *defaults, PyObject *annotations) {
     struct Nuitka_FunctionObject *result = Nuitka_Function_New(
-        impl_database$db$$$function__6_db_get_today_metric_values,
-        mod_consts[77],
+        impl_database$db$$$function__6_db_get_metric_values_from_day,
+        mod_consts[78],
 #if PYTHON_VERSION >= 0x300
         NULL,
 #endif
-        codeobj_daced97fdf8093dba2c8777dbd2d425f,
+        codeobj_2c32919bc4bf70d2ae5cd1608eba44a3,
         defaults,
 #if PYTHON_VERSION >= 0x300
         NULL,
@@ -3221,7 +3255,7 @@ function_impl_code functable_database$db[] = {
     impl_database$db$$$function__3_insert_metric,
     impl_database$db$$$function__4_insert_metric_value,
     impl_database$db$$$function__5_db_get_all_metrics,
-    impl_database$db$$$function__6_db_get_today_metric_values,
+    impl_database$db$$$function__6_db_get_metric_values_from_day,
     NULL
 };
 
@@ -3457,7 +3491,7 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
         UPDATE_STRING_DICT0(
             moduledict_database$db,
             (Nuitka_StringObject *)const_str_plain___package__,
-            mod_consts[86]
+            mod_consts[87]
         );
 #elif 0
         PyObject *module_name = GET_STRING_DICT_VALUE(moduledict_database$db, (Nuitka_StringObject *)const_str_plain___name__);
@@ -3574,12 +3608,12 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
     {
         PyObject *tmp_assign_source_1;
         tmp_assign_source_1 = Py_None;
-        UPDATE_STRING_DICT0(moduledict_database$db, (Nuitka_StringObject *)mod_consts[56], tmp_assign_source_1);
+        UPDATE_STRING_DICT0(moduledict_database$db, (Nuitka_StringObject *)mod_consts[57], tmp_assign_source_1);
     }
     {
         PyObject *tmp_assign_source_2;
         tmp_assign_source_2 = module_filename_obj;
-        UPDATE_STRING_DICT0(moduledict_database$db, (Nuitka_StringObject *)mod_consts[57], tmp_assign_source_2);
+        UPDATE_STRING_DICT0(moduledict_database$db, (Nuitka_StringObject *)mod_consts[58], tmp_assign_source_2);
     }
     frame_fb118bb5186a35b4b5ba8cd6f8dd3c40 = MAKE_MODULE_FRAME(codeobj_fb118bb5186a35b4b5ba8cd6f8dd3c40, module_database$db);
 
@@ -3593,14 +3627,14 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
         PyObject *tmp_assattr_value_1;
         PyObject *tmp_assattr_target_1;
         tmp_assattr_value_1 = module_filename_obj;
-        tmp_assattr_target_1 = GET_STRING_DICT_VALUE(moduledict_database$db, (Nuitka_StringObject *)mod_consts[58]);
+        tmp_assattr_target_1 = GET_STRING_DICT_VALUE(moduledict_database$db, (Nuitka_StringObject *)mod_consts[59]);
 
         if (unlikely(tmp_assattr_target_1 == NULL)) {
-            tmp_assattr_target_1 = GET_MODULE_VARIABLE_VALUE_FALLBACK(mod_consts[58]);
+            tmp_assattr_target_1 = GET_MODULE_VARIABLE_VALUE_FALLBACK(mod_consts[59]);
         }
 
         assert(!(tmp_assattr_target_1 == NULL));
-        tmp_result = SET_ATTRIBUTE(tmp_assattr_target_1, mod_consts[59], tmp_assattr_value_1);
+        tmp_result = SET_ATTRIBUTE(tmp_assattr_target_1, mod_consts[60], tmp_assattr_value_1);
         if (tmp_result == false) {
             assert(ERROR_OCCURRED());
 
@@ -3616,14 +3650,14 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
         PyObject *tmp_assattr_value_2;
         PyObject *tmp_assattr_target_2;
         tmp_assattr_value_2 = Py_True;
-        tmp_assattr_target_2 = GET_STRING_DICT_VALUE(moduledict_database$db, (Nuitka_StringObject *)mod_consts[58]);
+        tmp_assattr_target_2 = GET_STRING_DICT_VALUE(moduledict_database$db, (Nuitka_StringObject *)mod_consts[59]);
 
         if (unlikely(tmp_assattr_target_2 == NULL)) {
-            tmp_assattr_target_2 = GET_MODULE_VARIABLE_VALUE_FALLBACK(mod_consts[58]);
+            tmp_assattr_target_2 = GET_MODULE_VARIABLE_VALUE_FALLBACK(mod_consts[59]);
         }
 
         assert(!(tmp_assattr_target_2 == NULL));
-        tmp_result = SET_ATTRIBUTE(tmp_assattr_target_2, mod_consts[60], tmp_assattr_value_2);
+        tmp_result = SET_ATTRIBUTE(tmp_assattr_target_2, mod_consts[61], tmp_assattr_value_2);
         if (tmp_result == false) {
             assert(ERROR_OCCURRED());
 
@@ -3638,7 +3672,7 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
     {
         PyObject *tmp_assign_source_3;
         tmp_assign_source_3 = Py_None;
-        UPDATE_STRING_DICT0(moduledict_database$db, (Nuitka_StringObject *)mod_consts[61], tmp_assign_source_3);
+        UPDATE_STRING_DICT0(moduledict_database$db, (Nuitka_StringObject *)mod_consts[62], tmp_assign_source_3);
     }
     {
         PyObject *tmp_assign_source_4;
@@ -3702,7 +3736,7 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
         tmp_name_value_3 = mod_consts[24];
         tmp_globals_arg_value_3 = (PyObject *)moduledict_database$db;
         tmp_locals_arg_value_3 = Py_None;
-        tmp_fromlist_value_3 = mod_consts[62];
+        tmp_fromlist_value_3 = mod_consts[63];
         tmp_level_value_3 = mod_consts[34];
         frame_fb118bb5186a35b4b5ba8cd6f8dd3c40->m_frame.f_lineno = 3;
         tmp_assign_source_6 = IMPORT_MODULE5(tmp_name_value_3, tmp_globals_arg_value_3, tmp_locals_arg_value_3, tmp_fromlist_value_3, tmp_level_value_3);
@@ -3836,10 +3870,10 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
         PyObject *tmp_locals_arg_value_5;
         PyObject *tmp_fromlist_value_5;
         PyObject *tmp_level_value_5;
-        tmp_name_value_5 = mod_consts[63];
+        tmp_name_value_5 = mod_consts[64];
         tmp_globals_arg_value_5 = (PyObject *)moduledict_database$db;
         tmp_locals_arg_value_5 = Py_None;
-        tmp_fromlist_value_5 = mod_consts[64];
+        tmp_fromlist_value_5 = mod_consts[65];
         tmp_level_value_5 = mod_consts[34];
         frame_fb118bb5186a35b4b5ba8cd6f8dd3c40->m_frame.f_lineno = 5;
         tmp_assign_source_10 = IMPORT_MODULE5(tmp_name_value_5, tmp_globals_arg_value_5, tmp_locals_arg_value_5, tmp_fromlist_value_5, tmp_level_value_5);
@@ -3944,32 +3978,32 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
         PyObject *tmp_assign_source_13;
         tmp_assign_source_13 = IMPORT_HARD_OS();
         assert(!(tmp_assign_source_13 == NULL));
-        UPDATE_STRING_DICT0(moduledict_database$db, (Nuitka_StringObject *)mod_consts[65], tmp_assign_source_13);
+        UPDATE_STRING_DICT0(moduledict_database$db, (Nuitka_StringObject *)mod_consts[66], tmp_assign_source_13);
     }
     {
         PyObject *tmp_assign_source_14;
-        tmp_assign_source_14 = mod_consts[66];
+        tmp_assign_source_14 = mod_consts[67];
         UPDATE_STRING_DICT0(moduledict_database$db, (Nuitka_StringObject *)mod_consts[3], tmp_assign_source_14);
     }
     {
         PyObject *tmp_assign_source_15;
         PyObject *tmp_annotations_1;
-        tmp_annotations_1 = DICT_COPY(mod_consts[67]);
+        tmp_annotations_1 = DICT_COPY(mod_consts[68]);
 
 
         tmp_assign_source_15 = MAKE_FUNCTION_database$db$$$function__1_db_get_connection(tmp_annotations_1);
 
-        UPDATE_STRING_DICT1(moduledict_database$db, (Nuitka_StringObject *)mod_consts[68], tmp_assign_source_15);
+        UPDATE_STRING_DICT1(moduledict_database$db, (Nuitka_StringObject *)mod_consts[69], tmp_assign_source_15);
     }
     {
         PyObject *tmp_assign_source_16;
         PyObject *tmp_annotations_2;
-        tmp_annotations_2 = DICT_COPY(mod_consts[67]);
+        tmp_annotations_2 = DICT_COPY(mod_consts[68]);
 
 
         tmp_assign_source_16 = MAKE_FUNCTION_database$db$$$function__2_db_init_connection(tmp_annotations_2);
 
-        UPDATE_STRING_DICT1(moduledict_database$db, (Nuitka_StringObject *)mod_consts[69], tmp_assign_source_16);
+        UPDATE_STRING_DICT1(moduledict_database$db, (Nuitka_StringObject *)mod_consts[70], tmp_assign_source_16);
     }
     {
         PyObject *tmp_assign_source_17;
@@ -3994,7 +4028,7 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
 
             goto frame_exception_exit_1;
         }
-        tmp_dict_value_1 = LOOKUP_ATTRIBUTE(tmp_expression_value_1, mod_consts[70]);
+        tmp_dict_value_1 = LOOKUP_ATTRIBUTE(tmp_expression_value_1, mod_consts[71]);
         if (tmp_dict_value_1 == NULL) {
             assert(ERROR_OCCURRED());
 
@@ -4042,7 +4076,7 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
 
             goto frame_exception_exit_1;
         }
-        tmp_dict_value_2 = LOOKUP_ATTRIBUTE(tmp_expression_value_2, mod_consts[70]);
+        tmp_dict_value_2 = LOOKUP_ATTRIBUTE(tmp_expression_value_2, mod_consts[71]);
         if (tmp_dict_value_2 == NULL) {
             assert(ERROR_OCCURRED());
 
@@ -4069,7 +4103,7 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
 
         tmp_assign_source_18 = MAKE_FUNCTION_database$db$$$function__4_insert_metric_value(tmp_annotations_4);
 
-        UPDATE_STRING_DICT1(moduledict_database$db, (Nuitka_StringObject *)mod_consts[71], tmp_assign_source_18);
+        UPDATE_STRING_DICT1(moduledict_database$db, (Nuitka_StringObject *)mod_consts[72], tmp_assign_source_18);
     }
     {
         PyObject *tmp_assign_source_19;
@@ -4078,7 +4112,7 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
         PyObject *tmp_dict_key_3;
         PyObject *tmp_dict_value_3;
         PyObject *tmp_expression_value_3;
-        tmp_defaults_1 = mod_consts[72];
+        tmp_defaults_1 = mod_consts[73];
         tmp_dict_key_3 = mod_consts[9];
         tmp_expression_value_3 = GET_STRING_DICT_VALUE(moduledict_database$db, (Nuitka_StringObject *)mod_consts[0]);
 
@@ -4096,7 +4130,7 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
 
             goto frame_exception_exit_1;
         }
-        tmp_dict_value_3 = LOOKUP_ATTRIBUTE(tmp_expression_value_3, mod_consts[70]);
+        tmp_dict_value_3 = LOOKUP_ATTRIBUTE(tmp_expression_value_3, mod_consts[71]);
         if (tmp_dict_value_3 == NULL) {
             assert(ERROR_OCCURRED());
 
@@ -4111,7 +4145,7 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
         tmp_res = PyDict_SetItem(tmp_annotations_5, tmp_dict_key_3, tmp_dict_value_3);
         Py_DECREF(tmp_dict_value_3);
         assert(!(tmp_res != 0));
-        tmp_dict_key_3 = mod_consts[73];
+        tmp_dict_key_3 = mod_consts[74];
         tmp_dict_value_3 = (PyObject *)&PyBool_Type;
         tmp_res = PyDict_SetItem(tmp_annotations_5, tmp_dict_key_3, tmp_dict_value_3);
         assert(!(tmp_res != 0));
@@ -4120,7 +4154,7 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
 
         tmp_assign_source_19 = MAKE_FUNCTION_database$db$$$function__5_db_get_all_metrics(tmp_defaults_1, tmp_annotations_5);
 
-        UPDATE_STRING_DICT1(moduledict_database$db, (Nuitka_StringObject *)mod_consts[74], tmp_assign_source_19);
+        UPDATE_STRING_DICT1(moduledict_database$db, (Nuitka_StringObject *)mod_consts[75], tmp_assign_source_19);
     }
     {
         PyObject *tmp_assign_source_20;
@@ -4129,7 +4163,7 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
         PyObject *tmp_dict_key_4;
         PyObject *tmp_dict_value_4;
         PyObject *tmp_expression_value_4;
-        tmp_defaults_2 = mod_consts[75];
+        tmp_defaults_2 = mod_consts[76];
         tmp_dict_key_4 = mod_consts[9];
         tmp_expression_value_4 = GET_STRING_DICT_VALUE(moduledict_database$db, (Nuitka_StringObject *)mod_consts[0]);
 
@@ -4147,7 +4181,7 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
 
             goto frame_exception_exit_1;
         }
-        tmp_dict_value_4 = LOOKUP_ATTRIBUTE(tmp_expression_value_4, mod_consts[70]);
+        tmp_dict_value_4 = LOOKUP_ATTRIBUTE(tmp_expression_value_4, mod_consts[71]);
         if (tmp_dict_value_4 == NULL) {
             assert(ERROR_OCCURRED());
 
@@ -4162,20 +4196,20 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
         tmp_res = PyDict_SetItem(tmp_annotations_6, tmp_dict_key_4, tmp_dict_value_4);
         Py_DECREF(tmp_dict_value_4);
         assert(!(tmp_res != 0));
-        tmp_dict_key_4 = mod_consts[76];
+        tmp_dict_key_4 = mod_consts[77];
         tmp_dict_value_4 = (PyObject *)&PyUnicode_Type;
         tmp_res = PyDict_SetItem(tmp_annotations_6, tmp_dict_key_4, tmp_dict_value_4);
         assert(!(tmp_res != 0));
-        tmp_dict_key_4 = mod_consts[73];
+        tmp_dict_key_4 = mod_consts[74];
         tmp_dict_value_4 = (PyObject *)&PyBool_Type;
         tmp_res = PyDict_SetItem(tmp_annotations_6, tmp_dict_key_4, tmp_dict_value_4);
         assert(!(tmp_res != 0));
         Py_INCREF(tmp_defaults_2);
 
 
-        tmp_assign_source_20 = MAKE_FUNCTION_database$db$$$function__6_db_get_today_metric_values(tmp_defaults_2, tmp_annotations_6);
+        tmp_assign_source_20 = MAKE_FUNCTION_database$db$$$function__6_db_get_metric_values_from_day(tmp_defaults_2, tmp_annotations_6);
 
-        UPDATE_STRING_DICT1(moduledict_database$db, (Nuitka_StringObject *)mod_consts[77], tmp_assign_source_20);
+        UPDATE_STRING_DICT1(moduledict_database$db, (Nuitka_StringObject *)mod_consts[78], tmp_assign_source_20);
     }
 
 

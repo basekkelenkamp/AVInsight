@@ -2,6 +2,7 @@ import json
 import os
 import sys
 import shutil
+from datetime import datetime
 
 
 from flask import Flask, render_template, jsonify, request
@@ -16,7 +17,7 @@ from database.db import (
     db_get_all_metrics,
     db_init_connection,
     db_get_connection,
-    db_get_today_metric_values,
+    db_get_metric_values_from_day,
     insert_metric_value,
 )
 from util.metrics import (
@@ -193,17 +194,27 @@ def save_config():
         return jsonify({"result": "error"}), 500
 
 
-@app.route("/archive")
-def archive():
+@app.route("/archive", defaults={'date': None})
+@app.route("/archive/<date>")
+def archive(date):
+    try:
+        datetime.strptime(date, "%Y-%m-%d")
+    except:
+        date = None
+
     connection = db_get_connection(db_path=db_path)
     cursor = connection.cursor()
 
-    data = db_get_today_metric_values(cursor)
+    # Example date str: 'YYYY-MM-DD'
+    data, date = db_get_metric_values_from_day(cursor, date)
     metric_names = db_get_all_metrics(cursor)
     connection.close()
 
     return render_template(
-        "archive.html", data=json.dumps(data), metric_names=json.dumps(metric_names)
+        "archive.html", 
+        data=json.dumps(data), 
+        metric_names=json.dumps(metric_names),
+        date=date
     )
 
 

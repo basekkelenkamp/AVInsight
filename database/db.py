@@ -118,7 +118,7 @@ def db_get_all_metrics(cursor: sqlite3.Cursor, as_obj: bool = False):
     return metrics
 
 
-def db_get_today_metric_values(
+def db_get_metric_values_from_day(
     cursor: sqlite3.Cursor, custom_date: str = None, as_obj: bool = False
 ):
     berlin_tz = pytz.timezone("Europe/Berlin")
@@ -161,4 +161,4 @@ def db_get_today_metric_values(
             }
         metric_values.append(metric_value)
 
-    return metric_values
+    return metric_values, day.strftime("%Y-%m-%d")
