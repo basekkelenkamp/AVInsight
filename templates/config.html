@@ -4,34 +4,37 @@
 <div class="wraper">
   <div class="config-form">
     <form id="config-form">
-      {% for section, configs in config.items() %}
+      {% for section, settings in config.items() %}
       <fieldset>
         <legend>{{ section }}</legend>
-        {% for config_item in configs %}
-          {% for key, value in config_item.items() %}
+        {% for setting in settings %}
           <div class="form-group">
-            <label for="{{ section }}-{{ key }}" class="label-text">{{ key }}</label>
-            {% if value is number %}
-              <input type="number" name="{{ section }}-{{ key }}" id="{{ section }}-{{ key }}" value="{{ value }}">
-            {% elif value == "true" or value == "false" %}
+            <div class="label-container">
+              <div class="info-icon" data-description="{{ setting.description }}">i</div>
+              <label for="{{ section }}-{{ setting.name }}" class="label-text">{{ setting.name }}</label>
+            </div>
+            {% if setting.value is number %}
+              <input type="number" name="{{ section }}-{{ setting.name }}" id="{{ section }}-{{ setting.name }}" value="{{ setting.value }}">
+            {% elif setting.value == "true" or setting.value == "false" %}
               <div class="switch" for="checkbox">
-                <input type="hidden" name="{{ section }}-{{ key }}" value="false">
-                <input type="checkbox" id="{{ section }}-{{ key }}" name="{{ section }}-{{ key }}" {% if value == "true" %}checked{% endif %}>
-                <label for="{{ section }}-{{ key }}" class="slider round"></label>
+                <input type="hidden" name="{{ section }}-{{ setting.name }}" value="false">
+                <input type="checkbox" id="{{ section }}-{{ setting.name }}" name="{{ section }}-{{ setting.name }}" {% if setting.value == "true" %}checked{% endif %}>
+                <label for="{{ section }}-{{ setting.name }}" class="slider round"></label>
               </div>
-            {% elif key == "disk" %}
-              <select id="{{ section }}-{{ key }}" name="{{ section }}-{{ key }}">
+            {% elif setting.name == "disk" %}
+              <select id="{{ section }}-{{ setting.name }}" name="{{ section }}-{{ setting.name }}">
                 {% for disk in disks %}
-                  {% if disk == value %}
+                  {% if disk == setting.value %}
                     <option value="{{ disk }}" selected="selected">{{ disk }}</option>
                   {% else %}
                     <option value="{{ disk }}">{{ disk }}</option>
                   {% endif %}
                 {% endfor %}
               </select>
+            {% else %}
+              <input type="text" name="{{ section }}-{{ setting.name }}" id="{{ section }}-{{ setting.name }}" value="{{ setting.value }}">
             {% endif %}
           </div>
-          {% endfor %}
         {% endfor %}
       </fieldset>
       {% endfor %}
@@ -40,4 +43,5 @@
   </div>
 </div>
 <script src="{{ url_for('static', filename='js/config.js') }}"></script>
+<script src="{{ url_for('static', filename='js/tooltip.js') }}"></script>
 {% endblock %}

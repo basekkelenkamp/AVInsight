@@ -169,10 +169,11 @@ def index():
 
 @app.route("/config")
 def config():
-    config_data = get_config(no_object=True)
-    disks = get_disk_list()
     # ['PhysicalDrive0', 'PhysicalDrive1', 'PhysicalDrive2']
-    return render_template("config.html", config=config_data, disks=disks)
+    disks = get_disk_list()
+    config = get_config()
+
+    return render_template("config.html", config=config.to_dict(), disks=disks)
 
 
 @app.route("/save-config", methods=["POST"])
@@ -180,6 +181,7 @@ def save_config():
     global config
     global keep_running
     new_config = request.json
+    breakpoint()
     try:
         stop_metrics_thread()
 

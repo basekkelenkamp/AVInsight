@@ -50,7 +50,7 @@ body {
     color: #F2F2F3;
 }
 
-input[type=number] {
+input[type=number], select {
     width: 40%;
     padding: 0.5rem;
     border-radius: 4px;
@@ -58,6 +58,15 @@ input[type=number] {
     background-color: #1D1D26;
     color: #F2F2F3;
     font-size: 1rem;
+}
+
+select {
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path fill='%23F2F2F3' d='M7 10l5 5 5-5z'/></svg>") no-repeat right 0.5rem center/8px 8px;
+    padding-right: 1.5rem; /* space for the icon */
+
 }
 
 .switch {
@@ -150,4 +159,49 @@ input:checked + .slider:before {
     color: #4CAF50;
     margin-left: 10px;
     transition: opacity 1s ease-out;
+}
+
+.label-container {
+    display: flex;
+    align-items: center;
+}
+
+.info-icon {
+    margin-right: 10px;
+    color: #2196F3;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    background-color: #2196F3;
+    color: #F2F2F3;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px;
+    font-size: 14px;
+}
+
+.tooltip {
+    visibility: hidden;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s;
+    transform: translateX(-50%);
+    left: 50%;
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
 }
