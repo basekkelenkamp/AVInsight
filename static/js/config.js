@@ -1,11 +1,11 @@
 document.getElementById('save-config').addEventListener('click', saveConfig);
 
-document.getElementById('config-form').addEventListener('change', function() {
+document.getElementById('config-form').addEventListener('change', function () {
   document.getElementById('save-config').disabled = false;
   document.getElementById('save-config').innerHTML = 'Save';
 });
 
-document.getElementById('config-form').addEventListener('keydown', function(event) {
+document.getElementById('config-form').addEventListener('keydown', function (event) {
   if (event.key === 'Enter') {
     event.preventDefault(); // Prevent form submission
     saveConfig();
@@ -20,20 +20,28 @@ function saveConfig() {
     "archive": []
   };
 
-  for (const [key, value] of formData.entries()) {
-    const [section, configKey] = key.split('-', 2);
-    const input = document.getElementById(key);
-    let processedValue;
+  let tempSetting = { "name": undefined, "value": undefined, "description": undefined }
 
-    if (input.type === 'checkbox') {
-      processedValue = input.checked;
+  for (const [key, value] of formData.entries()) {
+    console.log(`key: ${key}. value: ${value}`)
+
+    const [section, settingName] = key.split('-', 2)
+
+    if (key.includes("-description")) {
+      tempSetting.description = value
     } else {
-      processedValue = isNaN(value) ? value : Number(value);
+      tempSetting.name = settingName
+      tempSetting.value = typeof value === 'boolean' ? String(value) : value
+      tempSetting.value = value === 'on' ? "true" : value
     }
 
-    const configItem = {};
-    configItem[configKey] = processedValue;
-    updatedConfig[section].push(configItem);
+    if (!Object.values(tempSetting).every(value => value !== undefined)) {
+      continue
+    }
+
+    let settingObject = tempSetting
+    tempSetting = { "name": undefined, "value": undefined, "description": undefined }
+    updatedConfig[section].push(settingObject)
   }
 
   // Send updatedConfig to Flask backend

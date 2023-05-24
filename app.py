@@ -19,6 +19,7 @@ from database.db import (
     db_get_connection,
     db_get_metric_values_from_day,
     insert_metric_value,
+    remove_archive_after_days,
 )
 from util.metrics import (
     get_cpu_usage,
@@ -88,23 +89,40 @@ keep_running = True
 
 
 def get_metrics(original_config: Config):
-    interval = original_config.interval
-    disk = original_config.disk
-    enable_archive = original_config.enable_archive
-    archive_days = original_config.clear_archive_after_days
+    # Extract settings
+    interval = float(original_config.get_setting_value("interval"))
+    disk = original_config.get_setting_value("disk")
+    archive_days = int(original_config.get_setting_value("clear_archive_after_days"))
+    archive_GPU = original_config.get_setting_value("archive_GPU")
+    archive_CPU = original_config.get_setting_value("archive_CPU")
+    archive_RAM = original_config.get_setting_value("archive_RAM")
+    archive_DISK = original_config.get_setting_value("archive_DISK")
 
+    # archives to write to
+    archives = [
+        x[0]
+        for x in [
+            ("GPU", archive_GPU),
+            ("CPU", archive_CPU),
+            ("RAM", archive_RAM),
+            ("DISK", archive_DISK),
+        ]
+        if x[1]
+    ]
+
+    # Timers
     prev_time = time.time()
     prev_disk_io = get_disk_io_counters(disk)
 
     while keep_running:
-        if json.dumps(original_config.get_params()) != json.dumps(config.get_params()):
+        if json.dumps(original_config.to_dict()) != json.dumps(config.to_dict()):
             break
 
         # to keep track of function runtime speed
         start_time = time.time()
 
         print(
-            f"archive: {enable_archive}| disk: {disk}| interval: {interval}| days:{archive_days}"
+            f"archive: {archives} | disk: {disk} | interval: {interval} | del after days:{archive_days}"
         )
 
         # Get CPU, GPU, RAM
@@ -131,21 +149,27 @@ def get_metrics(original_config: Config):
         )
 
         # Connect to the database, write data, then close the connection
-        if enable_archive:
+        if archives:
             connection = db_get_connection(db_path=db_path)
             cursor = connection.cursor()
-            insert_metric_value(
-                cursor, get_metric_id_by_type(metrics, "CPU"), cpu_percent
-            )
-            insert_metric_value(
-                cursor, get_metric_id_by_type(metrics, "GPU"), gpu_percent
-            )
-            insert_metric_value(
-                cursor, get_metric_id_by_type(metrics, "RAM"), ram_percent
-            )
-            insert_metric_value(
-                cursor, get_metric_id_by_type(metrics, "DISK"), disk_read_speed
-            )
+            for archive in archives:
+                if archive == "GPU":
+                    insert_metric_value(
+                        cursor, get_metric_id_by_type(metrics, "GPU"), gpu_percent
+                    )
+                elif archive == "CPU":
+                    insert_metric_value(
+                        cursor, get_metric_id_by_type(metrics, "CPU"), cpu_percent
+                    )
+                elif archive == "RAM":
+                    insert_metric_value(
+                        cursor, get_metric_id_by_type(metrics, "RAM"), ram_percent
+                    )
+                elif archive == "DISK":
+                    insert_metric_value(
+                        cursor, get_metric_id_by_type(metrics, "DISK"), disk_read_speed
+                    )
+
             connection.commit()
             connection.close()
 
@@ -181,12 +205,19 @@ def save_config():
     global config
     global keep_running
     new_config = request.json
-    breakpoint()
     try:
         stop_metrics_thread()
 
         update_config(new_config)
         config = get_config()
+
+        # Remove archive
+        archive_days = int(config.get_setting_value("clear_archive_after_days"))
+        connection = db_get_connection(db_path=db_path)
+        cursor = connection.cursor()
+        print(f"removing archive older than {archive_days} days")
+        remove_archive_after_days(cursor, archive_days)
+        connection.close()
 
         start_metrics_thread()
 
@@ -268,5 +299,13 @@ if __name__ == "__main__":
         os.environ.get("FLASK_PORT", 5000)
     )  # Use 5000 as the default port number
     url = f"http://localhost:{port}"
+
+    # Remove archive
+    archive_days = int(config.get_setting_value("clear_archive_after_days"))
+    connection = db_get_connection(db_path=db_path)
+    cursor = connection.cursor()
+    print(f"removing archive older than {archive_days} days")
+    remove_archive_after_days(cursor, archive_days)
+    connection.close()
 
     socket_io.run(app, host="0.0.0.0", port=port, debug=debug)

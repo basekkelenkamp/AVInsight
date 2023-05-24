@@ -34,6 +34,7 @@
             {% else %}
               <input type="text" name="{{ section }}-{{ setting.name }}" id="{{ section }}-{{ setting.name }}" value="{{ setting.value }}">
             {% endif %}
+            <input type="hidden" name="{{ section }}-{{ setting.name }}-description" value="{{ setting.description }}">
           </div>
         {% endfor %}
       </fieldset>

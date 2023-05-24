@@ -1,10 +1,22 @@
 {
-    "archive-settings": [
+    "metrics": [
         {
             "name": "clear_archive_after_days",
-            "value": 7,
+            "value": "14",
             "description": "Clears the archive after a set amount of days. Set to '0' to never clear. (DEFAULT=7)"
         },
+        {
+            "name": "disk",
+            "value": "PhysicalDrive0",
+            "description": "Select what DISK to track. (DEFAULT=PhysicalDrive0)"
+        },
+        {
+            "name": "interval",
+            "value": "1",
+            "description": "The frequency of when data points are recorded. WARNING: Do not go below 0.1 (DEFAULT=1)"
+        }
+    ],
+    "archive": [
         {
             "name": "archive_GPU",
             "value": "false",
@@ -24,18 +36,6 @@
             "name": "archive_DISK",
             "value": "false",
             "description": "Decide whether or not to save DISK data to the archive. (DEFAULT=TRUE)"
-        }
-    ],
-    "metrics-settings": [
-        {
-            "name": "disk",
-            "value": "PhysicalDrive0",
-            "description": "Select what DISK to track. (DEFAULT=PhysicalDrive0)"
-        },
-        {
-            "name": "interval",
-            "value": 1,
-            "description": "The frequency of when data points are recorded and stored in the archive. WARNING: Do not go below 0.1 (DEFAULT=1)"
         }
     ]
 }

@@ -174,3 +174,19 @@ def db_get_metric_values_from_day(
         prev_date.strftime("%Y-%m-%d"),
         next_date,
     )
+
+
+def remove_archive_after_days(cursor: sqlite3.Cursor, days: int):
+    berlin_tz = pytz.timezone("Europe/Berlin")
+    current_time_berlin = datetime.now(berlin_tz)
+    cutoff_time = current_time_berlin - timedelta(days=days)
+
+    query_remove_old_records = """
+        DELETE FROM metric_values
+        WHERE timestamp < ?
+        """
+
+    cursor.execute(
+        query_remove_old_records, (cutoff_time.strftime("%Y-%m-%d %H:%M:%S.%f"),)
+    )
+    cursor.connection.commit()
