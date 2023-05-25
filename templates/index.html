@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
 
+<div hidden id="dataSelector" data-interval="{{ interval }}" data-thresholdgpu="{{ threshold_GPU }}" data-thresholdcpu="{{ threshold_CPU }}" data-thresholdram="{{ threshold_RAM }}"></div>
+
 <div class="dashboard-wrapper">
     <div class="line-graph-container">
         <div class="chart-container">
@@ -27,6 +29,10 @@
     <div class="info-warning-container">
         <div class="info-container">
             <h3>Info Container</h3>
+            <div id="info-cpu" class="info-metrics"></div>
+            <div id="info-gpu" class="info-metrics"></div>
+            <div id="info-ram" class="info-metrics"></div>
+            <div id="info-disk" class="info-metrics"></div>
         </div>
 
         <div class="warning-container">
@@ -35,4 +41,5 @@
     </div>
 
 <script src="{{ url_for('static', filename='js/draw_charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard_containers.js') }}"></script>
 {% endblock content %}

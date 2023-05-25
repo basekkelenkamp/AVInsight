@@ -16,7 +16,9 @@
     stroke-linecap: circle;
   }
 
-.ct-chart .threshold {
-    stroke: red;
-    stroke-dasharray: 4px 4px;
+.threshold {
+  stroke: red;
+  stroke-width: 1px;
+  stroke-dasharray: 3;
+  opacity: 80%;
 }

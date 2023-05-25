@@ -16,7 +16,7 @@
         },
         {
             "name": "interval",
-            "value": "0.5",
+            "value": "1",
             "description": "The frequency of when data points are recorded. WARNING: Do not go below 0.1 (DEFAULT=1)",
             "category": "metrics",
             "datatype": "float"
@@ -55,7 +55,7 @@
     "thresholds": [
         {
             "name": "threshold_GPU",
-            "value": "70",
+            "value": "50",
             "description": "GPU Threshold percentage. Activates warning when exceeded. (DEFAULT=75)",
             "category": "thresholds",
             "datatype": "int%"
@@ -69,7 +69,7 @@
         },
         {
             "name": "threshold_RAM",
-            "value": "75",
+            "value": "25",
             "description": "RAM Threshold percentage. Activates warning when exceeded. (DEFAULT=75)",
             "category": "thresholds",
             "datatype": "int%"

@@ -1572,18 +1572,16 @@ static PyObject *impl_util$metrics$$$function__3_calculate_disk_read_speeds(stru
 
     // Framed code:
     {
-        PyObject *tmp_sub_expr_left_1;
-        PyObject *tmp_sub_expr_right_1;
         PyObject *tmp_truediv_expr_left_1;
         PyObject *tmp_truediv_expr_right_1;
+        PyObject *tmp_sub_expr_left_1;
+        PyObject *tmp_sub_expr_right_1;
         CHECK_OBJECT(par_curr_disk_io);
         tmp_sub_expr_left_1 = par_curr_disk_io;
         CHECK_OBJECT(par_prev_disk_io);
-        tmp_truediv_expr_left_1 = par_prev_disk_io;
-        CHECK_OBJECT(par_time_diff);
-        tmp_truediv_expr_right_1 = par_time_diff;
-        tmp_sub_expr_right_1 = BINARY_OPERATION_TRUEDIV_OBJECT_OBJECT_OBJECT(tmp_truediv_expr_left_1, tmp_truediv_expr_right_1);
-        if (tmp_sub_expr_right_1 == NULL) {
+        tmp_sub_expr_right_1 = par_prev_disk_io;
+        tmp_truediv_expr_left_1 = BINARY_OPERATION_SUB_OBJECT_OBJECT_OBJECT(tmp_sub_expr_left_1, tmp_sub_expr_right_1);
+        if (tmp_truediv_expr_left_1 == NULL) {
             assert(ERROR_OCCURRED());
 
             FETCH_ERROR_OCCURRED(&exception_type, &exception_value, &exception_tb);
@@ -1593,8 +1591,10 @@ static PyObject *impl_util$metrics$$$function__3_calculate_disk_read_speeds(stru
             type_description_1 = "ooo";
             goto frame_exception_exit_1;
         }
-        tmp_return_value = BINARY_OPERATION_SUB_OBJECT_OBJECT_OBJECT(tmp_sub_expr_left_1, tmp_sub_expr_right_1);
-        Py_DECREF(tmp_sub_expr_right_1);
+        CHECK_OBJECT(par_time_diff);
+        tmp_truediv_expr_right_1 = par_time_diff;
+        tmp_return_value = BINARY_OPERATION_TRUEDIV_OBJECT_OBJECT_OBJECT(tmp_truediv_expr_left_1, tmp_truediv_expr_right_1);
+        Py_DECREF(tmp_truediv_expr_left_1);
         if (tmp_return_value == NULL) {
             assert(ERROR_OCCURRED());
 

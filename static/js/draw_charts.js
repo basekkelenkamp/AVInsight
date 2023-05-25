@@ -33,7 +33,20 @@ function megabytesToBytes(megabytes) {
 function init() {
     let charts = document.getElementsByClassName("ct-chart");
 
+    let d = document.querySelector("#dataSelector");
+    let interval = d.dataset.interval;
+
+    let thresholds = {
+        'gpu': d.dataset.thresholdgpu,
+        'cpu': d.dataset.thresholdcpu,
+        'ram': d.dataset.thresholdram
+    };
+
     for (let c of charts) {
+
+        let metricType = c.id.slice(0, 3);
+        let thresholdValue = thresholds[metricType];
+
         let chartOptions = {...options};
         if (c.id === 'disk-read-speed-chart') {
             chartOptions.axisY.high = megabytesToBytes(500)
@@ -50,14 +63,15 @@ function init() {
 
         // Add a threshold line at 75% for all charts except 'disk-read-speed-chart'
         if (c.id !== 'disk-read-speed-chart') {
+
             chart.on('created', function(context) {
                 var threshold = {
-                    value: 75,
+                    value: thresholdValue,
                     class: 'threshold',
                     axisX: context.axisX,
                     axisY: context.axisY
                 };
-                var targetLineY = context.chartRect.y1 - (context.chartRect.height() * (threshold.value / chartOptions.axisY.high));
+                var targetLineY = context.chartRect.y1 - (context.chartRect.height() * (threshold.value / 100));
                 context.svg.elem('line', {
                     x1: context.chartRect.x1,
                     x2: context.chartRect.x2,
@@ -66,7 +80,7 @@ function init() {
                 }, threshold.class);
             });
         }
-
+        
         socket.on(c.id, function (receivedData) {
             let new_data_point = receivedData.data;
 

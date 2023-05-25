@@ -9,6 +9,7 @@ from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO
 import time
 import threading
+from threading import Event
 
 # from hwinfo.pci import PCIDevice
 # from hwinfo.pci.lspci import LspciNNMMParser
@@ -72,15 +73,21 @@ app.jinja_env.filters["fromjson"] = from_json_filter
 socket_io = SocketIO(app)
 
 # Load the config
-config = get_config()
+config: Config = get_config()
 
-# Init db connection
+# Init db connection & remove archive
 connection = db_init_connection(db_path=db_path)
 metrics = db_get_all_metrics(connection.cursor(), as_obj=True)
+
+archive_days = int(config.get_setting_value("clear_archive_after_days"))
+print(f"removing archive older than {archive_days} days")
+remove_archive_after_days(connection.cursor(), archive_days)
 connection.close()
 
-# Global flag to control the running thread
-keep_running = True
+
+# Event to control the running threads
+stop_event = Event()
+threads = []
 
 
 #   ######   #
@@ -114,7 +121,7 @@ def get_metrics(original_config: Config):
     prev_time = time.time()
     prev_disk_io = get_disk_io_counters(disk)
 
-    while keep_running:
+    while not stop_event.is_set():
         if json.dumps(original_config.to_dict()) != json.dumps(config.to_dict()):
             break
 
@@ -188,7 +195,13 @@ def get_metrics(original_config: Config):
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template(
+        "index.html",
+        interval=config.get_setting_value("interval"),
+        threshold_GPU=config.get_setting_value("threshold_GPU"),
+        threshold_CPU=config.get_setting_value("threshold_CPU"),
+        threshold_RAM=config.get_setting_value("threshold_RAM"),
+    )
 
 
 @app.route("/config")
@@ -254,13 +267,10 @@ def archive(date):
 
 @socket_io.on("connect", namespace="/metrics")
 def connect():
-    global config
-    global keep_running
-
     """Event handler for socket.io connection"""
     print("Client connected")
     # Start a separate thread to get usage in real-time
-    start_metrics_thread()
+    # start_metrics_thread()
 
 
 @socket_io.on("disconnect", namespace="/metrics")
@@ -269,42 +279,46 @@ def disconnect():
     print("Client disconnected")
 
 
-# Threading
+#   ######   #
+#   THREAD   #
+#   ######   #
 def start_metrics_thread():
     global config
-    global keep_running
-    # Start a separate thread to get usage in real-time
+    global threads
     config = get_config()
-    keep_running = True
+
+    # Stop all previous threads
+    for thread in threads:
+        if thread.is_alive():
+            stop_event.set()
+
+    # Clear the threads list and the stop event
+    threads = []
+    stop_event.clear()
+
+    # Start a new thread
     thread = threading.Thread(target=get_metrics, args=(config,))
     thread.daemon = True
     thread.start()
 
+    # Add the new thread to the threads list
+    threads.append(thread)
+
 
 def stop_metrics_thread():
-    global keep_running
-    global config
     # Stop the current thread
-    keep_running = False
-    time.sleep(1)
+    stop_event.set()
 
 
 #   ######   #
 #   SERVER   #
 #   ######   #
 
+start_metrics_thread()
 if __name__ == "__main__":
     port = int(
         os.environ.get("FLASK_PORT", 5000)
     )  # Use 5000 as the default port number
     url = f"http://localhost:{port}"
-
-    # Remove archive
-    archive_days = int(config.get_setting_value("clear_archive_after_days"))
-    connection = db_get_connection(db_path=db_path)
-    cursor = connection.cursor()
-    print(f"removing archive older than {archive_days} days")
-    remove_archive_after_days(cursor, archive_days)
-    connection.close()
 
     socket_io.run(app, host="0.0.0.0", port=port, debug=debug)

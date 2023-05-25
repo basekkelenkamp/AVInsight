@@ -24,7 +24,11 @@ class Config:
     def to_dict(self) -> Dict[str, Any]:
         categories = {setting.category for setting in self.settings}
         return {
-            category: [asdict(setting) for setting in self.settings if setting.category == category]
+            category: [
+                asdict(setting)
+                for setting in self.settings
+                if setting.category == category
+            ]
             for category in categories
         }
 
