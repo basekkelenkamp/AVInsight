@@ -13,6 +13,14 @@ let options = {
     }
 };
 
+function bytesToMegabytes(bytes) {
+    return bytes / (1024 * 1024);
+}
+
+function megabytesToBytes(megabytes) {
+    return megabytes * (1024 * 1024);
+}
+
 function draw_chart(chart_id, chart_data, chart_labels) {
     let chartOptions = { ...options };
 
@@ -20,6 +28,13 @@ function draw_chart(chart_id, chart_data, chart_labels) {
         labels: chart_labels,
         series: [chart_data]
     };
+
+    if (chart_id === 'metric-chart-4') {
+        chartOptions.axisY.high = megabytesToBytes(500)
+        chartOptions.axisY.labelInterpolationFnc = function (value) {
+            return bytesToMegabytes(value).toFixed(0) + ' MB/s';
+        };
+    }
 
     let chart = new Chartist.Line('#' + chart_id, data, chartOptions);
 

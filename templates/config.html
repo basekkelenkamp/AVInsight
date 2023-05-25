@@ -13,16 +13,20 @@
               <div class="info-icon" data-description="{{ setting.description }}">i</div>
               <label for="{{ section }}-{{ setting.name }}" class="label-text">{{ setting.name }}</label>
             </div>
-            {% if setting.value is number %}
-              <input type="number" name="{{ section }}-{{ setting.name }}" id="{{ section }}-{{ setting.name }}" value="{{ setting.value }}">
-            {% elif setting.value == "true" or setting.value == "false" %}
+            {% if setting.datatype == "int" or setting.datatype == "float" %}
+              <input type="number" name="{{ section }}-{{ setting.name }}" id="{{ section }}-{{ setting.name }}" data-type="{{ setting.datatype }}" value="{{ setting.value }}">
+
+            {% elif setting.datatype == "int%" %}
+              <input type="number" name="{{ section }}-{{ setting.name }}" id="{{ section }}-{{ setting.name }}" data-type="{{ setting.datatype }}" value="{{ setting.value }}">
+
+            {% elif setting.datatype == "boolean" %}
               <div class="switch" for="checkbox">
                 <input type="hidden" name="{{ section }}-{{ setting.name }}" value="false">
-                <input type="checkbox" id="{{ section }}-{{ setting.name }}" name="{{ section }}-{{ setting.name }}" {% if setting.value == "true" %}checked{% endif %}>
+                <input type="checkbox" id="{{ section }}-{{ setting.name }}" name="{{ section }}-{{ setting.name }}" data-type="{{ setting.datatype }}" {% if setting.value == "true" %}checked{% endif %}>
                 <label for="{{ section }}-{{ setting.name }}" class="slider round"></label>
               </div>
-            {% elif setting.name == "disk" %}
-              <select id="{{ section }}-{{ setting.name }}" name="{{ section }}-{{ setting.name }}">
+            {% elif setting.datatype == "dropdown" %}
+              <select id="{{ section }}-{{ setting.name }}" name="{{ section }}-{{ setting.name }}" data-type="{{ setting.datatype }}">
                 {% for disk in disks %}
                   {% if disk == setting.value %}
                     <option value="{{ disk }}" selected="selected">{{ disk }}</option>
@@ -32,9 +36,11 @@
                 {% endfor %}
               </select>
             {% else %}
-              <input type="text" name="{{ section }}-{{ setting.name }}" id="{{ section }}-{{ setting.name }}" value="{{ setting.value }}">
+              <input type="text" name="{{ section }}-{{ setting.name }}" id="{{ section }}-{{ setting.name }}" data-type="{{ setting.datatype }}" value="{{ setting.value }}">
             {% endif %}
             <input type="hidden" name="{{ section }}-{{ setting.name }}-description" value="{{ setting.description }}">
+            <input type="hidden" name="{{ section }}-{{ setting.name }}-category" value="{{ setting.category }}">
+            <input type="hidden" name="{{ section }}-{{ setting.name }}-datatype" value="{{ setting.datatype }}">
           </div>
         {% endfor %}
       </fieldset>

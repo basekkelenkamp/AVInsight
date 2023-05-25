@@ -15,3 +15,8 @@
     /* Make your points appear as squares */
     stroke-linecap: circle;
   }
+
+.ct-chart .threshold {
+    stroke: red;
+    stroke-dasharray: 4px 4px;
+}

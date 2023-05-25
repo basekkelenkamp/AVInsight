@@ -8,6 +8,8 @@ class Setting:
     name: str
     value: Any
     description: str
+    category: str
+    datatype: str
 
 
 @dataclass
@@ -20,17 +22,11 @@ class Config:
         return cls(settings)
 
     def to_dict(self) -> Dict[str, Any]:
-        archive_settings = [
-            asdict(setting)
-            for setting in self.settings
-            if setting.name.startswith("archive")
-        ]
-        metrics_settings = [
-            asdict(setting)
-            for setting in self.settings
-            if not setting.name.startswith("archive")
-        ]
-        return {"archive": archive_settings, "metrics": metrics_settings}
+        categories = {setting.category for setting in self.settings}
+        return {
+            category: [asdict(setting) for setting in self.settings if setting.category == category]
+            for category in categories
+        }
 
     def get_setting_values(self) -> Dict[str, Any]:
         return {setting.name: setting.value for setting in self.settings}

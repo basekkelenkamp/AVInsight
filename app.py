@@ -196,7 +196,6 @@ def config():
     # ['PhysicalDrive0', 'PhysicalDrive1', 'PhysicalDrive2']
     disks = get_disk_list()
     config = get_config()
-
     return render_template("config.html", config=config.to_dict(), disks=disks)
 
 

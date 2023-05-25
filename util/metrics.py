@@ -19,7 +19,7 @@ def get_disk_io_counters(disk):
 
 
 def calculate_disk_read_speeds(prev_disk_io, curr_disk_io, time_diff):
-    return curr_disk_io - prev_disk_io / time_diff
+    return (curr_disk_io - prev_disk_io) / time_diff
 
 
 def get_cpu_usage(interval):

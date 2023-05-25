@@ -21,8 +21,13 @@ let options = {
     }
 };
 
-let maxDiskReadSpeed = 100;
+function bytesToMegabytes(bytes) {
+    return bytes / (1024 * 1024);
+}
 
+function megabytesToBytes(megabytes) {
+    return megabytes * (1024 * 1024);
+}
 
 
 function init() {
@@ -31,10 +36,10 @@ function init() {
     for (let c of charts) {
         let chartOptions = {...options};
         if (c.id === 'disk-read-speed-chart') {
+            chartOptions.axisY.high = megabytesToBytes(500)
             chartOptions.axisY.labelInterpolationFnc = function (value) {
-                return (value / 1024 / 1024).toFixed(2) + ' MB/s';
+                return bytesToMegabytes(value).toFixed(0) + ' MB/s';
             };
-            chartOptions.axisY.high = 1024 * 100;
         } else {
             chartOptions.axisY.labelInterpolationFnc = function (value) {
                 return value + '%';
@@ -43,16 +48,27 @@ function init() {
         
         let chart = new Chartist.Line('#' + c.id, data, chartOptions);
 
+        // Add a threshold line at 75% for all charts except 'disk-read-speed-chart'
+        if (c.id !== 'disk-read-speed-chart') {
+            chart.on('created', function(context) {
+                var threshold = {
+                    value: 75,
+                    class: 'threshold',
+                    axisX: context.axisX,
+                    axisY: context.axisY
+                };
+                var targetLineY = context.chartRect.y1 - (context.chartRect.height() * (threshold.value / chartOptions.axisY.high));
+                context.svg.elem('line', {
+                    x1: context.chartRect.x1,
+                    x2: context.chartRect.x2,
+                    y1: targetLineY,
+                    y2: targetLineY
+                }, threshold.class);
+            });
+        }
+
         socket.on(c.id, function (receivedData) {
             let new_data_point = receivedData.data;
-            // let labels = receivedData.labels;
-
-            if (c.id === 'disk-read-speed-chart') {
-                let diskReadSpeeds = Object.values(new_data_point);
-                maxDiskReadSpeed = Math.max(maxDiskReadSpeed, ...diskReadSpeeds);
-                chart.options.axisY.high = maxDiskReadSpeed * 1.1;
-                new_data_point = [diskReadSpeeds.reduce((a, b) => a + b, 0)]; // Sum all disk read speeds
-            }
 
             chart.update({
                 labels: new_data_point,

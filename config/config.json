@@ -2,40 +2,77 @@
     "metrics": [
         {
             "name": "clear_archive_after_days",
-            "value": "14",
-            "description": "Clears the archive after a set amount of days. Set to '0' to never clear. (DEFAULT=7)"
+            "value": "10",
+            "description": "Clears the archive after a set amount of days. Set to '0' to never clear. (DEFAULT=7)",
+            "category": "metrics",
+            "datatype": "int"
         },
         {
             "name": "disk",
             "value": "PhysicalDrive0",
-            "description": "Select what DISK to track. (DEFAULT=PhysicalDrive0)"
+            "description": "Select what DISK to track. (DEFAULT=PhysicalDrive0)",
+            "category": "metrics",
+            "datatype": "dropdown"
         },
         {
             "name": "interval",
-            "value": "1",
-            "description": "The frequency of when data points are recorded. WARNING: Do not go below 0.1 (DEFAULT=1)"
+            "value": "0.5",
+            "description": "The frequency of when data points are recorded. WARNING: Do not go below 0.1 (DEFAULT=1)",
+            "category": "metrics",
+            "datatype": "float"
         }
     ],
     "archive": [
         {
             "name": "archive_GPU",
             "value": "false",
-            "description": "Decide whether or not to save GPU data to the archive. (DEFAULT=TRUE)"
+            "description": "Decide whether or not to save GPU data to the archive. (DEFAULT=TRUE)",
+            "category": "archive",
+            "datatype": "boolean"
         },
         {
             "name": "archive_CPU",
             "value": "false",
-            "description": "Decide whether or not to save CPU data to the archive. (DEFAULT=TRUE)"
+            "description": "Decide whether or not to save CPU data to the archive. (DEFAULT=TRUE)",
+            "category": "archive",
+            "datatype": "boolean"
         },
         {
             "name": "archive_RAM",
             "value": "false",
-            "description": "Decide whether or not to save RAM data to the archive. (DEFAULT=TRUE)"
+            "description": "Decide whether or not to save RAM data to the archive. (DEFAULT=TRUE)",
+            "category": "archive",
+            "datatype": "boolean"
         },
         {
             "name": "archive_DISK",
             "value": "false",
-            "description": "Decide whether or not to save DISK data to the archive. (DEFAULT=TRUE)"
+            "description": "Decide whether or not to save DISK data to the archive. (DEFAULT=TRUE)",
+            "category": "archive",
+            "datatype": "boolean"
+        }
+    ],
+    "thresholds": [
+        {
+            "name": "threshold_GPU",
+            "value": "70",
+            "description": "GPU Threshold percentage. Activates warning when exceeded. (DEFAULT=75)",
+            "category": "thresholds",
+            "datatype": "int%"
+        },
+        {
+            "name": "threshold_CPU",
+            "value": "75",
+            "description": "CPU Threshold percentage. Activates warning when exceeded. (DEFAULT=75)",
+            "category": "thresholds",
+            "datatype": "int%"
+        },
+        {
+            "name": "threshold_RAM",
+            "value": "75",
+            "description": "RAM Threshold percentage. Activates warning when exceeded. (DEFAULT=75)",
+            "category": "thresholds",
+            "datatype": "int%"
         }
     ]
 }
