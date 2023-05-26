@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/archive_raw.css') }}">
+
+<h2>Data report</h2>
+
+<div class="date-container">
+    <h3>{{ date }}</h3>
+    <div class="date-button-container">
+        <h3 class="date-button-prev"><a href="{{ url_for('data_report', date=prev_date) }}">previous</a></h3>
+        {% if next_date is not none %}
+            <h3 class="date-button-next"><a href="{{ url_for('data_report', date=next_date) }}">next</a></h3>
+        {% endif %}
+    </div>
+</div>
+
+<div class="chart-container">
+    <h3>No data</h3>
+    <p>Cannot generate report without data.</p>
+</div>
+
+{% endblock content %}

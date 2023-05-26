@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/data_report.css') }}">
+
+<h2>Data report</h2>
+
+<div class="date-container">
+    <h3>{{ date }}</h3>
+    <div class="date-button-container">
+        <h3 class="date-button-prev"><a href="{{ url_for('data_report', date=prev_date) }}">previous</a></h3>
+        {% if next_date is not none %}
+            <h3 class="date-button-next"><a href="{{ url_for('data_report', date=next_date) }}">next</a></h3>
+        {% endif %}
+    </div>
+</div>
+
+<div class="timestamp-container">
+    <h4>
+        Data recorded from <span>{{ first_timestamp }}</span> - <span>{{ last_timestamp }}</span>
+    </h4>
+</div>
+
+<div class="daily-data-container">
+    <table id="daily-data" class="daily-data-table">
+        <tr>
+            <th></th>
+            <th>Count</th>
+            <th>Max</th>
+            <th>Avg</th>
+        </tr>
+        {% for daily_metric in daily_data %}
+            {% for metric, values in daily_metric.items() %}
+                <tr>
+                    <th>{{ metric }}</th>
+                    <td>{{ values['daily_counts'] }}</td>
+                    <td>{{ values['daily_max'] }}</td>
+                    <td>{{ values['daily_avg'] }}</td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    </table>
+        <div class="chart-container">
+            <h3>Daily chart</h3>
+        <div id="metric-chart-daily" class="ct-chart ct-double-octave"></div>
+    </div>
+</div>
+
+<div hidden id="dataFirstLastTimestamps" data-first_timestamp="{{ first_timestamp }}" data-last_timestamp="{{ last_timestamp }}"></div>
+<div hidden id="dataThresholds" data-thresholds="{{ thresholds }}"></div>
+<div hidden id="dataTotalPoints" data-total_points_count="{{ total_points_count }}"></div>
+<div hidden id="dataMinute" data-minute_data="{{ minute_data }}"></div>
+
+<!-- {% for metric in metric_names|fromjson %}
+    <div class="chart-container">
+        <h3>{{ metric }}</h3>
+        <div id="metric-chart-{{ metric }}" class="ct-chart ct-double-octave"></div>
+    </div>
+{% endfor %} -->
+
+<script src="{{ url_for('static', filename='js/draw_data_report.js') }}"></script>
+{% endblock content %}

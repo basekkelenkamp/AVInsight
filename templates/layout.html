@@ -20,13 +20,17 @@
                 <img src="{{ url_for('static', filename='imgs/dashboard.png') }}" alt="dashboard" class="icon">
                 <span class="button-text">Dashboard</span>
             </a>
-            <a class="header-link" href="{{ url_for('archive') }}" id="archive-link">
-                <img src="{{ url_for('static', filename='imgs/archive.png') }}" alt="archive" class="icon">
-                <span class="button-text">Archive</span>
+            <a class="header-link" href="{{ url_for('data_report') }}" id="data-report-link">
+                <img src="{{ url_for('static', filename='imgs/data_report.png') }}" alt="data-report" class="icon">
+                <span class="button-text">Data report</span>
             </a>
             <a class="header-link" href="{{ url_for('config') }}" id="config-link">
                 <img src="{{ url_for('static', filename='imgs/config.png') }}" alt="config" class="icon">
                 <span class="button-text">Config</span>
+            </a>
+            <a class="header-link" href="{{ url_for('archive_raw') }}" id="archive-link">
+                <img src="{{ url_for('static', filename='imgs/archive.png') }}" alt="archive_raw" class="icon">
+                <span class="button-text">Archive (RAW)</span>
             </a>
             
         </div>

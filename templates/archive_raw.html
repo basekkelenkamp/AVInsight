@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/archive.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/archive_raw.css') }}">
 
 <h2>Archive (RAW DATA)</h2>
 
@@ -23,5 +23,5 @@
     </div>
 {% endfor %}
 
-<script src="{{ url_for('static', filename='js/draw_archive_charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/draw_archive_raw_charts.js') }}"></script>
 {% endblock content %}

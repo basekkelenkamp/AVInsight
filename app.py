@@ -242,9 +242,9 @@ def save_config():
         return jsonify({"result": "error"}), 500
 
 
-@app.route("/archive", defaults={"date": None})
-@app.route("/archive/<date>")
-def archive(date):
+@app.route("/data_report", defaults={"date": None})
+@app.route("/data_report/<date>")
+def data_report(date):
     try:
         datetime.strptime(date, "%Y-%m-%d")
     except:
@@ -276,15 +276,39 @@ def archive(date):
         data_report = get_data_report(cursor, report_id)
         connection.close()
 
-    breakpoint()
-    return render_template(
-        "archive.html",
-        data=json.dumps(data),
-        metric_names=json.dumps(metric_names),
-        date=date,
-        prev_date=prev_date,
-        next_date=next_date,
-    )
+        metric_names = [x for x in json.loads(data_report.daily_counts).keys()]
+        daily_data = []
+        for key in metric_names:
+            daily_data.append(
+                {
+                    key: {
+                        "daily_counts": json.loads(data_report.daily_counts)[key],
+                        "daily_max": json.loads(data_report.daily_max)[key],
+                        "daily_avg": json.loads(data_report.daily_avg)[key],
+                    }
+                }
+            )
+
+        return render_template(
+            "data_report.html",
+            date=date,
+            metric_names=json.dumps(metric_names),
+            prev_date=prev_date,
+            next_date=next_date,
+            daily_data=daily_data,
+            first_timestamp=data_report.first_timestamp[10:],
+            last_timestamp=data_report.last_timestamp[10:],
+            thresholds=data_report.thresholds,
+            total_points_count=data_report.total_points_count,
+            minute_data=data_report.minute_data,
+        )
+    elif not data:
+        return render_template(
+            "data_report_no_data.html",
+            date=date,
+            prev_date=prev_date,
+            next_date=next_date,
+        )
 
 
 @app.route("/archive/raw", defaults={"date": None})
@@ -303,14 +327,22 @@ def archive_raw(date):
     metric_names = db_get_all_metrics(cursor)
     connection.close()
 
-    return render_template(
-        "archive_raw.html",
-        data=json.dumps(data),
-        metric_names=json.dumps(metric_names),
-        date=date,
-        prev_date=prev_date,
-        next_date=next_date,
-    )
+    if data:
+        return render_template(
+            "archive_raw.html",
+            data=json.dumps(data),
+            metric_names=json.dumps(metric_names),
+            date=date,
+            prev_date=prev_date,
+            next_date=next_date,
+        )
+    elif not data:
+        return render_template(
+            "archive_no_data.html",
+            date=date,
+            prev_date=prev_date,
+            next_date=next_date,
+        )
 
 
 @socket_io.on("connect", namespace="/metrics")

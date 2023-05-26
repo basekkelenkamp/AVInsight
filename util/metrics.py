@@ -84,12 +84,12 @@ def calculate_data_report(metric_names, data, point_per_minute, thresholds):
         # Update daily totals and counts
         daily_totals[metric_type] += value
         daily_counts[metric_type] += 1
-        daily_min[metric_type] = min(daily_min[metric_type], value)
-        daily_max[metric_type] = max(daily_max[metric_type], value)
+        daily_min[metric_type] = round(min(daily_min[metric_type], value), 2)
+        daily_max[metric_type] = round(max(daily_max[metric_type], value), 2)
 
     # Calculate daily averages
     daily_avg = {
-        metric_type: daily_totals[metric_type] / daily_counts[metric_type]
+        metric_type: round(daily_totals[metric_type] / daily_counts[metric_type], 2)
         for metric_type in daily_totals
     }
 
@@ -129,9 +129,9 @@ def calculate_data_report(metric_names, data, point_per_minute, thresholds):
 
         # Add daily averages, min, max to final_data
         final_data[metric_type]["daily"] = {
-            "avg": daily_avg[metric_type],
-            "min": daily_min[metric_type],
-            "max": daily_max[metric_type],
+            "avg": round(daily_avg[metric_type], 2),
+            "min": round(daily_min[metric_type], 2),
+            "max": round(daily_max[metric_type], 2),
         }
 
     # store
