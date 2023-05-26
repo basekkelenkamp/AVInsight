@@ -7416,7 +7416,7 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
         PyObject *tmp_dict_key_6;
         PyObject *tmp_dict_value_6;
         PyObject *tmp_expression_value_6;
-        tmp_tuple_element_1 = MAKE_LIST_REPEATED(4, mod_consts[118]);
+        tmp_tuple_element_1 = DICT_COPY(mod_consts[118]);
         tmp_defaults_3 = MAKE_TUPLE_EMPTY(2);
         PyTuple_SET_ITEM(tmp_defaults_3, 0, tmp_tuple_element_1);
         tmp_tuple_element_1 = mod_consts[119];
@@ -7458,7 +7458,7 @@ PyObject *modulecode_database$db(PyObject *module, struct Nuitka_MetaPathBasedLo
         tmp_res = PyDict_SetItem(tmp_annotations_8, tmp_dict_key_6, tmp_dict_value_6);
         assert(!(tmp_res != 0));
         tmp_dict_key_6 = mod_consts[120];
-        tmp_dict_value_6 = (PyObject *)&PyList_Type;
+        tmp_dict_value_6 = (PyObject *)&PyDict_Type;
         tmp_res = PyDict_SetItem(tmp_annotations_8, tmp_dict_key_6, tmp_dict_value_6);
         assert(!(tmp_res != 0));
         tmp_dict_key_6 = mod_consts[121];

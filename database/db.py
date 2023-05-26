@@ -216,7 +216,7 @@ def save_data_report(
     date: str,
     data,
     metric_names,
-    thresholds: list = [70, 70, 70, 70],
+    thresholds: dict = {"GPU": 70, "CPU": 70, "RAM": 70},
     point_per_minute: int = 10,
 ):
     berlin_tz = pytz.timezone("Europe/Berlin")

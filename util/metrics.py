@@ -64,9 +64,6 @@ def get_metric_id_by_type(metrics, metric_type):
 def calculate_data_report(metric_names, data, point_per_minute, thresholds):
     new_data = defaultdict(lambda: defaultdict(list))
     id_to_type = {metric["id"]: metric["type"] for metric in metric_names}
-    id_to_threshold = {
-        metric["id"]: threshold for metric, threshold in zip(metric_names, thresholds)
-    }
 
     # Initialize daily data structures
     daily_totals = defaultdict(int)
@@ -77,7 +74,6 @@ def calculate_data_report(metric_names, data, point_per_minute, thresholds):
     for d in data:
         metric_id = d["metric_id"]
         metric_type = id_to_type[metric_id]
-        threshold = id_to_threshold[metric_id]
         minute = datetime.strptime(d["timestamp"], "%Y-%m-%d %H:%M:%S.%f").strftime(
             "%H:%M"
         )
@@ -111,7 +107,9 @@ def calculate_data_report(metric_names, data, point_per_minute, thresholds):
             max_ = max(v for _, v in values)
 
             threshold_values = [
-                (t, v) for t, v in values if v >= id_to_threshold[metric_id]
+                (t, v)
+                for t, v in values
+                if metric_type in thresholds and v >= thresholds[metric_type]
             ]
             if len(values) <= point_per_minute:
                 final_values = values

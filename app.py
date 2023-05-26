@@ -263,9 +263,16 @@ def archive(date):
             remove_data_report(cursor, date)
             connection.commit()
 
-        report_id = save_data_report(cursor, date, data, metric_names)
+        thresholds = {
+            "GPU": int(config.get_setting_value("threshold_GPU")),
+            "CPU": int(config.get_setting_value("threshold_CPU")),
+            "RAM": int(config.get_setting_value("threshold_RAM")),
+        }
+        report_id = save_data_report(
+            cursor, date, data, metric_names, thresholds=thresholds
+        )
         connection.commit()
-        
+
         data_report = get_data_report(cursor, report_id)
         connection.close()
 
