@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/archive.css') }}">
+
+<h2>Archive (RAW DATA)</h2>
+
+<div class="date-container">
+    <h3>{{ date }}</h3>
+    <div class="date-button-container">
+        <h3 class="date-button-prev"><a href="{{ url_for('archive_raw', date=prev_date) }}">previous</a></h3>
+        {% if next_date is not none %}
+            <h3 class="date-button-next"><a href="{{ url_for('archive_raw', date=next_date) }}">next</a></h3>
+        {% endif %}
+    </div>
+</div>
+
+<div hidden id="dataSelector" data-metricvalues="{{ data }}" data-metricnames="{{ metric_names }}"></div>
+
+{% for metric in metric_names|fromjson %}
+    <div class="chart-container">
+        <h3>{{ metric.type }}</h3>
+        <div id="metric-chart-{{ metric.id }}" class="ct-chart ct-double-octave"></div>
+    </div>
+{% endfor %}
+
+<script src="{{ url_for('static', filename='js/draw_archive_charts.js') }}"></script>
+{% endblock content %}

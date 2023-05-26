@@ -15,6 +15,9 @@ from threading import Event
 # from hwinfo.pci.lspci import LspciNNMMParser
 from config.load_config import Config, get_config, update_config
 from database.db import (
+    get_data_report,
+    remove_data_report,
+    save_data_report,
     db_get_all_metrics,
     db_init_connection,
     db_get_connection,
@@ -253,10 +256,48 @@ def archive(date):
     # Example date str: 'YYYY-MM-DD'
     data, date, prev_date, next_date = db_get_metric_values_from_day(cursor, date)
     metric_names = db_get_all_metrics(cursor)
+
+    if data:
+        data_report = get_data_report(cursor, date)
+        if data_report is not None and not data_report.report_finished:
+            remove_data_report(cursor, date)
+            connection.commit()
+
+        report_id = save_data_report(cursor, date, data, metric_names)
+        connection.commit()
+        
+        data_report = get_data_report(cursor, report_id)
+        connection.close()
+
+    breakpoint()
+    return render_template(
+        "archive.html",
+        data=json.dumps(data),
+        metric_names=json.dumps(metric_names),
+        date=date,
+        prev_date=prev_date,
+        next_date=next_date,
+    )
+
+
+@app.route("/archive/raw", defaults={"date": None})
+@app.route("/archive/raw/<date>")
+def archive_raw(date):
+    try:
+        datetime.strptime(date, "%Y-%m-%d")
+    except:
+        date = None
+
+    connection = db_get_connection(db_path=db_path)
+    cursor = connection.cursor()
+
+    # Example date str: 'YYYY-MM-DD'
+    data, date, prev_date, next_date = db_get_metric_values_from_day(cursor, date)
+    metric_names = db_get_all_metrics(cursor)
     connection.close()
 
     return render_template(
-        "archive.html",
+        "archive_raw.html",
         data=json.dumps(data),
         metric_names=json.dumps(metric_names),
         date=date,

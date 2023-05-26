@@ -1,9 +1,13 @@
 import json
+from math import ceil
 import sqlite3
 from datetime import datetime, timedelta
 import pytz
-from database.models import Metric, MetricValue
+from database.models import DataReport, Metric, MetricValue
 import os
+import zlib
+
+from util.metrics import calculate_data_report
 
 db_name = "AVInsight.db"
 
@@ -23,7 +27,7 @@ def db_init_connection(db_path: str):
     # Check if tables exist
     cursor.execute(
         """
-        SELECT name FROM sqlite_master WHERE type='table' AND (name='metrics' OR name='metric_values');
+        SELECT name FROM sqlite_master WHERE type='table' AND (name='metrics' OR name='metric_values' OR name='daily_reports');
         """
     )
     tables = cursor.fetchall()
@@ -46,15 +50,30 @@ def db_init_connection(db_path: str):
             FOREIGN KEY (metric_id) REFERENCES metrics (id))
             """
 
+        q3 = """
+            CREATE TABLE daily_reports (
+            date_id TEXT PRIMARY KEY,
+            report_finished BOOLEAN,
+            first_timestamp TEXT,
+            last_timestamp TEXT,
+            daily_counts TEXT,
+            daily_max TEXT,
+            daily_avg TEXT,
+            thresholds TEXT,
+            total_points_count INTEGER,
+            minute_data BLOB)
+            """
+
         cursor.execute(q1)
         cursor.execute(q2)
+        cursor.execute(q3)
 
         metrics = ["CPU", "GPU", "RAM", "DISK"]
 
         for metric in metrics:
             insert_metric(cursor, metric)
 
-        # Commit the table creation
+        # Commit the table creation & metrics
         connection.commit()
 
     # set to True to reset db
@@ -89,7 +108,7 @@ def insert_metric_value(cursor: sqlite3.Cursor, metric_id: int, value: str):
         (
             metric_id,
             json.dumps(value),
-            current_time_berlin.strftime("%Y-%m-%d %H:%M:%S.%f"),
+            current_time_berlin.strftime("%Y-%m-%d %H:%M:%S.%f")[:-4],
         ),
     )
     return
@@ -190,3 +209,92 @@ def remove_archive_after_days(cursor: sqlite3.Cursor, days: int):
         query_remove_old_records, (cutoff_time.strftime("%Y-%m-%d %H:%M:%S.%f"),)
     )
     cursor.connection.commit()
+
+
+def save_data_report(
+    cursor: sqlite3.Cursor,
+    date: str,
+    data,
+    metric_names,
+    thresholds: list = [70, 70, 70, 70],
+    point_per_minute: int = 10,
+):
+    berlin_tz = pytz.timezone("Europe/Berlin")
+
+    date_ = datetime.strptime(date, "%Y-%m-%d")
+    date_ = berlin_tz.localize(date_)
+
+    report_finished = True
+    if date_.date() == datetime.now(berlin_tz).date():
+        report_finished = False
+
+    (
+        final_data,
+        daily_counts,
+        daily_max,
+        daily_avg,
+    ) = calculate_data_report(metric_names, data, point_per_minute, thresholds)
+
+    compressed_minute_data = zlib.compress(bytes(json.dumps(final_data), "utf-8"))
+
+    query_insert_data_report = """
+        INSERT INTO daily_reports (date_id, report_finished, first_timestamp, last_timestamp, daily_counts, daily_max, daily_avg, thresholds, total_points_count, minute_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """
+
+    first_timestamp = data[0]["timestamp"]
+    last_timestamp = data[-1]["timestamp"]
+
+    print(f"Creating data report: {date}")
+    cursor.execute(
+        query_insert_data_report,
+        (
+            date,
+            report_finished,  # Assuming the report is finished
+            first_timestamp,
+            last_timestamp,
+            json.dumps(daily_counts),
+            json.dumps(daily_max),
+            json.dumps(daily_avg),
+            json.dumps(thresholds),
+            json.dumps(sum(daily_counts.values())),
+            compressed_minute_data,
+        ),
+    )
+
+    return date
+
+
+def get_data_report(cursor: sqlite3.Cursor, date_id: str):
+    query_get_data_report = """
+        SELECT * FROM daily_reports WHERE date_id = ?
+        """
+
+    cursor.execute(query_get_data_report, (date_id,))
+    result = cursor.fetchone()
+
+    if result is None:
+        return None
+
+    data_report = DataReport(
+        date_id=result[0],
+        report_finished=bool(result[1]),
+        first_timestamp=result[2],
+        last_timestamp=result[3],
+        daily_counts=result[4],
+        daily_max=result[5],
+        daily_avg=result[6],
+        thresholds=result[7],
+        total_points_count=result[8],
+        minute_data=zlib.decompress(result[9]).decode("utf-8"),
+    )
+
+    return data_report
+
+
+def remove_data_report(cursor: sqlite3.Cursor, date_id: str):
+    query_remove_data_report = """
+        DELETE FROM daily_reports WHERE date_id = ?
+        """
+
+    print(f"Removing data report: {date_id}")
+    cursor.execute(query_remove_data_report, (date_id,))

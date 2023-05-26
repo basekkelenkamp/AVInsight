@@ -23,6 +23,8 @@ function init() {
         "disk": []
     }
 
+    document.getElementById("interval").textContent = `Data interval: ${interval}s`;
+
     for (let chart of charts) {
         let key = chart.id.split("-")[0];
         socket.on(chart.id, function (receivedData) {
