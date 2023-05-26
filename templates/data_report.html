@@ -2,25 +2,45 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/data_report.css') }}">
 
-<h2>Data report</h2>
+<div class="layout-container">
+    <div class="date-container">
+        <h3>{{ date }}</h3>
+        <div class="date-info">
+            <h4>Data recorded from: <span>{{ first_timestamp }}</span> - <span>{{ last_timestamp }}</span></h4>
+            <h4>Data points: <span>{{ total_points_original }}</span> reduced to <span>{{ total_points_reduced }}</span> (<span>{{ point_per_minute }}</span> points per minute)
+            </h4>
+        </div>
+    </div>
 
-<div class="date-container">
-    <h3>{{ date }}</h3>
-    <div class="date-button-container">
-        <h3 class="date-button-prev"><a href="{{ url_for('data_report', date=prev_date) }}">previous</a></h3>
-        {% if next_date is not none %}
-            <h3 class="date-button-next"><a href="{{ url_for('data_report', date=next_date) }}">next</a></h3>
-        {% endif %}
+
+    <div class="date-selector-container date-container">
+        <input class="date-selector-input" id="custom-date" type="date" value="{{ date }}"></input>
+        <h3 class="date-button-prev"><a href="{{ url_for('data_report', date=prev_date) }}">prev</a></h3>
+
+        <h3 class="date-button-next {% if next_date is none %}disabled{% endif %}">
+            <a href="{% if next_date is not none %}{{ url_for('data_report', date=next_date) }}{% else %}#{% endif %}">next</a>
+        </h3>
+    </div>
+    
+
+    <div class="settings-container date-container">
+        <div class="left-settings">
+            <label for="graph-setting">Graph view:</label>
+            <select name="graph" id="graph">
+                <option value="all" selected="selected">All (reduced)</option>
+                <option value="max">Max</option>
+            <option value="average">Average</option>
+            </select>
+        </div>
+
+        <div class="right-setting">          
+          <h3 class="button-raw-archive"><a href="{{ url_for('archive_raw', date=date) }}">Raw data</a></h3>
+        </div>
     </div>
 </div>
 
-<div class="timestamp-container">
-    <h4>
-        Data recorded from <span>{{ first_timestamp }}</span> - <span>{{ last_timestamp }}</span>
-    </h4>
-</div>
 
-<div class="daily-data-container">
+<!-- <div class="data-report-table">
     <table id="daily-data" class="daily-data-table">
         <tr>
             <th></th>
@@ -39,23 +59,34 @@
             {% endfor %}
         {% endfor %}
     </table>
+</div> -->
+
+<div class="all-charts-container">
+    <div class="main-chart-container">
         <div class="chart-container">
-            <h3>Daily chart</h3>
-        <div id="metric-chart-daily" class="ct-chart ct-double-octave"></div>
+            <h3>Chart</h3>
+        <div id="minute-metrics-chart" class="ct-chart ct-double-octave"></div>
+        </div>
+    </div>
+
+    <div class="gauge-charts-container">
+        {% for daily_metric in daily_data %}
+            {% for metric in daily_metric.keys() %}
+                {% if not metric == "DISK" %}
+                    <div class="chart-container">
+                        <h3>{{ metric }}</h3>
+                        <div id="gauge-chart-{{ metric }}" class="ct-chart ct-chart-gauge ct-square"></div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        <div class="chart-container">
+            <h3>Cycle</h3>
+            <div id="gauge-chart-3" class="ct-chart ct-chart-gauge ct-square"></div>
+        </div>  
     </div>
 </div>
 
-<div hidden id="dataFirstLastTimestamps" data-first_timestamp="{{ first_timestamp }}" data-last_timestamp="{{ last_timestamp }}"></div>
-<div hidden id="dataThresholds" data-thresholds="{{ thresholds }}"></div>
-<div hidden id="dataTotalPoints" data-total_points_count="{{ total_points_count }}"></div>
-<div hidden id="dataMinute" data-minute_data="{{ minute_data }}"></div>
-
-<!-- {% for metric in metric_names|fromjson %}
-    <div class="chart-container">
-        <h3>{{ metric }}</h3>
-        <div id="metric-chart-{{ metric }}" class="ct-chart ct-double-octave"></div>
-    </div>
-{% endfor %} -->
 
 <script src="{{ url_for('static', filename='js/draw_data_report.js') }}"></script>
 {% endblock content %}

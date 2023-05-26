@@ -16,7 +16,7 @@
         },
         {
             "name": "interval",
-            "value": "1",
+            "value": "99",
             "description": "The frequency of when data points are recorded. WARNING: Do not go below 0.1 (DEFAULT=1)",
             "category": "metrics",
             "datatype": "float"

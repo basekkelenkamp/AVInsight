@@ -1,60 +1,243 @@
-.chart-label {
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    padding: 4px 8px;
-    font-size: 12px;
-    border-radius: 4px;
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap');
+
+body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    background-color: #2E2E3A;
 }
 
-/* Add styling for the date container */
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 50%;
+}
+
+.chart-label {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+h2 {
+display: inline-block;
+vertical-align: top;
+}
+
+.date-button-container {
+display: inline-block;
+vertical-align: top;
+margin-left: 20px;
+}
+
+.date-button-prev,
+.date-button-next,
+.button-raw-archive {
+display: inline-block;
+margin-right: 10px;
+}
+
+.date-button-prev a,
+.date-button-next a,
+.button-raw-archive a {
+padding: 10px 20px;
+background-color: #0E283E;
+color: #F2F2F3;
+text-decoration: none;
+font-size: 16px;
+font-weight: bold;
+border-radius: 4px;
+transition: background-color 0.3s;
+}
+
+.date-button-prev a:hover,
+.date-button-next a:hover,
+.button-raw-archive a:hover {
+background-color: #051C2C;
+}
+
+.date-button-next.disabled a {
+  color: #888;  /* Or another color to indicate the button is disabled */
+  cursor: not-allowed;
+}
+
+
+.layout-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .date-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .date-container h3 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #F2F2F3;
-    margin: 0;
-    margin-right: 10px;
-  }
-  
-  /* Add styling for the date buttons */
-  .date-button-container {
-    display: flex;
-    align-items: center;
-  }
-  
-  .date-button-prev,
-  .date-button-next {
-    position: relative;
-    margin-right: 10px;
-  }
-  
-  .date-button-prev a,
-  .date-button-next a {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #1D3B58;
-    color: #F2F2F3;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-  }
-  
-  .date-button-prev a:hover,
-  .date-button-next a:hover {
-    background-color: #0E283E;
-  }
-  
-  /* Adjust position of the next button */
-  .date-button-next {
-    position: absolute;
-    left: 20%;
-  }
-  
+  display: flex;
+  flex-direction: row;
+  width: 48%;
+  background-color: #1D3B58;
+  padding: 20px;
+  box-sizing: border-box;
+  color: #F2F2F3;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.date-container h3 {
+font-size: 24px;
+padding-right: 20px;
+font-weight: bold;
+margin: 0;
+}
+
+.date-info {
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+border-left: 2px solid #FF0000;
+padding-left: 20px;
+flex: 1;
+margin-right: 20px;
+}
+
+.date-info h4 {
+margin: 0;
+color: #F2F2F3;
+}
+
+.date-info span {
+color: #FF0000;
+}
+
+.data-report-table {
+width: 45%;
+flex: 1;
+background: linear-gradient(90deg, #1D3B58 0%, #323239 100%);
+color: #F2F2F3;
+border-radius: 4px;
+overflow: hidden; /* To ensure border-radius applies to all elements inside */
+box-shadow: 2px 2px 0px #333;
+}
+
+.data-report-table th,
+.data-report-table td {
+border: none;
+background-color: transparent;
+}
+
+.data-report-table th {
+padding: 10px 20px;
+}
+
+.data-report-table tr:nth-child(even) {
+background-color: rgba(255, 255, 255, 0.1);
+}
+
+.data-report-table tr:hover {
+background-color: rgba(255, 255, 255, 0.2);
+}
+
+.data-report-table td {
+padding: 10px 20px;
+}
+
+.settings-container {
+  justify-content: space-between;
+  /* align-items: center; */
+  display: flex;
+  flex-direction: row;
+  width: 30%;
+  background-color: #1D3B58;
+  padding: 20px;
+  box-sizing: border-box;
+  color: #F2F2F3;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.settings-container > :last-child {
+  padding-right: 0;
+  margin-right: 0;
+}
+
+
+.settings-container label {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.settings-container select {
+  display: inline-block;
+  margin: 0 20px;
+  background-color: #0E283E;
+  color: #F2F2F3;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.settings-container select:hover {
+  background-color: #051C2C;
+}
+
+.settings-container h3 a {
+  padding: 10px 20px;
+  background-color: #0E283E;
+  color: #F2F2F3;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.settings-container h3 a:hover {
+  background-color: #051C2C;
+}
+
+.all-charts-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.main-chart-container {
+  width: 100%;
+}
+
+.gauge-charts-container {
+  display: flex;
+  /* justify-content: space-between; */
+  width: 100%;
+}
+
+.gauge-charts-container .chart-container {
+  width: 13%;
+  text-align: center; /* to center the title and chart */
+}
+
+/* You can remove this if you don't want space between the charts */
+.gauge-charts-container .chart-container:not(:last-child) {
+  margin-right: 2%;
+}
+
+.date-selector-container {
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+  width: 20%;
+}
+
+.date-selector-container > :last-child {
+  padding-right: 0;
+  margin-right: 0;
+}
+
+.date-selector-input {
+  margin-right: 20px;
+}

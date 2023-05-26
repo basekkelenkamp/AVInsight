@@ -127,12 +127,5 @@ def calculate_data_report(metric_names, data, point_per_minute, thresholds):
                 "values": final_values,
             }
 
-        # Add daily averages, min, max to final_data
-        final_data[metric_type]["daily"] = {
-            "avg": round(daily_avg[metric_type], 2),
-            "min": round(daily_min[metric_type], 2),
-            "max": round(daily_max[metric_type], 2),
-        }
-
     # store
     return final_data, daily_counts, daily_max, daily_avg

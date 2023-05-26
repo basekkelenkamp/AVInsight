@@ -258,6 +258,7 @@ def data_report(date):
     metric_names = db_get_all_metrics(cursor)
 
     if data:
+        point_per_minute = 10
         data_report = get_data_report(cursor, date)
         if data_report is not None and not data_report.report_finished:
             remove_data_report(cursor, date)
@@ -269,7 +270,12 @@ def data_report(date):
             "RAM": int(config.get_setting_value("threshold_RAM")),
         }
         report_id = save_data_report(
-            cursor, date, data, metric_names, thresholds=thresholds
+            cursor,
+            date,
+            data,
+            metric_names,
+            thresholds=thresholds,
+            point_per_minute=point_per_minute,
         )
         connection.commit()
 
@@ -289,6 +295,12 @@ def data_report(date):
                 }
             )
 
+        reduced_count = sum(
+            len(v["values"])
+            for m in json.loads(data_report.minute_data).values()
+            for v in m.values()
+        )
+
         return render_template(
             "data_report.html",
             date=date,
@@ -299,7 +311,9 @@ def data_report(date):
             first_timestamp=data_report.first_timestamp[10:],
             last_timestamp=data_report.last_timestamp[10:],
             thresholds=data_report.thresholds,
-            total_points_count=data_report.total_points_count,
+            total_points_reduced=reduced_count,
+            total_points_original=data_report.total_points_count,
+            point_per_minute=point_per_minute,
             minute_data=data_report.minute_data,
         )
     elif not data:
