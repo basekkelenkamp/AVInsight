@@ -2,6 +2,9 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/data_report.css') }}">
 
+<div hidden id="dataThresholds" data-thresholds="{{ thresholds }}"></div>
+<div hidden id="dataMinute" data-minute_data="{{ minute_data }}"></div>
+
 <div class="layout-container">
     <div class="date-container">
         <h3>{{ date }}</h3>

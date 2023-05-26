@@ -25,6 +25,7 @@ from database.db import (
     insert_metric_value,
     remove_archive_after_days,
 )
+from util.date_tools import get_today_string, is_date_today
 from util.metrics import (
     get_cpu_usage,
     get_disk_io_counters,
@@ -242,14 +243,15 @@ def save_config():
         return jsonify({"result": "error"}), 500
 
 
-@app.route("/data_report", defaults={"date": None})
+@app.route("/data_report", defaults={"date": get_today_string()})
 @app.route("/data_report/<date>")
 def data_report(date):
     try:
         datetime.strptime(date, "%Y-%m-%d")
     except:
-        date = None
+        date = get_today_string()
 
+    is_today = is_date_today(date)
     connection = db_get_connection(db_path=db_path)
     cursor = connection.cursor()
 
@@ -257,13 +259,23 @@ def data_report(date):
     data, date, prev_date, next_date = db_get_metric_values_from_day(cursor, date)
     metric_names = db_get_all_metrics(cursor)
 
-    if data:
-        point_per_minute = 10
-        data_report = get_data_report(cursor, date)
-        if data_report is not None and not data_report.report_finished:
-            remove_data_report(cursor, date)
-            connection.commit()
+    if not data:
+        return render_template(
+            "data_report_no_data.html",
+            date=date,
+            prev_date=prev_date,
+            next_date=next_date,
+        )
+    
+    point_per_minute = 10
+    data_report = get_data_report(cursor, date)
 
+    if data_report and is_today:
+        remove_data_report(cursor, date)
+        connection.commit()
+        data_report = None
+
+    if not data_report:
         thresholds = {
             "GPU": int(config.get_setting_value("threshold_GPU")),
             "CPU": int(config.get_setting_value("threshold_CPU")),
@@ -282,47 +294,40 @@ def data_report(date):
         data_report = get_data_report(cursor, report_id)
         connection.close()
 
-        metric_names = [x for x in json.loads(data_report.daily_counts).keys()]
-        daily_data = []
-        for key in metric_names:
-            daily_data.append(
-                {
-                    key: {
-                        "daily_counts": json.loads(data_report.daily_counts)[key],
-                        "daily_max": json.loads(data_report.daily_max)[key],
-                        "daily_avg": json.loads(data_report.daily_avg)[key],
-                    }
+    metric_names = [x for x in json.loads(data_report.daily_counts).keys()]
+    daily_data = []
+    for key in metric_names:
+        daily_data.append(
+            {
+                key: {
+                    "daily_counts": json.loads(data_report.daily_counts)[key],
+                    "daily_max": json.loads(data_report.daily_max)[key],
+                    "daily_avg": json.loads(data_report.daily_avg)[key],
                 }
-            )
-
-        reduced_count = sum(
-            len(v["values"])
-            for m in json.loads(data_report.minute_data).values()
-            for v in m.values()
+            }
         )
 
-        return render_template(
-            "data_report.html",
-            date=date,
-            metric_names=json.dumps(metric_names),
-            prev_date=prev_date,
-            next_date=next_date,
-            daily_data=daily_data,
-            first_timestamp=data_report.first_timestamp[10:],
-            last_timestamp=data_report.last_timestamp[10:],
-            thresholds=data_report.thresholds,
-            total_points_reduced=reduced_count,
-            total_points_original=data_report.total_points_count,
-            point_per_minute=point_per_minute,
-            minute_data=data_report.minute_data,
-        )
-    elif not data:
-        return render_template(
-            "data_report_no_data.html",
-            date=date,
-            prev_date=prev_date,
-            next_date=next_date,
-        )
+    reduced_count = sum(
+        len(v["values"])
+        for m in json.loads(data_report.minute_data).values()
+        for v in m.values()
+    )
+
+    return render_template(
+        "data_report.html",
+        date=date,
+        metric_names=json.dumps(metric_names),
+        prev_date=prev_date,
+        next_date=next_date,
+        daily_data=daily_data,
+        first_timestamp=data_report.first_timestamp[10:],
+        last_timestamp=data_report.last_timestamp[10:],
+        thresholds=data_report.thresholds,
+        total_points_reduced=reduced_count,
+        total_points_original=data_report.total_points_count,
+        point_per_minute=point_per_minute,
+        minute_data=data_report.minute_data,
+    )
 
 
 @app.route("/archive/raw", defaults={"date": None})

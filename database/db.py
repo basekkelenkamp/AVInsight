@@ -6,6 +6,7 @@ import pytz
 from database.models import DataReport, Metric, MetricValue
 import os
 import zlib
+from util.date_tools import is_date_today
 
 from util.metrics import calculate_data_report
 
@@ -225,7 +226,7 @@ def save_data_report(
     date_ = berlin_tz.localize(date_)
 
     report_finished = True
-    if date_.date() == datetime.now(berlin_tz).date():
+    if is_date_today(date):
         report_finished = False
 
     (
