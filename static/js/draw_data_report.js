@@ -3,9 +3,6 @@ let minuteChart = document.getElementById("minute-metrics-chart");
 let thresholds = JSON.parse(document.querySelector("#dataThresholds").dataset.thresholds)
 let minuteData = JSON.parse(document.querySelector("#dataMinute").dataset.minute_data)
 
-console.log(thresholds)
-console.log(minuteData)
-
 let options = {
     fullWidth: true,
     showArea: true,
@@ -18,9 +15,25 @@ let options = {
     },
     axisX: {
         showLabel: false,
-        offset: 4    
+        offset: 4
     }
-};
+}
+
+// function create_main_chart_element() {
+//     let existingElement = document.getElementById("minute-metrics-chart");
+//     if(existingElement) {
+//         existingElement.remove();
+//     }
+
+//     let newElement = document.createElement("div");
+//     newElement.id = "minute-metrics-chart";
+//     newElement.classList.add("ct-chart", "ct-double-octave");
+
+//     let parentContainer = document.getElementById("main-chart");
+
+//     parentContainer.appendChild(newElement);
+// }
+
 
 function bytesToMegabytes(bytes) {
     return bytes / (1024 * 1024);
@@ -31,43 +44,68 @@ function megabytesToBytes(megabytes) {
 }
 
 function extract_data_points_no_minutes(metric) {
-    let timestamps
-    let data
+    let timestamps = []
+    let values = []
+    let data = minuteData[metric]
 
-    // extract data
+    Object.keys(data).forEach(function (minute) {
+        for (let minData of data[minute]['values']) {
+            timestamps.push(minData[0])
+            values.push(minData[1])
+        }
+    });
 
-
-    return [timestamps, data]
+    return [timestamps, values]
 }
 
 function extract_data_points_with_minutes(metric, lineType) {
-    let timestamps
-    let data
-    
-    // extract data
+    let timestamps = []
+    let values = []
+    let data = minuteData[metric]
+    let key
 
+    if (lineType === 'average') {
+        key = 'avg'
+    } else if (lineType === 'min' || lineType === 'max') {
+        key = 'minmax'
+    }
 
-    return [timestamps, data]
+    Object.keys(data).forEach(function (minute) {
+        timestamps.push(minute)
+        if (key === 'minmax') {
+            if (lineType === 'min') {
+                values.push(data[minute][key][0]);
+            } else if (lineType === 'max') {
+                values.push(data[minute][key][1]);
+            }
+        } else {
+            values.push(data[minute][key]);
+        }
+    });
+
+    return [timestamps, values]
 }
 
 
-function draw_minute_graph(metric, lineType) {
-    console.log("Metric: ", metric);
-    console.log("Line: ", lineType);
 
+function draw_minute_graph(metric, lineType) {
     let thresholdValue = thresholds[metric];
     let is_disk = metric === 'DISK'
 
-    let data = undefined
-    let timestamps = undefined
+    let data = []
+    let timestamps = []
+
     if (lineType === 'all') {
         [timestamps, data] = extract_data_points_no_minutes(metric)
     } else {
         [timestamps, data] = extract_data_points_with_minutes(metric, lineType)
-
     }
 
-    let chartOptions = {...options};
+    console.log(`linetype: ${lineType}, metric: ${metric}`)
+    console.log(timestamps)
+    console.log(data)
+
+    let chartOptions = { ...options };
     if (is_disk) {
         chartOptions.axisY.high = megabytesToBytes(500)
         chartOptions.axisY.labelInterpolationFnc = function (value) {
@@ -78,11 +116,16 @@ function draw_minute_graph(metric, lineType) {
             return value + '%';
         };
     }
-    
-    let chart = new Chartist.Line('#minute-metrics-chart', data, chartOptions);
+
+    let chartData = {
+        labels: [],
+        series: [data]
+    };
+
+    let chart = new Chartist.Line('#minute-metrics-chart', chartData, chartOptions);
 
     if (!is_disk) {
-        chart.on('created', function(context) {
+        chart.on('created', function (context) {
             var threshold = {
                 value: thresholdValue,
                 class: 'threshold',
@@ -99,21 +142,25 @@ function draw_minute_graph(metric, lineType) {
         });
     }
 }
-  
+
 
 let selectMetricGraph = document.getElementById('select-graph-metric');
 let selectLine = document.getElementById('select-graph-line');
 
-selectMetricGraph.addEventListener('change', function() {
-    draw_minute_graph(this.value, selectLine.value); 
+selectMetricGraph.addEventListener('change', function () {
+    draw_minute_graph(this.value, selectLine.value);
 });
-  
-selectLine.addEventListener('change', function() {
-    draw_minute_graph(selectMetricGraph.value, this.value); 
+
+selectLine.addEventListener('change', function () {
+    draw_minute_graph(selectMetricGraph.value, this.value);
 });
 
 
 function init() {
     draw_minute_graph(selectMetricGraph.value, selectLine.value)
 }
-init();
+
+document.addEventListener('DOMContentLoaded', function () {
+    init();
+});
+

@@ -312,7 +312,7 @@ def data_report(date):
         for m in json.loads(data_report.minute_data).values()
         for v in m.values()
     )
-
+        
     return render_template(
         "data_report.html",
         date=date,
