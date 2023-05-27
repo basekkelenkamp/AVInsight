@@ -241,3 +241,15 @@ padding: 10px 20px;
 .date-selector-input {
   margin-right: 20px;
 }
+
+.chart-dropdown-container {
+  display: flex;
+}
+
+.line-dropdown {
+  margin-left: 10px;
+}
+
+.metric-select {
+  font-size: 120%;
+}

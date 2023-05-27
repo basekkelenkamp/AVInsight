@@ -29,10 +29,12 @@
     <div class="settings-container date-container">
         <div class="left-settings">
             <label for="graph-setting">Graph view:</label>
-            <select name="graph" id="graph">
-                <option value="all" selected="selected">All (reduced)</option>
-                <option value="max">Max</option>
-            <option value="average">Average</option>
+            <select class="metric-select" name="graph" id="select-graph-metric">
+                {% for daily_metric in daily_data %}
+                    {% for metric in daily_metric.keys() %}
+                        <option value="{{ metric }}">{{ metric }}</option>
+                    {% endfor %}
+                {% endfor %}
             </select>
         </div>
 
@@ -67,7 +69,15 @@
 <div class="all-charts-container">
     <div class="main-chart-container">
         <div class="chart-container">
-            <h3>Chart</h3>
+            <div class="chart-dropdown-container">
+                <h3>Chart</h3>
+                <select class="line-dropdown" name="graph" id="select-graph-line">
+                    <option value="all" selected="selected">All (reduced)</option>
+                    <option value="average">Average</option>
+                    <option value="min">Min</option>
+                    <option value="max">Max</option>
+                </select>
+            </div>
         <div id="minute-metrics-chart" class="ct-chart ct-double-octave"></div>
         </div>
     </div>
