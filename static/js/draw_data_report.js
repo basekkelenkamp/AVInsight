@@ -7,7 +7,12 @@ let options = {
     fullWidth: true,
     showArea: true,
     showLabel: false,
-    chartPadding: 0,
+    chartPadding: {
+        top: 30,
+        right: 0,
+        bottom: 0,
+        left: 5,
+    },
     axisY: {
         high: 100,
         low: 0,
@@ -18,22 +23,6 @@ let options = {
         offset: 4
     }
 }
-
-// function create_main_chart_element() {
-//     let existingElement = document.getElementById("minute-metrics-chart");
-//     if(existingElement) {
-//         existingElement.remove();
-//     }
-
-//     let newElement = document.createElement("div");
-//     newElement.id = "minute-metrics-chart";
-//     newElement.classList.add("ct-chart", "ct-double-octave");
-
-//     let parentContainer = document.getElementById("main-chart");
-
-//     parentContainer.appendChild(newElement);
-// }
-
 
 function bytesToMegabytes(bytes) {
     return bytes / (1024 * 1024);
@@ -50,7 +39,7 @@ function extract_data_points_no_minutes(metric) {
 
     Object.keys(data).forEach(function (minute) {
         for (let minData of data[minute]['values']) {
-            timestamps.push(minData[0])
+            timestamps.push(minData[0].split(' ')[1])
             values.push(minData[1])
         }
     });
@@ -89,6 +78,10 @@ function extract_data_points_with_minutes(metric, lineType) {
 
 
 function draw_minute_graph(metric, lineType) {
+
+    let chartTitle = document.getElementById("main-chart-title")
+    chartTitle.textContent = metric
+    
     let thresholdValue = thresholds[metric];
     let is_disk = metric === 'DISK'
 
@@ -112,13 +105,14 @@ function draw_minute_graph(metric, lineType) {
             return bytesToMegabytes(value).toFixed(0) + ' MB/s';
         };
     } else {
+        chartOptions.axisY.high = 100
         chartOptions.axisY.labelInterpolationFnc = function (value) {
             return value + '%';
         };
     }
 
     let chartData = {
-        labels: [],
+        labels: [timestamps],
         series: [data]
     };
 
@@ -141,6 +135,61 @@ function draw_minute_graph(metric, lineType) {
             }, threshold.class);
         });
     }
+
+    let tooltipTimeout;
+    let labelElement;
+
+    chart.on('draw', function (data) {
+        if (data.type === 'point') {
+            // Increase the hover area around the point
+            let hoverArea = document.createElementNS(
+                'http://www.w3.org/2000/svg',
+                'rect'
+            );
+            hoverArea.setAttribute('x', data.x - 5);
+            hoverArea.setAttribute('y', data.y - 5);
+            hoverArea.setAttribute('width', 10);
+            hoverArea.setAttribute('height', 10);
+            hoverArea.setAttribute('style', 'opacity: 0;');
+    
+            data.group._node.appendChild(hoverArea);
+    
+            hoverArea.addEventListener('mouseenter', function (event) {
+                let labelValue = timestamps[data.index];
+                showLabel(event.clientX, event.clientY, labelValue);
+            });
+            hoverArea.addEventListener('mouseleave', function (event) {
+                hideLabel();
+            });
+        }
+    });
+    
+    function showLabel(x, y, value) {
+        if (labelElement) {
+            labelElement.parentNode.removeChild(labelElement);
+        }
+
+        labelElement = document.createElement('div');
+        labelElement.className = 'chart-label';
+        labelElement.textContent = value;
+
+        labelElement.style.position = 'fixed';
+        labelElement.style.top = y - 30 + 'px';
+        labelElement.style.left = x + 'px';
+
+        document.body.appendChild(labelElement);
+
+        clearTimeout(tooltipTimeout);
+    }
+
+    function hideLabel() {
+        tooltipTimeout = setTimeout(function () {
+            if (labelElement) {
+                labelElement.parentNode.removeChild(labelElement);
+                labelElement = null;
+            }
+        }, 500);
+    }
 }
 
 
@@ -162,5 +211,12 @@ function init() {
 
 document.addEventListener('DOMContentLoaded', function () {
     init();
-});
 
+    let dateInput = document.getElementById('custom-date');
+
+    dateInput.addEventListener('change', function () {
+        let newDate = this.value;
+        window.location.href = `/data_report/${newDate}`;
+    });
+
+});

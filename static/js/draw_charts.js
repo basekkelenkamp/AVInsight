@@ -17,7 +17,7 @@ let options = {
     },
     axisX: {
         showLabel: false,
-        offset: 4    
+        offset: 4
     }
 };
 

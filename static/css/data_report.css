@@ -244,6 +244,7 @@ padding: 10px 20px;
 
 .chart-dropdown-container {
   display: flex;
+  justify-content: center;
 }
 
 .line-dropdown {
