@@ -84,8 +84,11 @@ connection = db_init_connection(db_path=db_path)
 metrics = db_get_all_metrics(connection.cursor(), as_obj=True)
 
 archive_days = int(config.get_setting_value("clear_archive_after_days"))
-print(f"removing archive older than {archive_days} days")
-remove_archive_after_days(connection.cursor(), archive_days)
+keep_reports = config.get_setting_value("keep_data_reports")
+print(f"removing archive older than {archive_days} days, keep reports: {keep_reports}")
+remove_archive_after_days(
+    connection.cursor(), archive_days, keep_reports
+)
 connection.close()
 
 
@@ -266,7 +269,7 @@ def data_report(date):
             prev_date=prev_date,
             next_date=next_date,
         )
-    
+
     point_per_minute = max(1, int(config.get_setting_value("points_per_minute")))
     data_report = get_data_report(cursor, date)
 

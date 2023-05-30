@@ -196,7 +196,7 @@ def db_get_metric_values_from_day(
     )
 
 
-def remove_archive_after_days(cursor: sqlite3.Cursor, days: int):
+def remove_archive_after_days(cursor: sqlite3.Cursor, days: int, keep_reports: bool):
     berlin_tz = pytz.timezone("Europe/Berlin")
     current_time_berlin = datetime.now(berlin_tz)
     cutoff_time = current_time_berlin - timedelta(days=days)
@@ -209,6 +209,16 @@ def remove_archive_after_days(cursor: sqlite3.Cursor, days: int):
     cursor.execute(
         query_remove_old_records, (cutoff_time.strftime("%Y-%m-%d %H:%M:%S.%f"),)
     )
+    cursor.connection.commit()
+
+    if not keep_reports:
+        query_remove_old_reports = """
+            DELETE FROM daily_reports
+            WHERE date_id < ?
+            """
+
+        cursor.execute(query_remove_old_reports, (cutoff_time.strftime("%Y-%m-%d"),))
+
     cursor.connection.commit()
 
 

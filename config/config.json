@@ -8,6 +8,13 @@
             "datatype": "int"
         },
         {
+            "name": "keep_data_reports",
+            "value": "true",
+            "description": "When true, it keeps the data reports even after clear_archive_after_days is reached. (DEFAULT=TRUE)",
+            "category": "metrics",
+            "datatype": "boolean"
+        },
+        {
             "name": "disk",
             "value": "PhysicalDrive0",
             "description": "Select what DISK to track. (DEFAULT=PhysicalDrive0)",
