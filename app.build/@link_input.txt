@@ -203,6 +203,7 @@
 "./module.socketio.zmq_manager.o"
 "./module.typing_extensions.o"
 "./module.util.o"
+"./module.util.date_tools.o"
 "./module.util.metrics.o"
 "./module.wcwidth.o"
 "./module.wcwidth.table_wide.o"

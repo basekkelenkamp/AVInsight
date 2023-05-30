@@ -267,7 +267,7 @@ def data_report(date):
             next_date=next_date,
         )
     
-    point_per_minute = 10
+    point_per_minute = max(1, int(config.get_setting_value("points_per_minute")))
     data_report = get_data_report(cursor, date)
 
     if data_report and is_today:

@@ -231,6 +231,7 @@ extern PyObject *modulecode_socketio$tornado(PyObject *, struct Nuitka_MetaPathB
 extern PyObject *modulecode_socketio$zmq_manager(PyObject *, struct Nuitka_MetaPathBasedLoaderEntry const *);
 extern PyObject *modulecode_typing_extensions(PyObject *, struct Nuitka_MetaPathBasedLoaderEntry const *);
 extern PyObject *modulecode_util(PyObject *, struct Nuitka_MetaPathBasedLoaderEntry const *);
+extern PyObject *modulecode_util$date_tools(PyObject *, struct Nuitka_MetaPathBasedLoaderEntry const *);
 extern PyObject *modulecode_util$metrics(PyObject *, struct Nuitka_MetaPathBasedLoaderEntry const *);
 extern PyObject *modulecode_wcwidth(PyObject *, struct Nuitka_MetaPathBasedLoaderEntry const *);
 extern PyObject *modulecode_wcwidth$table_wide(PyObject *, struct Nuitka_MetaPathBasedLoaderEntry const *);
@@ -1916,6 +1917,11 @@ static struct Nuitka_MetaPathBasedLoaderEntry meta_path_loader_entries[] = {
 #endif
 },
     {"util", modulecode_util, 0, 0, NUITKA_TRANSLATED_FLAG | NUITKA_PACKAGE_FLAG
+#if defined(_NUITKA_FREEZER_HAS_FILE_PATH)
+, NULL
+#endif
+},
+    {"util.date_tools", modulecode_util$date_tools, 0, 0, NUITKA_TRANSLATED_FLAG
 #if defined(_NUITKA_FREEZER_HAS_FILE_PATH)
 , NULL
 #endif

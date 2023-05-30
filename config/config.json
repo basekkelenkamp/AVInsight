@@ -25,31 +25,38 @@
     "archive": [
         {
             "name": "archive_GPU",
-            "value": "true",
+            "value": "false",
             "description": "Decide whether or not to save GPU data to the archive. (DEFAULT=TRUE)",
             "category": "archive",
             "datatype": "boolean"
         },
         {
             "name": "archive_CPU",
-            "value": "true",
+            "value": "false",
             "description": "Decide whether or not to save CPU data to the archive. (DEFAULT=TRUE)",
             "category": "archive",
             "datatype": "boolean"
         },
         {
             "name": "archive_RAM",
-            "value": "true",
+            "value": "false",
             "description": "Decide whether or not to save RAM data to the archive. (DEFAULT=TRUE)",
             "category": "archive",
             "datatype": "boolean"
         },
         {
             "name": "archive_DISK",
-            "value": "true",
+            "value": "false",
             "description": "Decide whether or not to save DISK data to the archive. (DEFAULT=TRUE)",
             "category": "archive",
             "datatype": "boolean"
+        },
+        {
+            "name": "points_per_minute",
+            "value": "5",
+            "description": "Amount of points to which data reports get reduced, per minute. (DEFAULT=10)",
+            "category": "archive",
+            "datatype": "int"
         }
     ],
     "thresholds": [
