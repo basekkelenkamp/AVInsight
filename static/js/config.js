@@ -14,33 +14,35 @@ document.getElementById('config-form').addEventListener('keydown', function (eve
 
 document.querySelectorAll('input[type=number]').forEach(function(input) {
   input.addEventListener('input', function(event) {
-    let dataType = event.target.dataset.type; // Access the data-type attribute
+    let dataType = event.target.dataset.type;
     let step = 1;
-    let value = parseFloat(event.target.value);
+    let value = event.target.value;
     if (dataType === "float") {
       step = 0.1;
-      if (event.target.value.slice(-1) === '.') {
-        return; // If the last character is a dot, do not change the value
+      if (value.slice(-1) === '.' || !value.includes('.')) {
+        return;
       }
-      value = Math.round(value * 10) / 10; // Round to 1 decimal place
+      value = parseFloat(value);
+      value = Math.round(value * 10) / 10;
+    } else {
+      value = parseFloat(value);
     }
-    // Ensure value is within the range 0-99
     value = Math.min(Math.max(value, 0), 99);
     event.target.value = isNaN(value) ? '' : value;
   });
   input.addEventListener('wheel', function(event) {
     event.preventDefault();
-    let dataType = event.target.dataset.type; // Access the data-type attribute
+    let dataType = event.target.dataset.type;
     let step = dataType === "float" ? 0.1 : 1;
     let value = parseFloat(event.target.value) + (event.deltaY < 0 ? step : -step);
     if (dataType === "float") {
-      value = Math.round(value * 10) / 10; // Round to 1 decimal place
+      value = Math.round(value * 10) / 10;
     }
-    // Ensure value is within the range 0-99
     value = Math.min(Math.max(value, 0), 99);
     event.target.value = isNaN(value) ? '' : value;
   });
 });
+
 
 function saveConfig() {
   const form = document.getElementById('config-form');
