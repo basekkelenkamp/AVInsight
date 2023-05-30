@@ -4,6 +4,7 @@
 
 <div hidden id="dataThresholds" data-thresholds="{{ thresholds }}"></div>
 <div hidden id="dataMinute" data-minute_data="{{ minute_data }}"></div>
+<div hidden id="dataDaily" data-daily_data="{{ daily_data }}"></div>
 
 <div class="layout-container">
     <div class="date-container">
@@ -30,10 +31,8 @@
         <div class="left-settings">
             <label for="graph-setting">Graph view:</label>
             <select class="metric-select" name="graph" id="select-graph-metric">
-                {% for daily_metric in daily_data %}
-                    {% for metric in daily_metric.keys() %}
-                        <option value="{{ metric }}">{{ metric }}</option>
-                    {% endfor %}
+                {% for metric in metric_names %}
+                    <option value="{{ metric }}">{{ metric }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -43,28 +42,6 @@
         </div>
     </div>
 </div>
-
-
-<!-- <div class="data-report-table">
-    <table id="daily-data" class="daily-data-table">
-        <tr>
-            <th></th>
-            <th>Count</th>
-            <th>Max</th>
-            <th>Avg</th>
-        </tr>
-        {% for daily_metric in daily_data %}
-            {% for metric, values in daily_metric.items() %}
-                <tr>
-                    <th>{{ metric }}</th>
-                    <td>{{ values['daily_counts'] }}</td>
-                    <td>{{ values['daily_max'] }}</td>
-                    <td>{{ values['daily_avg'] }}</td>
-                </tr>
-            {% endfor %}
-        {% endfor %}
-    </table>
-</div> -->
 
 <div class="all-charts-container">
     <div class="main-chart-container">
@@ -83,20 +60,17 @@
     </div>
 
     <div class="gauge-charts-container">
-        {% for daily_metric in daily_data %}
-            {% for metric in daily_metric.keys() %}
-                {% if not metric == "DISK" %}
-                    <div class="chart-container">
-                        <h3>{{ metric }}</h3>
-                        <div id="gauge-chart-{{ metric }}" class="ct-chart ct-chart-gauge ct-square"></div>
-                    </div>
-                {% endif %}
-            {% endfor %}
+        {% for metric in metric_names %}
+            {% if not metric == "DISK" %}
+                <div class="chart-container">
+                    <h3 id="gauge-title-{{ metric }}">{{ metric }}</h3>
+                    <div id="gauge-chart-{{ metric }}" class="ct-chart ct-chart-gauge ct-square"></div>
+                </div>
+            {% endif %}
         {% endfor %}
-        <div class="chart-container">
-            <h3>Cycle</h3>
-            <div id="gauge-chart-3" class="ct-chart ct-chart-gauge ct-square"></div>
-        </div>  
+            <div id="cycleButton" class="chart-container cycle-button unselectable" unselectable="on">
+                <h3>Cycle</h3>
+            </div>
     </div>
 </div>
 

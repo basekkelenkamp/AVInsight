@@ -1,8 +1,9 @@
-// Init
 let minuteChart = document.getElementById("minute-metrics-chart");
 let thresholds = JSON.parse(document.querySelector("#dataThresholds").dataset.thresholds)
 let minuteData = JSON.parse(document.querySelector("#dataMinute").dataset.minute_data)
+let dailyData = JSON.parse(document.querySelector("#dataDaily").dataset.daily_data)
 
+console.log(dailyData)
 let options = {
     fullWidth: true,
     showArea: true,
@@ -81,7 +82,7 @@ function draw_minute_graph(metric, lineType) {
 
     let chartTitle = document.getElementById("main-chart-title")
     chartTitle.textContent = metric
-    
+
     let thresholdValue = thresholds[metric];
     let is_disk = metric === 'DISK'
 
@@ -151,9 +152,9 @@ function draw_minute_graph(metric, lineType) {
             hoverArea.setAttribute('width', 10);
             hoverArea.setAttribute('height', 10);
             hoverArea.setAttribute('style', 'opacity: 0;');
-    
+
             data.group._node.appendChild(hoverArea);
-    
+
             hoverArea.addEventListener('mouseenter', function (event) {
                 let labelValue = timestamps[data.index];
                 showLabel(event.clientX, event.clientY, labelValue);
@@ -163,7 +164,7 @@ function draw_minute_graph(metric, lineType) {
             });
         }
     });
-    
+
     function showLabel(x, y, value) {
         if (labelElement) {
             labelElement.parentNode.removeChild(labelElement);
@@ -193,6 +194,57 @@ function draw_minute_graph(metric, lineType) {
 }
 
 
+function draw_gauge_chart(metric, data_type) {
+    let gaugeElement = document.getElementById(`gauge-chart-${metric}`);
+    gaugeElement.style.transform = "scale(1.75)";
+    gaugeElement.style.transformOrigin = "top";
+    gaugeElement.style.transform = "translateX(-100px)";
+
+
+    // remove the old chart if it exists
+    while (gaugeElement.firstChild) {
+        gaugeElement.firstChild.remove();
+    }
+
+    let gaugeData = dailyData.find((data) => data[metric] !== undefined)[metric][data_type];
+
+    let gaugeChart = new Chartist.Pie(`#gauge-chart-${metric}`, {
+        series: [gaugeData, 100 - gaugeData]
+    }, {
+        donut: true,
+        donutWidth: 40,
+        startAngle: 270,
+        total: 200, // halfway donut
+        labelInterpolationFnc: function (value) {
+            return value + '%';
+        },
+    });
+
+    let labelCount = 0;
+
+    gaugeChart.on('draw', function (data) {
+        if (!gaugeElement.style.transform) {
+            gaugeElement.style.transform = "scale(1.75)";
+        }
+        gaugeElement.style.transform = "scale(1.75)";
+        gaugeElement.style.transformOrigin = "top";
+        if (data.type === 'label') {
+            if (labelCount === 1) {
+                data.element.attr({
+                    style: 'display: none'
+                });
+            } else {
+                // Adjust the font size and color as needed
+                data.element.attr({
+                    style: 'font-size: 50%; fill: #F2F2F3;' // fill color is the text color
+                });
+            }
+            labelCount++;
+        }
+    });
+}
+
+
 let selectMetricGraph = document.getElementById('select-graph-metric');
 let selectLine = document.getElementById('select-graph-line');
 
@@ -207,16 +259,41 @@ selectLine.addEventListener('change', function () {
 
 function init() {
     draw_minute_graph(selectMetricGraph.value, selectLine.value)
+    const cycleButton = document.getElementById('cycleButton')
+    cycleButton.innerHTML = `Cycle<br>(current: daily_max)`
 }
 
+
 document.addEventListener('DOMContentLoaded', function () {
-    init();
+    init()
 
-    let dateInput = document.getElementById('custom-date');
-
+    let dateInput = document.getElementById('custom-date')
     dateInput.addEventListener('change', function () {
         let newDate = this.value;
-        window.location.href = `/data_report/${newDate}`;
+        window.location.href = `/data_report/${newDate}`
     });
 
+    const cycleKeys = ['daily_max', 'daily_avg']
+    let currentKeyIndex = 0
+    const cycleButton = document.getElementById('cycleButton')
+    cycleButton.addEventListener('click', function () {
+        currentKeyIndex = (currentKeyIndex + 1) % cycleKeys.length
+
+        for (let metric of Object.keys(minuteData)) {
+            if (metric !== 'DISK') {
+                cycleButton.innerHTML = `Cycle<br>(current: ${cycleKeys[currentKeyIndex]})`
+                draw_gauge_chart(metric, cycleKeys[currentKeyIndex])
+            }
+        }
+    });
+
+    let gaugeInfoElement = document.getElementById('gaugeInfo')
+
+    for (let metric of Object.keys(minuteData)) {
+        if (metric !== 'DISK') {
+            let title = document.getElementById('gauge-title-' + metric)
+            title.textContent = metric + " (" + dailyData.find((data) => data[metric] !== undefined)[metric]['daily_counts'] + ")"
+            draw_gauge_chart(metric, cycleKeys[currentKeyIndex])
+        }
+    }
 });

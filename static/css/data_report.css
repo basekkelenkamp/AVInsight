@@ -114,38 +114,6 @@ color: #F2F2F3;
 color: #FF0000;
 }
 
-.data-report-table {
-width: 45%;
-flex: 1;
-background: linear-gradient(90deg, #1D3B58 0%, #323239 100%);
-color: #F2F2F3;
-border-radius: 4px;
-overflow: hidden; /* To ensure border-radius applies to all elements inside */
-box-shadow: 2px 2px 0px #333;
-}
-
-.data-report-table th,
-.data-report-table td {
-border: none;
-background-color: transparent;
-}
-
-.data-report-table th {
-padding: 10px 20px;
-}
-
-.data-report-table tr:nth-child(even) {
-background-color: rgba(255, 255, 255, 0.1);
-}
-
-.data-report-table tr:hover {
-background-color: rgba(255, 255, 255, 0.2);
-}
-
-.data-report-table td {
-padding: 10px 20px;
-}
-
 .settings-container {
   justify-content: space-between;
   /* align-items: center; */
@@ -217,8 +185,9 @@ padding: 10px 20px;
 }
 
 .gauge-charts-container .chart-container {
-  width: 13%;
-  text-align: center; /* to center the title and chart */
+  width: 17%;
+  text-align: center;
+  height: 50%;
 }
 
 /* You can remove this if you don't want space between the charts */
@@ -253,4 +222,47 @@ padding: 10px 20px;
 
 .metric-select {
   font-size: 120%;
+}
+
+#gauge-chart-CPU,
+#gauge-chart-GPU,
+#gauge-chart-RAM {
+  padding-bottom: 0 !important;
+}
+
+.ct-square:before {
+  padding-bottom: 50%;
+}
+
+.ct-series-a .ct-slice-donut {
+  stroke: #FF0000;
+  opacity: 75%;
+}
+
+.ct-series-b .ct-slice-donut {
+  stroke: #1D3B58;
+}
+
+.cycle-button {
+  align-items: center;
+  display: block;
+  width: 100px;
+  height: 100px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cycle-button:hover {
+  background-color: #f00;
+}
+
+.unselectable {
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }

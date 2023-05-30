@@ -312,14 +312,14 @@ def data_report(date):
         for m in json.loads(data_report.minute_data).values()
         for v in m.values()
     )
-        
+
     return render_template(
         "data_report.html",
         date=date,
-        metric_names=json.dumps(metric_names),
+        metric_names=metric_names,
         prev_date=prev_date,
         next_date=next_date,
-        daily_data=daily_data,
+        daily_data=json.dumps(daily_data),
         first_timestamp=data_report.first_timestamp[10:],
         last_timestamp=data_report.last_timestamp[10:],
         thresholds=data_report.thresholds,
