@@ -1,5 +1,8 @@
 # AVInsight
 
+## Activity Diagram dashboard
+![Activity Diagram server   client AVInsight](https://github.com/basekkelenkamp/AVInsight/assets/57452503/16a5936b-303e-4187-b05e-8896857f6352)
+
 ## Start the application from executable (powershell)
 `.\app.exe "C:\path\to\rootfolder\AVInsight"`
 
