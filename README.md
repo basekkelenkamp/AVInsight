@@ -1,7 +1,15 @@
 # AVInsight
 
-## Activity Diagram dashboard
-![Activity Diagram server   client AVInsight (1)](https://github.com/basekkelenkamp/AVInsight/assets/57452503/c2a1f475-99f5-47ea-a6bc-9e953ec20a86)
+## Technical explanation
+The server starts a thread loop that takes care of:
+1. Gathering PC metrics.
+2. Writing metrics to the DB.
+3. Streaming metrics to a socket, connected to the frontend.
+
+When the config is updated, the server terminated the current thread, and starts a new thread with the updated configuration.
+
+### Activity diagram
+![Activity Diagram server   client AVInsight cropped](https://github.com/basekkelenkamp/AVInsight/assets/57452503/23e24059-bfc0-4409-9cf7-872e08545412)
 
 ## Start the application from executable (powershell)
 `.\app.exe "C:\path\to\rootfolder\AVInsight"`
