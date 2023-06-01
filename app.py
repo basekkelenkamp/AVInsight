@@ -235,7 +235,7 @@ def save_config():
         connection = db_get_connection(db_path=db_path)
         cursor = connection.cursor()
         print(f"removing archive older than {archive_days} days")
-        remove_archive_after_days(cursor, archive_days)
+        remove_archive_after_days(cursor, archive_days, config.get_setting_value("keep_data_reports"))
         connection.close()
 
         start_metrics_thread()
