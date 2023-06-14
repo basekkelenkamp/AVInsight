@@ -10,9 +10,6 @@ Start-Process -FilePath "powershell.exe" -ArgumentList "-Command", 'New-NetFirew
 # Open the web page
 # Start-Process 'http://127.0.0.1:5000'
 
-# Start the app
-.\app.exe $path
-
 # Minimize current PowerShell window
 Add-Type -TypeDefinition @"
     using System;
@@ -26,3 +23,5 @@ Add-Type -TypeDefinition @"
 $consolePtr = (Get-Process -Id $pid).MainWindowHandle
 [void] [Window]::ShowWindow($consolePtr, 2)
 
+# Start the app
+.\app.exe $path
