@@ -1,6 +1,8 @@
 # AVInsight
 This app is meant for monitoring PC metrics in an environment for immersive installations. This app was built as my thesis project for The Lighthouse of Digital art in Berlin.
 
+[WATCH DEMO](https://www.youtube.com/watch?v=msCJtoHTKJM)
+
 # Technical explanation
 The server starts a thread loop that takes care of:
 1. Gathering PC metrics.
