@@ -8,7 +8,6 @@ body {
     justify-content: center;
     font-family: 'IBM Plex Mono', monospace;
     background-color: #2E2E3A;
-    overflow: hidden; /* Hide scrollbars */
 }
 
 .container {

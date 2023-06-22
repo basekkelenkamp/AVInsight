@@ -1,32 +1,29 @@
-// Header logic
-document.addEventListener('DOMContentLoaded', function () {
-    const currentPage = window.location.pathname;
-    const dashboardLink = document.getElementById('dashboard-link');
-    const archiveLink = document.getElementById('archive-link');
-    const configLink = document.getElementById('config-link');
-    const dataReportLink = document.getElementById('data-report-link');
-    
-    if (currentPage === '/' || currentPage.startsWith('/index')) {
-        dashboardLink.classList.add('active');
-    } else {
-        dashboardLink.classList.remove('active');
-    }
+document.querySelectorAll('.info-icon').forEach(function(icon) {
+    const tooltip = document.createElement('div');
+    tooltip.classList.add('tooltip');
+    tooltip.innerHTML = icon.dataset.description.replace(/\. /g, '.<br>');
+    icon.parentNode.appendChild(tooltip);
+    icon.addEventListener('mouseover', function() {
+        const rect = icon.getBoundingClientRect();
+        tooltip.style.visibility = 'hidden';
+        tooltip.style.opacity = '0';
+        // force a recalc of the tooltip dimensions
+        tooltip.offsetHeight;
 
-    if (currentPage.startsWith('/archive')) {
-        archiveLink.classList.add('active');
-    } else {
-        archiveLink.classList.remove('active');
-    }
+        let tooltipLeft = rect.left + rect.width / 2 - tooltip.offsetWidth / 2;
 
-    if (currentPage.startsWith('/config')) {
-        configLink.classList.add('active');
-    } else {
-        configLink.classList.remove('active');
-    }
+        // Check if the tooltip goes off the left side of the screen
+        if (tooltipLeft < 0 || tooltipLeft < tooltip.offsetWidth / 2) {
+            tooltipLeft = 0;
+        }
 
-    if (currentPage.startsWith('/data_report')) {
-        dataReportLink.classList.add('active');
-    } else {
-        dataReportLink.classList.remove('active');
-    }
+        tooltip.style.top = (rect.top - tooltip.offsetHeight - 10) + 'px';
+        tooltip.style.left = tooltipLeft + 'px';
+        tooltip.style.visibility = 'visible';
+        tooltip.style.opacity = '1';
+    });
+    icon.addEventListener('mouseout', function() {
+        tooltip.style.visibility = 'hidden';
+        tooltip.style.opacity = '0';
+    });
 });

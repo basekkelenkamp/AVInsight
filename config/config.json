@@ -10,7 +10,7 @@
         {
             "name": "keep_data_reports",
             "value": "true",
-            "description": "When true, it keeps the data reports even after clear_archive_after_days is reached. (DEFAULT=TRUE)",
+            "description": "When true, it keeps the data reports. Even after clear_archive_after_days is reached. (DEFAULT=TRUE)",
             "category": "metrics",
             "datatype": "boolean"
         },
@@ -61,7 +61,7 @@
         {
             "name": "points_per_minute",
             "value": "10",
-            "description": "Amount of points to which data reports get reduced, per minute. (DEFAULT=10)",
+            "description": "Amount of points to which data reports get reduced. In minutes. (DEFAULT=10)",
             "category": "archive",
             "datatype": "int"
         }
