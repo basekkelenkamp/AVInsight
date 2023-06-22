@@ -1,22 +1,59 @@
 {% extends "layout.html" %}
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/archive_raw.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/data_report.css') }}">
 
-<h2>Data report</h2>
+<div hidden id="dataThresholds" data-thresholds="{{ thresholds }}"></div>
+<div hidden id="dataMinute" data-minute_data="{{ minute_data }}"></div>
+<div hidden id="dataDaily" data-daily_data="{{ daily_data }}"></div>
 
-<div class="date-container">
-    <h3>{{ date }}</h3>
-    <div class="date-button-container">
-        <h3 class="date-button-prev"><a href="{{ url_for('data_report', date=prev_date) }}">previous</a></h3>
-        {% if next_date is not none %}
-            <h3 class="date-button-next"><a href="{{ url_for('data_report', date=next_date) }}">next</a></h3>
-        {% endif %}
+<div class="layout-container">
+    <div class="date-container">
+        <h3>{{ date }}</h3>
+        <div class="date-info">
+            <h4>Data recorded from: <span>{{ first_timestamp }}</span> - <span>{{ last_timestamp }}</span></h4>
+            <h4>Data points: <span>{{ total_points_original }}</span> reduced to <span>{{ total_points_reduced }}</span> (<span>{{ point_per_minute }}</span> points per minute)
+            </h4>
+        </div>
+    </div>
+
+
+    <div class="date-selector-container date-container">
+        <input class="date-selector-input" id="custom-date" type="date" value="{{ date }}"></input>
+        <h3 class="date-button-prev"><a href="{{ url_for('data_report', date=prev_date) }}">prev</a></h3>
+
+        <h3 class="date-button-next {% if next_date is none %}disabled{% endif %}">
+            <a href="{% if next_date is not none %}{{ url_for('data_report', date=next_date) }}{% else %}#{% endif %}">next</a>
+        </h3>
+    </div>
+    
+
+    <div class="settings-container date-container">
+        <div class="left-settings">
+            <label for="graph-setting">Graph view:</label>
+            <select class="metric-select" name="graph" id="select-graph-metric">
+                {% for metric in metric_names %}
+                    <option value="{{ metric }}">{{ metric }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="right-setting">          
+        </div>
     </div>
 </div>
 
-<div class="chart-container">
-    <h3>No data</h3>
-    <p>Cannot generate report without data.</p>
+<div class="all-charts-container">
+    <div class="main-chart-container">
+        <div id="main-chart" class="chart-container">
+            <div class="chart-dropdown-container">
+                <h3 id="main-chart-title">No data recorded on this day.</h3>
+            </div>
+            <div id="minute-metrics-chart" class="ct-chart ct-double-octave"></div>
+        </div>
+    </div>
+
 </div>
 
+
+<script src="{{ url_for('static', filename='js/draw_data_report.js') }}"></script>
 {% endblock content %}

@@ -3,6 +3,15 @@ This app is meant for monitoring PC metrics in an environment for immersive inst
 
 [WATCH DEMO](https://www.youtube.com/watch?v=msCJtoHTKJM)
 
+# HOW TO INSTALL
+
+1. Download the [latest release](https://github.com/basekkelenkamp/AVInsight/releases) from github.
+2. Extract the zip, and place all files in a folder where you want to install AVInsight.
+
+### For the Lighthouse servers:
+1. Download the zip as explained above, and replace the files in `Program Files (x86)\AVInsight` with the new files.
+2. If you want to keep your data, you should keep your old database file which can be found in: database/AVInsight.db.
+
 # Technical explanation
 The server starts a thread loop that takes care of:
 1. Gathering PC metrics.
@@ -11,13 +20,17 @@ The server starts a thread loop that takes care of:
 
 When the config is updated, the server terminated the current thread, and starts a new thread with the updated configuration.
 
+### Note
+The raw archive data is still available under `archive/raw`, but it is not recommended to go there while the show is running, as it can cause big lags. 
+
 ### Activity diagram
 ![Activity Diagram server   client AVInsight cropped](https://github.com/basekkelenkamp/AVInsight/assets/57452503/23e24059-bfc0-4409-9cf7-872e08545412)
 
 ## Start the application from executable (powershell)
-From powershell (as admin), open the AVInsight dir, then run: `.\app.exe "C:\path\to\rootfolder\AVInsight"`
+1. Open powershell as admin and browse to the AVInsight directory: `Set-Location 'C:\path\to\rootfolder\AVInsight\'`
+2. Start the app with the command: `.\app.exe "C:\path\to\rootfolder\AVInsight"`
 
-For me it is: `.\app.exe "F:\school\jaar4\the lighthouse internship\AVInsight"`
+(For me it is: `.\app.exe "F:\school\jaar4\the lighthouse internship\AVInsight"`)
 
 # Development
 This repository is split into different sections. `app.py` holds all the logic for flask routes, sockets and threads. `database/db.py` holds all functions relevant to the database. The `config/` folder holds the `config.json` file that can be edited by hand, but it is recommended to do it via the AVInsight UI, which uses functions in the `load_config.py`.
@@ -43,4 +56,5 @@ The standalone executable allows you to easily deploy AVInsight on any windows 1
 
 ### Create executable with Nuitka
 Remove pytest dependency: `poetry remove pytest` (remember to add it back later if needed with `poetry add pytest`)
-`poetry run python -m nuitka --onefile --standalone app.py`
+
+Create executable: `poetry run python -m nuitka --onefile --standalone app.py`

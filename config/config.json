@@ -32,7 +32,7 @@
     "archive": [
         {
             "name": "archive_GPU",
-            "value": "false",
+            "value": "true",
             "description": "Decide whether or not to save GPU data to the archive. (DEFAULT=TRUE)",
             "category": "archive",
             "datatype": "boolean"
@@ -46,7 +46,7 @@
         },
         {
             "name": "archive_RAM",
-            "value": "false",
+            "value": "true",
             "description": "Decide whether or not to save RAM data to the archive. (DEFAULT=TRUE)",
             "category": "archive",
             "datatype": "boolean"
@@ -60,7 +60,7 @@
         },
         {
             "name": "points_per_minute",
-            "value": "5",
+            "value": "10",
             "description": "Amount of points to which data reports get reduced, per minute. (DEFAULT=10)",
             "category": "archive",
             "datatype": "int"
@@ -76,7 +76,7 @@
         },
         {
             "name": "threshold_CPU",
-            "value": "70",
+            "value": "50",
             "description": "CPU Threshold percentage. Activates warning when exceeded. (DEFAULT=75)",
             "category": "thresholds",
             "datatype": "int%"
