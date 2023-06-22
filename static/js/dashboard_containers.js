@@ -9,12 +9,19 @@ function bytesToMegabytes(bytes) {
     return bytes / (1024 * 1024);
 }
 
-
+function getColorForPercentage(pct) {
+    let percent = Math.max(Math.min(pct, 100), 0) / 100;
+    let color1 = [25, 198, 34];
+    let color2 = [230, 57, 70];
+    let color = [0, 0, 0];
+    for (let i = 0; i < 3; i++) {
+        color[i] = Math.round(color1[i] + percent * (color2[i] - color1[i]));
+    }
+    return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+}
+    
 function init() {
     let charts = document.getElementsByClassName("ct-chart");
-
-    let d = document.querySelector("#dataSelector");
-    let interval = d.dataset.interval;
 
     let incomingData = {
         "gpu": [],
@@ -22,8 +29,6 @@ function init() {
         "ram": [],
         "disk": []
     }
-
-    document.getElementById("interval").textContent = `Data interval: ${interval}s`;
 
     for (let chart of charts) {
         let key = chart.id.split("-")[0];
@@ -39,14 +44,18 @@ function init() {
             // Update the info container
             let container = document.getElementById(`info-${key}`);
             if (key == "disk") {
-                container.textContent = `Read speed ${key.toUpperCase()}: ${bytesToMegabytes(incomingData[key].slice(-1)).toFixed(2)} MB/s`;
+                container.innerHTML = `Read speed ${key.toUpperCase()}: <span style="color: rgb(25, 198, 34)"><b>${bytesToMegabytes(incomingData[key].slice(-1)).toFixed(2)} MB/s</b></span>`;
 
             } else {
                 let average = calculateAverage(incomingData[key]);
-                container.textContent = `Average ${key.toUpperCase()}: ${average.toFixed(2)}%`;
+                let color = getColorForPercentage(average); // get color for average
+                container.innerHTML = `Average ${key.toUpperCase()}: <span style="color: ${color}"><b>${average.toFixed(2)}%</b></span>`;
             }
         });
     }
 }
 
 init();
+
+let container = document.getElementById('warning-container-content');
+container.scrollTop = container.scrollHeight;

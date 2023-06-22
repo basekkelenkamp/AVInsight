@@ -28,19 +28,43 @@
 
     <div class="info-warning-container">
         <div class="info-container">
-            <h3>Info Container</h3>
-            <div id="interval"></div>
-            <br>
-            <div class="avg-container">
-                <div id="info-cpu" class="info-metrics"></div>
-                <div id="info-gpu" class="info-metrics"></div>
-                <div id="info-ram" class="info-metrics"></div>
-                <div id="info-disk" class="info-metrics"></div>
+            <div class="dashboard-container">
+                <h3>PC information</h3>
+                {% for metric, metric_list in info.items() %}
+                    <div class="info-metrics-title">{{ metric }}</div>
+                    {% for line in metric_list %}
+                        <div class="info-metrics">{{ line }}</div>
+                    {% endfor %}
+                    <br>
+                {% endfor %}
             </div>
+            <div class="dashboard-container">
+                <h3>Averages</h3>
+                <div class="avg-container">
+                    <div id="info-cpu" class="info-metrics"></div>
+                    <div id="info-gpu" class="info-metrics"></div>
+                    <div id="info-ram" class="info-metrics"></div>
+                    <div id="info-disk" class="info-metrics"></div>
+                    </div>
+                </div>
         </div>
 
         <div class="warning-container">
-            <h3>Warning Container</h3>
+            <div class="dashboard-container">
+                <h3>Warning Container</h3>
+                <div class="warning-container-content">
+                    <p>test</p>
+                    <p>test</p>
+                    <p>test</p>
+                    <p>test</p>
+                    <p>test</p>
+                    <p>test</p>
+                    <p>test</p>
+                    <p>test</p>
+                    <p>test</p>
+                    <p>test</p>
+                </div>
+            </div>
         </div>
     </div>
 

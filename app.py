@@ -26,6 +26,7 @@ from database.db import (
     remove_archive_after_days,
 )
 from util.date_tools import get_today_string, is_date_today
+from util.system_info import get_pc_info
 from util.metrics import (
     get_cpu_usage,
     get_disk_io_counters,
@@ -204,10 +205,10 @@ def get_metrics(original_config: Config):
 def index():
     return render_template(
         "index.html",
-        interval=config.get_setting_value("interval"),
         threshold_GPU=config.get_setting_value("threshold_GPU"),
         threshold_CPU=config.get_setting_value("threshold_CPU"),
         threshold_RAM=config.get_setting_value("threshold_RAM"),
+        info=get_pc_info()
     )
 
 
