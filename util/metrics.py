@@ -70,6 +70,7 @@ def calculate_data_report(metric_names, data, point_per_minute, thresholds):
     daily_counts = defaultdict(int)
     daily_min = defaultdict(lambda: float("inf"))
     daily_max = defaultdict(float)
+    spikes = []
 
     for d in data:
         metric_id = d["metric_id"]
@@ -80,6 +81,12 @@ def calculate_data_report(metric_names, data, point_per_minute, thresholds):
         value = float(d["value"])
         timestamp = d["timestamp"]
         new_data[metric_type][minute].append((timestamp, value))
+
+        # calculate spikes
+        if float(d["value"]) > int(thresholds[metric_type]):
+            spikes.append(
+                f"{d['timestamp'].split(' ')[1]}|{metric_type} threshold ({thresholds[metric_type]}) exceeded.|{d['value']}"
+            )
 
         # Update daily totals and counts
         daily_totals[metric_type] += value
@@ -127,5 +134,4 @@ def calculate_data_report(metric_names, data, point_per_minute, thresholds):
                 "values": final_values,
             }
 
-    # store
-    return final_data, daily_counts, daily_max, daily_avg
+    return final_data, daily_counts, daily_max, daily_avg, spikes

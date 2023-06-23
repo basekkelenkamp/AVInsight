@@ -5,6 +5,7 @@
 <div hidden id="dataThresholds" data-thresholds="{{ thresholds }}"></div>
 <div hidden id="dataMinute" data-minute_data="{{ minute_data }}"></div>
 <div hidden id="dataDaily" data-daily_data="{{ daily_data }}"></div>
+<div hidden id="dataSpikes" data-spike_data="{{ spike_data }}"></div>
 
 <div class="layout-container">
     <div class="date-container">
@@ -70,6 +71,14 @@
         {% endfor %}
             <div id="cycleButton" class="chart-container cycle-button unselectable" unselectable="on">
                 <h3>Cycle</h3>
+            </div>
+
+            <div class="warning-container data-report">
+                <div class="dashboard-container">
+                    <h3>Threshold warnings (high to low)</h3>
+                    <div class="spikes-container-content">
+                    </div>
+                </div>
             </div>
     </div>
 </div>

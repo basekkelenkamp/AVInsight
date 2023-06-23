@@ -62,7 +62,8 @@ def db_init_connection(db_path: str):
             daily_avg TEXT,
             thresholds TEXT,
             total_points_count INTEGER,
-            minute_data BLOB)
+            minute_data BLOB,
+            spike_data BLOB)
             """
 
         cursor.execute(q1)
@@ -82,6 +83,7 @@ def db_init_connection(db_path: str):
     if clear_db:
         cursor.execute("DROP TABLE IF EXISTS metrics")
         cursor.execute("DROP TABLE IF EXISTS metric_values")
+        cursor.execute("DROP TABLE IF EXISTS daily_reports")
         print("DROPPED TABLES")
         connection.commit()
 
@@ -239,17 +241,15 @@ def save_data_report(
     if is_date_today(date):
         report_finished = False
 
-    (
-        final_data,
-        daily_counts,
-        daily_max,
-        daily_avg,
-    ) = calculate_data_report(metric_names, data, point_per_minute, thresholds)
+    (final_data, daily_counts, daily_max, daily_avg, spikes) = calculate_data_report(
+        metric_names, data, point_per_minute, thresholds
+    )
 
     compressed_minute_data = zlib.compress(bytes(json.dumps(final_data), "utf-8"))
+    compressed_spikes = zlib.compress(bytes(json.dumps(spikes), "utf-8"))
 
     query_insert_data_report = """
-        INSERT INTO daily_reports (date_id, report_finished, first_timestamp, last_timestamp, daily_counts, daily_max, daily_avg, thresholds, total_points_count, minute_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO daily_reports (date_id, report_finished, first_timestamp, last_timestamp, daily_counts, daily_max, daily_avg, thresholds, total_points_count, minute_data, spike_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
 
     first_timestamp = data[0]["timestamp"]
@@ -260,7 +260,7 @@ def save_data_report(
         query_insert_data_report,
         (
             date,
-            report_finished,  # Assuming the report is finished
+            report_finished,
             first_timestamp,
             last_timestamp,
             json.dumps(daily_counts),
@@ -269,6 +269,7 @@ def save_data_report(
             json.dumps(thresholds),
             json.dumps(sum(daily_counts.values())),
             compressed_minute_data,
+            compressed_spikes,
         ),
     )
 
@@ -297,6 +298,7 @@ def get_data_report(cursor: sqlite3.Cursor, date_id: str):
         thresholds=result[7],
         total_points_count=result[8],
         minute_data=zlib.decompress(result[9]).decode("utf-8"),
+        spike_data=zlib.decompress(result[10]).decode("utf-8"),
     )
 
     return data_report

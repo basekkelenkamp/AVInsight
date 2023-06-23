@@ -19,7 +19,7 @@ function getColorForPercentage(pct) {
     }
     return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
 }
-    
+
 function init_charts() {
     let charts = document.getElementsByClassName("ct-chart");
 
@@ -64,16 +64,19 @@ function init_warnings() {
 
             let p = document.createElement("p")
             p.classList.add('spike-warning')
-            p.innerHTML = `<span class="time">${time}</span>   |   <span class="message">${message}</span>   |   <span class="value">${value}</span>`
-            
+            p.innerHTML = `<span class="time">${time}</span>   |   <span class="message">${message}</span>   |   <span class="value">${value}%</span>`
+
             if (warning_container.firstChild) {
                 warning_container.insertBefore(p, warning_container.firstChild);
             } else {
                 warning_container.appendChild(p);
             }
 
+            if (warning_container.childElementCount > 50) {
+                warning_container.removeChild(warning_container.lastChild);
+            }
         }
-    });    
+    });
 }
 
 init_charts();

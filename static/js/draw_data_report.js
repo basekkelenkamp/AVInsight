@@ -2,8 +2,8 @@ let minuteChart = document.getElementById("minute-metrics-chart");
 let thresholds = JSON.parse(document.querySelector("#dataThresholds").dataset.thresholds)
 let minuteData = JSON.parse(document.querySelector("#dataMinute").dataset.minute_data)
 let dailyData = JSON.parse(document.querySelector("#dataDaily").dataset.daily_data)
+let spikesData = JSON.parse(document.querySelector("#dataSpikes").dataset.spike_data)
 
-console.log(dailyData)
 let options = {
     fullWidth: true,
     showArea: true,
@@ -94,10 +94,6 @@ function draw_minute_graph(metric, lineType) {
     } else {
         [timestamps, data] = extract_data_points_with_minutes(metric, lineType)
     }
-
-    console.log(`linetype: ${lineType}, metric: ${metric}`)
-    console.log(timestamps)
-    console.log(data)
 
     let chartOptions = { ...options };
     if (is_disk) {
@@ -244,6 +240,30 @@ function draw_gauge_chart(metric, data_type) {
     });
 }
 
+function init_warnings() {
+    let spikes_container = document.getElementsByClassName("spikes-container-content")[0]
+
+    spikesData.sort((a, b) => {
+        let aValue = Number(a.split("|")[2]);
+        let bValue = Number(b.split("|")[2]);
+        return bValue - aValue;
+    });
+
+    if (spikesData.length > 100) {
+        spikesData = spikesData.slice(0, 100);
+    }
+
+    for (let spike of spikesData) {
+        let [time, message, value] = spike.split("|")
+
+        let p = document.createElement("p")
+        p.classList.add('spike-warning')
+        p.innerHTML = `<span class="time">${time}</span>   |   <span class="message">${message}</span>   |   <span class="value">${value}%</span>`
+        spikes_container.appendChild(p);
+    }
+}
+
+
 
 let selectMetricGraph = document.getElementById('select-graph-metric');
 let selectLine = document.getElementById('select-graph-line');
@@ -259,6 +279,7 @@ selectLine.addEventListener('change', function () {
 
 function init() {
     draw_minute_graph(selectMetricGraph.value, selectLine.value)
+    init_warnings()
     const cycleButton = document.getElementById('cycleButton')
     cycleButton.innerHTML = `Cycle<br>(current: daily_max)`
 }
@@ -286,8 +307,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
-
-    let gaugeInfoElement = document.getElementById('gaugeInfo')
 
     for (let metric of Object.keys(minuteData)) {
         if (metric !== 'DISK') {

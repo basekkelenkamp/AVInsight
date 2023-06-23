@@ -60,7 +60,6 @@ body {
 }
 
 .chart-container {
-    background-color: #323239;
     border: 2px solid #4D4A4F;
     box-shadow: 2px 2px 0px #333;
     margin-bottom: 1rem;
@@ -88,18 +87,33 @@ body {
     margin-bottom: 1rem;
 }
 
+.warning-container p {
+    background: inherit;
+}
+
 .info-container {
     display: flex;
 }
 
 .dashboard-container {
-    background-color: #323239;
     border: 2px solid #4D4A4F;
     box-shadow: 2px 2px 0px #333;
     margin-bottom: 1rem;
     padding: 0.8rem;
     border-radius: 4px;
 }
+
+.dashboard-container,
+.chart-container {
+    background: linear-gradient(135deg, #323239 0%, #3C3C46 100%);
+    transition: background 2s ease-in-out;
+}
+
+.dashboard-container:hover,
+.chart-container:hover {
+    background: linear-gradient(135deg, #3C3C46 0%, #323239 100%);
+}
+
 
 .dashboard-container, .info-container {
     margin-left: 10px;
@@ -111,7 +125,7 @@ body {
 }
 
 .info-metrics {
-    color: #E63946;
+    color: #397de6;
 
 }
 

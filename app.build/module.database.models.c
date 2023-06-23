@@ -33,9 +33,9 @@ PyObject *module_database$models;
 PyDictObject *moduledict_database$models;
 
 /* The declarations of module constants used, if any. */
-static PyObject *mod_consts[39];
+static PyObject *mod_consts[40];
 #ifndef __NUITKA_NO_ASSERT__
-static Py_hash_t mod_consts_hash[39];
+static Py_hash_t mod_consts_hash[40];
 #endif
 
 static PyObject *module_filename_obj = NULL;
@@ -50,7 +50,7 @@ static void createModuleConstants(void) {
         constants_created = true;
 
 #ifndef __NUITKA_NO_ASSERT__
-        for (int i = 0; i < 39; i++) {
+        for (int i = 0; i < 40; i++) {
             mod_consts_hash[i] = DEEP_HASH(mod_consts[i]);
         }
 #endif
@@ -70,7 +70,7 @@ void checkModuleConstants_database$models(void) {
     // The module may not have been used at all, then ignore this.
     if (constants_created == false) return;
 
-    for (int i = 0; i < 39; i++) {
+    for (int i = 0; i < 40; i++) {
         assert(mod_consts_hash[i] == DEEP_HASH(mod_consts[i]));
         CHECK_OBJECT_DEEP(mod_consts[i]);
     }
@@ -84,11 +84,11 @@ static PyCodeObject *codeobj_4400bef52e987a082e0743a9d687f0ba;
 static PyCodeObject *codeobj_e9ef272c4a8bbbdb6092a8bfcde6b973;
 
 static void createModuleCodeObjects(void) {
-    module_filename_obj = MAKE_RELATIVE_PATH(mod_consts[35]); CHECK_OBJECT(module_filename_obj);
-    codeobj_c09ad71d305048243c8739332841388c = MAKE_CODE_OBJECT(module_filename_obj, 1, CO_NOFREE, mod_consts[36], mod_consts[36], NULL, NULL, 0, 0, 0);
-    codeobj_0329699be3ba3eb5f27aa531d22399ab = MAKE_CODE_OBJECT(module_filename_obj, 21, CO_NOFREE, mod_consts[24], mod_consts[24], mod_consts[37], NULL, 0, 0, 0);
-    codeobj_4400bef52e987a082e0743a9d687f0ba = MAKE_CODE_OBJECT(module_filename_obj, 6, CO_NOFREE, mod_consts[13], mod_consts[13], mod_consts[37], NULL, 0, 0, 0);
-    codeobj_e9ef272c4a8bbbdb6092a8bfcde6b973 = MAKE_CODE_OBJECT(module_filename_obj, 12, CO_NOFREE, mod_consts[19], mod_consts[19], mod_consts[37], NULL, 0, 0, 0);
+    module_filename_obj = MAKE_RELATIVE_PATH(mod_consts[36]); CHECK_OBJECT(module_filename_obj);
+    codeobj_c09ad71d305048243c8739332841388c = MAKE_CODE_OBJECT(module_filename_obj, 1, CO_NOFREE, mod_consts[37], mod_consts[37], NULL, NULL, 0, 0, 0);
+    codeobj_0329699be3ba3eb5f27aa531d22399ab = MAKE_CODE_OBJECT(module_filename_obj, 21, CO_NOFREE, mod_consts[24], mod_consts[24], mod_consts[38], NULL, 0, 0, 0);
+    codeobj_4400bef52e987a082e0743a9d687f0ba = MAKE_CODE_OBJECT(module_filename_obj, 6, CO_NOFREE, mod_consts[13], mod_consts[13], mod_consts[38], NULL, 0, 0, 0);
+    codeobj_e9ef272c4a8bbbdb6092a8bfcde6b973 = MAKE_CODE_OBJECT(module_filename_obj, 12, CO_NOFREE, mod_consts[19], mod_consts[19], mod_consts[38], NULL, 0, 0, 0);
 }
 
 // The module function declarations.
@@ -347,7 +347,7 @@ PyObject *modulecode_database$models(PyObject *module, struct Nuitka_MetaPathBas
         UPDATE_STRING_DICT0(
             moduledict_database$models,
             (Nuitka_StringObject *)const_str_plain___package__,
-            mod_consts[38]
+            mod_consts[39]
         );
 #elif 0
         PyObject *module_name = GET_STRING_DICT_VALUE(moduledict_database$models, (Nuitka_StringObject *)const_str_plain___name__);
@@ -1913,6 +1913,47 @@ PyObject *modulecode_database$models(PyObject *module, struct Nuitka_MetaPathBas
 
 
                 exception_lineno = 31;
+                type_description_2 = "o";
+                goto frame_exception_exit_4;
+            }
+        }
+        {
+            PyObject *tmp_ass_subvalue_18;
+            PyObject *tmp_ass_subscribed_18;
+            PyObject *tmp_ass_subscript_18;
+            tmp_ass_subvalue_18 = (PyObject *)&PyUnicode_Type;
+            tmp_ass_subscribed_18 = DICT_GET_ITEM0(locals_database$models$$$class__3_DataReport_21, mod_consts[15]);
+
+            if (unlikely(tmp_ass_subscribed_18 == NULL && CHECK_AND_CLEAR_KEY_ERROR_OCCURRED())) {
+
+                FORMAT_NAME_ERROR(&exception_type, &exception_value, mod_consts[15]);
+                NORMALIZE_EXCEPTION(&exception_type, &exception_value, &exception_tb);
+                CHAIN_EXCEPTION(exception_value);
+
+                exception_lineno = 32;
+                type_description_2 = "o";
+                goto frame_exception_exit_4;
+            }
+
+            if (tmp_ass_subscribed_18 == NULL) {
+                assert(ERROR_OCCURRED());
+
+                FETCH_ERROR_OCCURRED(&exception_type, &exception_value, &exception_tb);
+
+
+                exception_lineno = 32;
+                type_description_2 = "o";
+                goto frame_exception_exit_4;
+            }
+            tmp_ass_subscript_18 = mod_consts[35];
+            tmp_result = SET_SUBSCRIPT(tmp_ass_subscribed_18, tmp_ass_subscript_18, tmp_ass_subvalue_18);
+            if (tmp_result == false) {
+                assert(ERROR_OCCURRED());
+
+                FETCH_ERROR_OCCURRED(&exception_type, &exception_value, &exception_tb);
+
+
+                exception_lineno = 32;
                 type_description_2 = "o";
                 goto frame_exception_exit_4;
             }

@@ -60,7 +60,7 @@
         },
         {
             "name": "points_per_minute",
-            "value": "10",
+            "value": "5",
             "description": "Amount of points to which data reports get reduced. In minutes. (DEFAULT=10)",
             "category": "archive",
             "datatype": "int"
@@ -69,21 +69,21 @@
     "thresholds": [
         {
             "name": "threshold_GPU",
-            "value": "60",
+            "value": "80",
             "description": "GPU Threshold percentage. Activates warning when exceeded. (DEFAULT=75)",
             "category": "thresholds",
             "datatype": "int%"
         },
         {
             "name": "threshold_CPU",
-            "value": "20",
+            "value": "50",
             "description": "CPU Threshold percentage. Activates warning when exceeded. (DEFAULT=75)",
             "category": "thresholds",
             "datatype": "int%"
         },
         {
             "name": "threshold_RAM",
-            "value": "50",
+            "value": "75",
             "description": "RAM Threshold percentage. Activates warning when exceeded. (DEFAULT=75)",
             "category": "thresholds",
             "datatype": "int%"

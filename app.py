@@ -352,6 +352,7 @@ def data_report(date):
         total_points_original=data_report.total_points_count,
         point_per_minute=point_per_minute,
         minute_data=data_report.minute_data,
+        spike_data=data_report.spike_data,
     )
 
 

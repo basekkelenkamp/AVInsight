@@ -29,3 +29,4 @@ class DataReport:
     thresholds: str
     total_points_count: str
     minute_data: str  # BLOB
+    spike_data: str  # BLOB
