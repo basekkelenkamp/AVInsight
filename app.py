@@ -25,7 +25,7 @@ from database.db import (
     insert_metric_value,
     remove_archive_after_days,
 )
-from util.date_tools import get_today_string, is_date_today
+from util.date_tools import current_time, get_today_string, is_date_today
 from util.system_info import get_pc_info
 from util.metrics import (
     get_cpu_usage,
@@ -87,9 +87,7 @@ metrics = db_get_all_metrics(connection.cursor(), as_obj=True)
 archive_days = int(config.get_setting_value("clear_archive_after_days"))
 keep_reports = config.get_setting_value("keep_data_reports")
 print(f"removing archive older than {archive_days} days, keep reports: {keep_reports}")
-remove_archive_after_days(
-    connection.cursor(), archive_days, keep_reports
-)
+remove_archive_after_days(connection.cursor(), archive_days, keep_reports)
 connection.close()
 
 
@@ -107,11 +105,16 @@ def get_metrics(original_config: Config):
     # Extract settings
     interval = float(original_config.get_setting_value("interval"))
     disk = original_config.get_setting_value("disk")
+
     archive_days = int(original_config.get_setting_value("clear_archive_after_days"))
     archive_GPU = original_config.get_setting_value("archive_GPU")
     archive_CPU = original_config.get_setting_value("archive_CPU")
     archive_RAM = original_config.get_setting_value("archive_RAM")
     archive_DISK = original_config.get_setting_value("archive_DISK")
+
+    threshold_GPU = int(original_config.get_setting_value("threshold_GPU"))
+    threshold_CPU = int(original_config.get_setting_value("threshold_CPU"))
+    threshold_RAM = int(original_config.get_setting_value("threshold_RAM"))
 
     # archives to write to
     archives = [
@@ -136,14 +139,27 @@ def get_metrics(original_config: Config):
         # to keep track of function runtime speed
         start_time = time.time()
 
+        time_str = current_time()
         print(
-            f"archive: {archives} | disk: {disk} | interval: {interval} | del after days:{archive_days}"
+            f"{time_str} | archive: {archives} | disk: {disk} | interval: {interval} | del after days:{archive_days}"
         )
 
         # Get CPU, GPU, RAM
         cpu_percent = get_cpu_usage(interval)
         ram_percent = get_ram_usage()
         gpu_percent = get_gpu_usage()
+
+        hardware_stats = [
+            ("CPU", cpu_percent, threshold_CPU),
+            ("RAM", ram_percent, threshold_RAM),
+            ("GPU", gpu_percent, threshold_GPU),
+        ]
+
+        spikes = [
+            f"{time_str}|{name} threshold ({threshold}) exceeded.|{percent}"
+            for name, percent, threshold in hardware_stats
+            if percent > threshold
+        ]
 
         # Get disk read speed
         curr_time = time.time()
@@ -162,6 +178,9 @@ def get_metrics(original_config: Config):
         socket_io.emit(
             "disk-read-speed-chart", {"data": [disk_read_speed]}, namespace="/metrics"
         )
+
+        if spikes:
+            socket_io.emit("spikes", {"data": spikes}, namespace="/metrics")
 
         # Connect to the database, write data, then close the connection
         if archives:
@@ -208,7 +227,7 @@ def index():
         threshold_GPU=config.get_setting_value("threshold_GPU"),
         threshold_CPU=config.get_setting_value("threshold_CPU"),
         threshold_RAM=config.get_setting_value("threshold_RAM"),
-        info=get_pc_info()
+        info=get_pc_info(),
     )
 
 
@@ -236,7 +255,9 @@ def save_config():
         connection = db_get_connection(db_path=db_path)
         cursor = connection.cursor()
         print(f"removing archive older than {archive_days} days")
-        remove_archive_after_days(cursor, archive_days, config.get_setting_value("keep_data_reports"))
+        remove_archive_after_days(
+            cursor, archive_days, config.get_setting_value("keep_data_reports")
+        )
         connection.close()
 
         start_metrics_thread()

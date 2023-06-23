@@ -10,6 +10,7 @@ def _get_size(bytes, suffix="B"):
             return f"{bytes:.2f}{unit}{suffix}"
         bytes /= factor
 
+
 def get_pc_info():
     cpu_info = []
 
@@ -17,11 +18,11 @@ def get_pc_info():
     cpu_info.append(f"{uname.processor}")
     cpu_info.append(f"Total cores: {psutil.cpu_count(logical=True)}")
     cpu_info.append(f"Current Frequency: {psutil.cpu_freq().current:.2f}Mhz")
-    
+
     svmem = psutil.virtual_memory()
     print(f"Total: {_get_size(svmem.total)}")
     print(f"Available: {_get_size(svmem.available)}")
-    
+
     ram_info = []
     ram_info.append(f"Total ram: {_get_size(svmem.total)}")
 
@@ -32,7 +33,7 @@ def get_pc_info():
         gpu_info.append(f"Temperature: {gpu.temperature}°C")
 
     return {
-        "CPU": cpu_info, 
-        "GPU": gpu_info, 
-        "RAM": ram_info, 
-        }
+        "CPU": cpu_info,
+        "GPU": gpu_info,
+        "RAM": ram_info,
+    }

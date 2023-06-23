@@ -125,6 +125,38 @@ body {
     overflow-y: auto;
 }
 
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+@keyframes flash {
+    0%   {background-color: #E63946;} /* Start color */
+    100% {background-color: #323239;} /* End color (original color) */
+}
+
+.spike-warning {
+    animation: fadeIn 0.5s, flash 1s;
+    color: #F2F2F3;
+    background-color: #323239;
+    border-bottom: 1px solid #4D4A4F;
+    padding: 10px;
+}
+
+.spike-warning .time {
+    color: #8D99AE;
+    font-weight: bold;
+}
+
+.spike-warning .message {
+    color: #E63946;
+    margin: 0 10px;
+}
+
+.spike-warning .value {
+    color: rgb(25, 198, 34);
+}
+
+
 
 /* HEADER */
 header {

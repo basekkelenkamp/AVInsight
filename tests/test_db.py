@@ -4,11 +4,20 @@ import json
 from datetime import datetime, timedelta
 import pytz
 import zlib
-from database.db import db_get_all_metrics, db_get_metric_values_from_day, db_init_connection, insert_metric, insert_metric_value, remove_archive_after_days, save_data_report
+from database.db import (
+    db_get_all_metrics,
+    db_get_metric_values_from_day,
+    db_init_connection,
+    insert_metric,
+    insert_metric_value,
+    remove_archive_after_days,
+    save_data_report,
+)
+
 
 @pytest.fixture
 def db_cursor():
-    connection = sqlite3.connect(':memory:')
+    connection = sqlite3.connect(":memory:")
     connection.row_factory = sqlite3.Row
     connection.execute("PRAGMA journal_mode=WAL")
     cursor = connection.cursor()
@@ -108,18 +117,23 @@ def test_db_get_metric_values_from_day(db_cursor):
         {"usage": 50, "timestamp": "2023-01-01 12:00:00.000"},
         {"usage": 80, "timestamp": "2023-01-01 15:45:00.000"},
         # Adding a value from another day
-        {"usage": 30, "timestamp": "2023-01-02 11:00:00.000"}
+        {"usage": 30, "timestamp": "2023-01-02 11:00:00.000"},
     ]
 
     for value in metric_values:
         query_insert_metric_value = """
             INSERT INTO metric_values (metric_id, value, timestamp) VALUES (?, ?, ?)
             """
-        db_cursor.execute(query_insert_metric_value, (metric_id, json.dumps(value["usage"]), value["timestamp"]))
+        db_cursor.execute(
+            query_insert_metric_value,
+            (metric_id, json.dumps(value["usage"]), value["timestamp"]),
+        )
 
     db_cursor.connection.commit()
 
-    metric_values, day, prev_date, next_date = db_get_metric_values_from_day(db_cursor, "2023-01-01")
+    metric_values, day, prev_date, next_date = db_get_metric_values_from_day(
+        db_cursor, "2023-01-01"
+    )
 
     assert len(metric_values) == 3
     for value in metric_values:
@@ -145,7 +159,10 @@ def test_remove_archive_after_days(db_cursor):
         query_insert_metric_value = """
             INSERT INTO metric_values (metric_id, value, timestamp) VALUES (?, ?, ?)
             """
-        db_cursor.execute(query_insert_metric_value, (metric_id, json.dumps(value["usage"]), value["timestamp"]))
+        db_cursor.execute(
+            query_insert_metric_value,
+            (metric_id, json.dumps(value["usage"]), value["timestamp"]),
+        )
 
     # Insert daily reports for the same days
     for i in range(5):
@@ -153,7 +170,21 @@ def test_remove_archive_after_days(db_cursor):
         query_insert_daily_report = """
             INSERT INTO daily_reports (date_id, report_finished, first_timestamp, last_timestamp, daily_counts, daily_max, daily_avg, thresholds, total_points_count, minute_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """
-        db_cursor.execute(query_insert_daily_report, (date_id, 1, f"{date_id} 00:00:00.000", f"{date_id} 23:59:59.999", "{'CPU': 100}", "{'CPU': 80}", "{'CPU': 40}", "{'CPU': 70}", 100, zlib.compress(bytes(json.dumps([]), "utf-8"))))
+        db_cursor.execute(
+            query_insert_daily_report,
+            (
+                date_id,
+                1,
+                f"{date_id} 00:00:00.000",
+                f"{date_id} 23:59:59.999",
+                "{'CPU': 100}",
+                "{'CPU': 80}",
+                "{'CPU': 40}",
+                "{'CPU': 70}",
+                100,
+                zlib.compress(bytes(json.dumps([]), "utf-8")),
+            ),
+        )
 
     db_cursor.connection.commit()
 
@@ -167,7 +198,7 @@ def test_remove_archive_after_days(db_cursor):
 
 
 def test_save_data_report(db_cursor):
-    date = '2023-01-01'
+    date = "2023-01-01"
     metric_id = insert_metric(db_cursor, "TEST_METRIC")
 
     metric_values = [
@@ -175,15 +206,17 @@ def test_save_data_report(db_cursor):
         {"usage": 50, "timestamp": "2023-01-01 12:00:00.000"},
         {"usage": 80, "timestamp": "2023-01-01 15:45:00.000"},
         # Adding a value from another day
-        {"usage": 30, "timestamp": "2023-01-02 11:00:00.000"}
+        {"usage": 30, "timestamp": "2023-01-02 11:00:00.000"},
     ]
     for value in metric_values:
         query_insert_metric_value = """
             INSERT INTO metric_values (metric_id, value, timestamp) VALUES (?, ?, ?)
             """
-        db_cursor.execute(query_insert_metric_value, (metric_id, json.dumps(value["usage"]), value["timestamp"]))
+        db_cursor.execute(
+            query_insert_metric_value,
+            (metric_id, json.dumps(value["usage"]), value["timestamp"]),
+        )
     db_cursor.connection.commit()
-
 
     data, date, _, _ = db_get_metric_values_from_day(db_cursor, date)
     metric_names = db_get_all_metrics(db_cursor)
@@ -216,6 +249,6 @@ def test_save_data_report(db_cursor):
     saved_daily_max = json.loads(report[5])
     saved_daily_avg = json.loads(report[6])
 
-    assert saved_daily_counts == {'TEST_METRIC': 3}
-    assert saved_daily_max == {'TEST_METRIC': 80.0}
-    assert saved_daily_avg == {'TEST_METRIC': 50.0}
+    assert saved_daily_counts == {"TEST_METRIC": 3}
+    assert saved_daily_max == {"TEST_METRIC": 80.0}
+    assert saved_daily_avg == {"TEST_METRIC": 50.0}

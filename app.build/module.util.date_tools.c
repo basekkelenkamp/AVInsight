@@ -33,9 +33,9 @@ PyObject *module_util$date_tools;
 PyDictObject *moduledict_util$date_tools;
 
 /* The declarations of module constants used, if any. */
-static PyObject *mod_consts[27];
+static PyObject *mod_consts[31];
 #ifndef __NUITKA_NO_ASSERT__
-static Py_hash_t mod_consts_hash[27];
+static Py_hash_t mod_consts_hash[31];
 #endif
 
 static PyObject *module_filename_obj = NULL;
@@ -50,7 +50,7 @@ static void createModuleConstants(void) {
         constants_created = true;
 
 #ifndef __NUITKA_NO_ASSERT__
-        for (int i = 0; i < 27; i++) {
+        for (int i = 0; i < 31; i++) {
             mod_consts_hash[i] = DEEP_HASH(mod_consts[i]);
         }
 #endif
@@ -70,7 +70,7 @@ void checkModuleConstants_util$date_tools(void) {
     // The module may not have been used at all, then ignore this.
     if (constants_created == false) return;
 
-    for (int i = 0; i < 27; i++) {
+    for (int i = 0; i < 31; i++) {
         assert(mod_consts_hash[i] == DEEP_HASH(mod_consts[i]));
         CHECK_OBJECT_DEEP(mod_consts[i]);
     }
@@ -79,14 +79,16 @@ void checkModuleConstants_util$date_tools(void) {
 
 // The module code objects.
 static PyCodeObject *codeobj_7e484d3c7205b754025d5ab2886f3187;
+static PyCodeObject *codeobj_2eef7e4ed18a2455c180d3b9d20b1730;
 static PyCodeObject *codeobj_d7cc6a5c5d22408932a205282ec81201;
 static PyCodeObject *codeobj_dfa974ea5a78805824686f49b6d0e54d;
 
 static void createModuleCodeObjects(void) {
-    module_filename_obj = MAKE_RELATIVE_PATH(mod_consts[22]); CHECK_OBJECT(module_filename_obj);
-    codeobj_7e484d3c7205b754025d5ab2886f3187 = MAKE_CODE_OBJECT(module_filename_obj, 1, CO_NOFREE, mod_consts[23], mod_consts[23], NULL, NULL, 0, 0, 0);
-    codeobj_d7cc6a5c5d22408932a205282ec81201 = MAKE_CODE_OBJECT(module_filename_obj, 5, CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE, mod_consts[19], mod_consts[19], mod_consts[24], NULL, 0, 0, 0);
-    codeobj_dfa974ea5a78805824686f49b6d0e54d = MAKE_CODE_OBJECT(module_filename_obj, 11, CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE, mod_consts[21], mod_consts[21], mod_consts[25], NULL, 1, 0, 0);
+    module_filename_obj = MAKE_RELATIVE_PATH(mod_consts[25]); CHECK_OBJECT(module_filename_obj);
+    codeobj_7e484d3c7205b754025d5ab2886f3187 = MAKE_CODE_OBJECT(module_filename_obj, 1, CO_NOFREE, mod_consts[26], mod_consts[26], NULL, NULL, 0, 0, 0);
+    codeobj_2eef7e4ed18a2455c180d3b9d20b1730 = MAKE_CODE_OBJECT(module_filename_obj, 20, CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE, mod_consts[24], mod_consts[24], mod_consts[27], NULL, 0, 0, 0);
+    codeobj_d7cc6a5c5d22408932a205282ec81201 = MAKE_CODE_OBJECT(module_filename_obj, 5, CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE, mod_consts[21], mod_consts[21], mod_consts[28], NULL, 0, 0, 0);
+    codeobj_dfa974ea5a78805824686f49b6d0e54d = MAKE_CODE_OBJECT(module_filename_obj, 11, CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE, mod_consts[23], mod_consts[23], mod_consts[29], NULL, 1, 0, 0);
 }
 
 // The module function declarations.
@@ -94,6 +96,9 @@ static PyObject *MAKE_FUNCTION_util$date_tools$$$function__1_get_today_string();
 
 
 static PyObject *MAKE_FUNCTION_util$date_tools$$$function__2_is_date_today(PyObject *annotations);
+
+
+static PyObject *MAKE_FUNCTION_util$date_tools$$$function__3_current_time();
 
 
 // The module function definitions.
@@ -706,11 +711,281 @@ function_return_exit:
 }
 
 
+static PyObject *impl_util$date_tools$$$function__3_current_time(struct Nuitka_FunctionObject const *self, PyObject **python_pars) {
+    // Preserve error status for checks
+#ifndef __NUITKA_NO_ASSERT__
+    NUITKA_MAY_BE_UNUSED bool had_error = ERROR_OCCURRED();
+#endif
+
+    // Local variable declarations.
+    PyObject *var_date = NULL;
+    struct Nuitka_FrameObject *frame_2eef7e4ed18a2455c180d3b9d20b1730;
+    NUITKA_MAY_BE_UNUSED char const *type_description_1 = NULL;
+    PyObject *exception_type = NULL;
+    PyObject *exception_value = NULL;
+    PyTracebackObject *exception_tb = NULL;
+    NUITKA_MAY_BE_UNUSED int exception_lineno = 0;
+    PyObject *tmp_return_value = NULL;
+    static struct Nuitka_FrameObject *cache_frame_2eef7e4ed18a2455c180d3b9d20b1730 = NULL;
+    PyObject *exception_keeper_type_1;
+    PyObject *exception_keeper_value_1;
+    PyTracebackObject *exception_keeper_tb_1;
+    NUITKA_MAY_BE_UNUSED int exception_keeper_lineno_1;
+
+    // Actual function body.
+    // Tried code:
+    if (isFrameUnusable(cache_frame_2eef7e4ed18a2455c180d3b9d20b1730)) {
+        Py_XDECREF(cache_frame_2eef7e4ed18a2455c180d3b9d20b1730);
+
+#if _DEBUG_REFCOUNTS
+        if (cache_frame_2eef7e4ed18a2455c180d3b9d20b1730 == NULL) {
+            count_active_frame_cache_instances += 1;
+        } else {
+            count_released_frame_cache_instances += 1;
+        }
+        count_allocated_frame_cache_instances += 1;
+#endif
+        cache_frame_2eef7e4ed18a2455c180d3b9d20b1730 = MAKE_FUNCTION_FRAME(codeobj_2eef7e4ed18a2455c180d3b9d20b1730, module_util$date_tools, sizeof(void *));
+#if _DEBUG_REFCOUNTS
+    } else {
+        count_hit_frame_cache_instances += 1;
+#endif
+    }
+
+    assert(cache_frame_2eef7e4ed18a2455c180d3b9d20b1730->m_type_description == NULL);
+    frame_2eef7e4ed18a2455c180d3b9d20b1730 = cache_frame_2eef7e4ed18a2455c180d3b9d20b1730;
+
+    // Push the new frame as the currently active one, and we should be exclusively
+    // owning it.
+    pushFrameStackCompiledFrame(frame_2eef7e4ed18a2455c180d3b9d20b1730);
+    assert(Py_REFCNT(frame_2eef7e4ed18a2455c180d3b9d20b1730) == 2);
+
+    // Framed code:
+    {
+        PyObject *tmp_assign_source_1;
+        PyObject *tmp_called_value_1;
+        PyObject *tmp_expression_value_1;
+        PyObject *tmp_args_element_value_1;
+        PyObject *tmp_called_instance_1;
+        tmp_expression_value_1 = GET_STRING_DICT_VALUE(moduledict_util$date_tools, (Nuitka_StringObject *)mod_consts[3]);
+
+        if (unlikely(tmp_expression_value_1 == NULL)) {
+            tmp_expression_value_1 = GET_MODULE_VARIABLE_VALUE_FALLBACK(mod_consts[3]);
+        }
+
+        if (tmp_expression_value_1 == NULL) {
+            assert(ERROR_OCCURRED());
+
+            FETCH_ERROR_OCCURRED(&exception_type, &exception_value, &exception_tb);
+
+
+            exception_lineno = 21;
+            type_description_1 = "o";
+            goto frame_exception_exit_1;
+        }
+        tmp_called_value_1 = LOOKUP_ATTRIBUTE(tmp_expression_value_1, mod_consts[4]);
+        if (tmp_called_value_1 == NULL) {
+            assert(ERROR_OCCURRED());
+
+            FETCH_ERROR_OCCURRED(&exception_type, &exception_value, &exception_tb);
+
+
+            exception_lineno = 21;
+            type_description_1 = "o";
+            goto frame_exception_exit_1;
+        }
+        tmp_called_instance_1 = GET_STRING_DICT_VALUE(moduledict_util$date_tools, (Nuitka_StringObject *)mod_consts[0]);
+
+        if (unlikely(tmp_called_instance_1 == NULL)) {
+            tmp_called_instance_1 = GET_MODULE_VARIABLE_VALUE_FALLBACK(mod_consts[0]);
+        }
+
+        if (tmp_called_instance_1 == NULL) {
+            assert(ERROR_OCCURRED());
+
+            FETCH_ERROR_OCCURRED(&exception_type, &exception_value, &exception_tb);
+            Py_DECREF(tmp_called_value_1);
+
+            exception_lineno = 21;
+            type_description_1 = "o";
+            goto frame_exception_exit_1;
+        }
+        frame_2eef7e4ed18a2455c180d3b9d20b1730->m_frame.f_lineno = 21;
+        tmp_args_element_value_1 = CALL_METHOD_WITH_SINGLE_ARG(
+            tmp_called_instance_1,
+            mod_consts[1],
+            PyTuple_GET_ITEM(mod_consts[2], 0)
+        );
+
+        if (tmp_args_element_value_1 == NULL) {
+            assert(ERROR_OCCURRED());
+
+            FETCH_ERROR_OCCURRED(&exception_type, &exception_value, &exception_tb);
+            Py_DECREF(tmp_called_value_1);
+
+            exception_lineno = 21;
+            type_description_1 = "o";
+            goto frame_exception_exit_1;
+        }
+        frame_2eef7e4ed18a2455c180d3b9d20b1730->m_frame.f_lineno = 21;
+        tmp_assign_source_1 = CALL_FUNCTION_WITH_SINGLE_ARG(tmp_called_value_1, tmp_args_element_value_1);
+        Py_DECREF(tmp_called_value_1);
+        Py_DECREF(tmp_args_element_value_1);
+        if (tmp_assign_source_1 == NULL) {
+            assert(ERROR_OCCURRED());
+
+            FETCH_ERROR_OCCURRED(&exception_type, &exception_value, &exception_tb);
+
+
+            exception_lineno = 21;
+            type_description_1 = "o";
+            goto frame_exception_exit_1;
+        }
+        assert(var_date == NULL);
+        var_date = tmp_assign_source_1;
+    }
+    {
+        PyObject *tmp_expression_value_2;
+        PyObject *tmp_called_instance_2;
+        PyObject *tmp_subscript_value_1;
+        CHECK_OBJECT(var_date);
+        tmp_called_instance_2 = var_date;
+        frame_2eef7e4ed18a2455c180d3b9d20b1730->m_frame.f_lineno = 22;
+        tmp_expression_value_2 = CALL_METHOD_WITH_SINGLE_ARG(
+            tmp_called_instance_2,
+            mod_consts[5],
+            PyTuple_GET_ITEM(mod_consts[11], 0)
+        );
+
+        if (tmp_expression_value_2 == NULL) {
+            assert(ERROR_OCCURRED());
+
+            FETCH_ERROR_OCCURRED(&exception_type, &exception_value, &exception_tb);
+
+
+            exception_lineno = 22;
+            type_description_1 = "o";
+            goto frame_exception_exit_1;
+        }
+        tmp_subscript_value_1 = mod_consts[12];
+        tmp_return_value = LOOKUP_SUBSCRIPT(tmp_expression_value_2, tmp_subscript_value_1);
+        Py_DECREF(tmp_expression_value_2);
+        if (tmp_return_value == NULL) {
+            assert(ERROR_OCCURRED());
+
+            FETCH_ERROR_OCCURRED(&exception_type, &exception_value, &exception_tb);
+
+
+            exception_lineno = 22;
+            type_description_1 = "o";
+            goto frame_exception_exit_1;
+        }
+        goto frame_return_exit_1;
+    }
+
+
+    // Put the previous frame back on top.
+    popFrameStack();
+
+    goto frame_no_exception_1;
+    frame_return_exit_1:
+
+    // Put the previous frame back on top.
+    popFrameStack();
+
+    goto try_return_handler_1;
+    frame_exception_exit_1:
+
+
+    if (exception_tb == NULL) {
+        exception_tb = MAKE_TRACEBACK(frame_2eef7e4ed18a2455c180d3b9d20b1730, exception_lineno);
+    } else if (exception_tb->tb_frame != &frame_2eef7e4ed18a2455c180d3b9d20b1730->m_frame) {
+        exception_tb = ADD_TRACEBACK(exception_tb, frame_2eef7e4ed18a2455c180d3b9d20b1730, exception_lineno);
+    }
+
+    // Attaches locals to frame if any.
+    Nuitka_Frame_AttachLocals(
+        frame_2eef7e4ed18a2455c180d3b9d20b1730,
+        type_description_1,
+        var_date
+    );
+
+
+    // Release cached frame if used for exception.
+    if (frame_2eef7e4ed18a2455c180d3b9d20b1730 == cache_frame_2eef7e4ed18a2455c180d3b9d20b1730) {
+#if _DEBUG_REFCOUNTS
+        count_active_frame_cache_instances -= 1;
+        count_released_frame_cache_instances += 1;
+#endif
+        Py_DECREF(cache_frame_2eef7e4ed18a2455c180d3b9d20b1730);
+        cache_frame_2eef7e4ed18a2455c180d3b9d20b1730 = NULL;
+    }
+
+    assertFrameObject(frame_2eef7e4ed18a2455c180d3b9d20b1730);
+
+    // Put the previous frame back on top.
+    popFrameStack();
+
+    // Return the error.
+    goto try_except_handler_1;
+    frame_no_exception_1:;
+    NUITKA_CANNOT_GET_HERE("tried codes exits in all cases");
+    return NULL;
+    // Return handler code:
+    try_return_handler_1:;
+    CHECK_OBJECT(var_date);
+    Py_DECREF(var_date);
+    var_date = NULL;
+    goto function_return_exit;
+    // Exception handler code:
+    try_except_handler_1:;
+    exception_keeper_type_1 = exception_type;
+    exception_keeper_value_1 = exception_value;
+    exception_keeper_tb_1 = exception_tb;
+    exception_keeper_lineno_1 = exception_lineno;
+    exception_type = NULL;
+    exception_value = NULL;
+    exception_tb = NULL;
+    exception_lineno = 0;
+
+    Py_XDECREF(var_date);
+    var_date = NULL;
+    // Re-raise.
+    exception_type = exception_keeper_type_1;
+    exception_value = exception_keeper_value_1;
+    exception_tb = exception_keeper_tb_1;
+    exception_lineno = exception_keeper_lineno_1;
+
+    goto function_exception_exit;
+    // End of try:
+
+    NUITKA_CANNOT_GET_HERE("Return statement must have exited already.");
+    return NULL;
+
+function_exception_exit:
+
+    assert(exception_type);
+    RESTORE_ERROR_OCCURRED(exception_type, exception_value, exception_tb);
+
+    return NULL;
+
+function_return_exit:
+   // Function cleanup code if any.
+
+
+   // Actual function exit with return value, making sure we did not make
+   // the error status worse despite non-NULL return.
+   CHECK_OBJECT(tmp_return_value);
+   assert(had_error || !ERROR_OCCURRED());
+   return tmp_return_value;
+}
+
+
 
 static PyObject *MAKE_FUNCTION_util$date_tools$$$function__1_get_today_string() {
     struct Nuitka_FunctionObject *result = Nuitka_Function_New(
         impl_util$date_tools$$$function__1_get_today_string,
-        mod_consts[19],
+        mod_consts[21],
 #if PYTHON_VERSION >= 0x300
         NULL,
 #endif
@@ -735,7 +1010,7 @@ static PyObject *MAKE_FUNCTION_util$date_tools$$$function__1_get_today_string() 
 static PyObject *MAKE_FUNCTION_util$date_tools$$$function__2_is_date_today(PyObject *annotations) {
     struct Nuitka_FunctionObject *result = Nuitka_Function_New(
         impl_util$date_tools$$$function__2_is_date_today,
-        mod_consts[21],
+        mod_consts[23],
 #if PYTHON_VERSION >= 0x300
         NULL,
 #endif
@@ -744,6 +1019,31 @@ static PyObject *MAKE_FUNCTION_util$date_tools$$$function__2_is_date_today(PyObj
 #if PYTHON_VERSION >= 0x300
         NULL,
         annotations,
+#endif
+        module_util$date_tools,
+        NULL,
+        NULL,
+        0
+    );
+
+
+    return (PyObject *)result;
+}
+
+
+
+static PyObject *MAKE_FUNCTION_util$date_tools$$$function__3_current_time() {
+    struct Nuitka_FunctionObject *result = Nuitka_Function_New(
+        impl_util$date_tools$$$function__3_current_time,
+        mod_consts[24],
+#if PYTHON_VERSION >= 0x300
+        NULL,
+#endif
+        codeobj_2eef7e4ed18a2455c180d3b9d20b1730,
+        NULL,
+#if PYTHON_VERSION >= 0x300
+        NULL,
+        NULL,
 #endif
         module_util$date_tools,
         NULL,
@@ -772,6 +1072,7 @@ extern void registerDillPluginTables(char const *module_name, PyMethodDef *reduc
 function_impl_code functable_util$date_tools[] = {
     impl_util$date_tools$$$function__1_get_today_string,
     impl_util$date_tools$$$function__2_is_date_today,
+    impl_util$date_tools$$$function__3_current_time,
     NULL
 };
 
@@ -1007,7 +1308,7 @@ PyObject *modulecode_util$date_tools(PyObject *module, struct Nuitka_MetaPathBas
         UPDATE_STRING_DICT0(
             moduledict_util$date_tools,
             (Nuitka_StringObject *)const_str_plain___package__,
-            mod_consts[26]
+            mod_consts[30]
         );
 #elif 0
         PyObject *module_name = GET_STRING_DICT_VALUE(moduledict_util$date_tools, (Nuitka_StringObject *)const_str_plain___name__);
@@ -1113,12 +1414,12 @@ PyObject *modulecode_util$date_tools(PyObject *module, struct Nuitka_MetaPathBas
     {
         PyObject *tmp_assign_source_1;
         tmp_assign_source_1 = Py_None;
-        UPDATE_STRING_DICT0(moduledict_util$date_tools, (Nuitka_StringObject *)mod_consts[11], tmp_assign_source_1);
+        UPDATE_STRING_DICT0(moduledict_util$date_tools, (Nuitka_StringObject *)mod_consts[13], tmp_assign_source_1);
     }
     {
         PyObject *tmp_assign_source_2;
         tmp_assign_source_2 = module_filename_obj;
-        UPDATE_STRING_DICT0(moduledict_util$date_tools, (Nuitka_StringObject *)mod_consts[12], tmp_assign_source_2);
+        UPDATE_STRING_DICT0(moduledict_util$date_tools, (Nuitka_StringObject *)mod_consts[14], tmp_assign_source_2);
     }
     frame_7e484d3c7205b754025d5ab2886f3187 = MAKE_MODULE_FRAME(codeobj_7e484d3c7205b754025d5ab2886f3187, module_util$date_tools);
 
@@ -1132,14 +1433,14 @@ PyObject *modulecode_util$date_tools(PyObject *module, struct Nuitka_MetaPathBas
         PyObject *tmp_assattr_value_1;
         PyObject *tmp_assattr_target_1;
         tmp_assattr_value_1 = module_filename_obj;
-        tmp_assattr_target_1 = GET_STRING_DICT_VALUE(moduledict_util$date_tools, (Nuitka_StringObject *)mod_consts[13]);
+        tmp_assattr_target_1 = GET_STRING_DICT_VALUE(moduledict_util$date_tools, (Nuitka_StringObject *)mod_consts[15]);
 
         if (unlikely(tmp_assattr_target_1 == NULL)) {
-            tmp_assattr_target_1 = GET_MODULE_VARIABLE_VALUE_FALLBACK(mod_consts[13]);
+            tmp_assattr_target_1 = GET_MODULE_VARIABLE_VALUE_FALLBACK(mod_consts[15]);
         }
 
         assert(!(tmp_assattr_target_1 == NULL));
-        tmp_result = SET_ATTRIBUTE(tmp_assattr_target_1, mod_consts[14], tmp_assattr_value_1);
+        tmp_result = SET_ATTRIBUTE(tmp_assattr_target_1, mod_consts[16], tmp_assattr_value_1);
         if (tmp_result == false) {
             assert(ERROR_OCCURRED());
 
@@ -1155,14 +1456,14 @@ PyObject *modulecode_util$date_tools(PyObject *module, struct Nuitka_MetaPathBas
         PyObject *tmp_assattr_value_2;
         PyObject *tmp_assattr_target_2;
         tmp_assattr_value_2 = Py_True;
-        tmp_assattr_target_2 = GET_STRING_DICT_VALUE(moduledict_util$date_tools, (Nuitka_StringObject *)mod_consts[13]);
+        tmp_assattr_target_2 = GET_STRING_DICT_VALUE(moduledict_util$date_tools, (Nuitka_StringObject *)mod_consts[15]);
 
         if (unlikely(tmp_assattr_target_2 == NULL)) {
-            tmp_assattr_target_2 = GET_MODULE_VARIABLE_VALUE_FALLBACK(mod_consts[13]);
+            tmp_assattr_target_2 = GET_MODULE_VARIABLE_VALUE_FALLBACK(mod_consts[15]);
         }
 
         assert(!(tmp_assattr_target_2 == NULL));
-        tmp_result = SET_ATTRIBUTE(tmp_assattr_target_2, mod_consts[15], tmp_assattr_value_2);
+        tmp_result = SET_ATTRIBUTE(tmp_assattr_target_2, mod_consts[17], tmp_assattr_value_2);
         if (tmp_result == false) {
             assert(ERROR_OCCURRED());
 
@@ -1177,7 +1478,7 @@ PyObject *modulecode_util$date_tools(PyObject *module, struct Nuitka_MetaPathBas
     {
         PyObject *tmp_assign_source_3;
         tmp_assign_source_3 = Py_None;
-        UPDATE_STRING_DICT0(moduledict_util$date_tools, (Nuitka_StringObject *)mod_consts[16], tmp_assign_source_3);
+        UPDATE_STRING_DICT0(moduledict_util$date_tools, (Nuitka_StringObject *)mod_consts[18], tmp_assign_source_3);
     }
     {
         PyObject *tmp_assign_source_4;
@@ -1190,8 +1491,8 @@ PyObject *modulecode_util$date_tools(PyObject *module, struct Nuitka_MetaPathBas
         tmp_name_value_1 = mod_consts[3];
         tmp_globals_arg_value_1 = (PyObject *)moduledict_util$date_tools;
         tmp_locals_arg_value_1 = Py_None;
-        tmp_fromlist_value_1 = mod_consts[17];
-        tmp_level_value_1 = mod_consts[18];
+        tmp_fromlist_value_1 = mod_consts[19];
+        tmp_level_value_1 = mod_consts[20];
         frame_7e484d3c7205b754025d5ab2886f3187->m_frame.f_lineno = 1;
         tmp_import_name_from_1 = IMPORT_MODULE5(tmp_name_value_1, tmp_globals_arg_value_1, tmp_locals_arg_value_1, tmp_fromlist_value_1, tmp_level_value_1);
         if (tmp_import_name_from_1 == NULL) {
@@ -1209,7 +1510,7 @@ PyObject *modulecode_util$date_tools(PyObject *module, struct Nuitka_MetaPathBas
                 tmp_import_name_from_1,
                 (PyObject *)moduledict_util$date_tools,
                 mod_consts[3],
-                mod_consts[18]
+                mod_consts[20]
             );
         } else {
             tmp_assign_source_4 = IMPORT_NAME(tmp_import_name_from_1, mod_consts[3]);
@@ -1239,7 +1540,7 @@ PyObject *modulecode_util$date_tools(PyObject *module, struct Nuitka_MetaPathBas
         tmp_globals_arg_value_2 = (PyObject *)moduledict_util$date_tools;
         tmp_locals_arg_value_2 = Py_None;
         tmp_fromlist_value_2 = Py_None;
-        tmp_level_value_2 = mod_consts[18];
+        tmp_level_value_2 = mod_consts[20];
         frame_7e484d3c7205b754025d5ab2886f3187->m_frame.f_lineno = 2;
         tmp_assign_source_5 = IMPORT_MODULE5(tmp_name_value_2, tmp_globals_arg_value_2, tmp_locals_arg_value_2, tmp_fromlist_value_2, tmp_level_value_2);
         if (tmp_assign_source_5 == NULL) {
@@ -1285,17 +1586,25 @@ PyObject *modulecode_util$date_tools(PyObject *module, struct Nuitka_MetaPathBas
 
         tmp_assign_source_6 = MAKE_FUNCTION_util$date_tools$$$function__1_get_today_string();
 
-        UPDATE_STRING_DICT1(moduledict_util$date_tools, (Nuitka_StringObject *)mod_consts[19], tmp_assign_source_6);
+        UPDATE_STRING_DICT1(moduledict_util$date_tools, (Nuitka_StringObject *)mod_consts[21], tmp_assign_source_6);
     }
     {
         PyObject *tmp_assign_source_7;
         PyObject *tmp_annotations_1;
-        tmp_annotations_1 = DICT_COPY(mod_consts[20]);
+        tmp_annotations_1 = DICT_COPY(mod_consts[22]);
 
 
         tmp_assign_source_7 = MAKE_FUNCTION_util$date_tools$$$function__2_is_date_today(tmp_annotations_1);
 
-        UPDATE_STRING_DICT1(moduledict_util$date_tools, (Nuitka_StringObject *)mod_consts[21], tmp_assign_source_7);
+        UPDATE_STRING_DICT1(moduledict_util$date_tools, (Nuitka_StringObject *)mod_consts[23], tmp_assign_source_7);
+    }
+    {
+        PyObject *tmp_assign_source_8;
+
+
+        tmp_assign_source_8 = MAKE_FUNCTION_util$date_tools$$$function__3_current_time();
+
+        UPDATE_STRING_DICT1(moduledict_util$date_tools, (Nuitka_StringObject *)mod_consts[24], tmp_assign_source_8);
     }
 
     // Report to PGO about leaving the module without error.

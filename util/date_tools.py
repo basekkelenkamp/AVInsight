@@ -15,3 +15,8 @@ def is_date_today(date: str):
     date = berlin_tz.localize(date)
 
     return date.date() == datetime.now(berlin_tz).date()
+
+
+def current_time():
+    date = datetime.now(pytz.timezone("Europe/Berlin"))
+    return date.strftime("%H:%M:%S.%f")[:-4]

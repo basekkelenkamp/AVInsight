@@ -205,6 +205,7 @@
 "./module.util.o"
 "./module.util.date_tools.o"
 "./module.util.metrics.o"
+"./module.util.system_info.o"
 "./module.wcwidth.o"
 "./module.wcwidth.table_wide.o"
 "./module.wcwidth.table_zero.o"

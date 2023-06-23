@@ -20,7 +20,7 @@ function getColorForPercentage(pct) {
     return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
 }
     
-function init() {
+function init_charts() {
     let charts = document.getElementsByClassName("ct-chart");
 
     let incomingData = {
@@ -55,7 +55,26 @@ function init() {
     }
 }
 
-init();
+function init_warnings() {
+    let warning_container = document.getElementsByClassName("warning-container-content")[0]
 
-let container = document.getElementById('warning-container-content');
-container.scrollTop = container.scrollHeight;
+    socket.on('spikes', function (receivedData) {
+        for (let spike of receivedData.data) {
+            let [time, message, value] = spike.split("|")
+
+            let p = document.createElement("p")
+            p.classList.add('spike-warning')
+            p.innerHTML = `<span class="time">${time}</span>   |   <span class="message">${message}</span>   |   <span class="value">${value}</span>`
+            
+            if (warning_container.firstChild) {
+                warning_container.insertBefore(p, warning_container.firstChild);
+            } else {
+                warning_container.appendChild(p);
+            }
+
+        }
+    });    
+}
+
+init_charts();
+init_warnings();
