@@ -268,20 +268,26 @@ function init_warnings() {
 let selectMetricGraph = document.getElementById('select-graph-metric');
 let selectLine = document.getElementById('select-graph-line');
 
-selectMetricGraph.addEventListener('change', function () {
-    draw_minute_graph(this.value, selectLine.value);
-});
+if (selectMetricGraph) {
+    selectMetricGraph.addEventListener('change', function () {
+        draw_minute_graph(this.value, selectLine.value);
+    });
+}
 
-selectLine.addEventListener('change', function () {
-    draw_minute_graph(selectMetricGraph.value, this.value);
-});
+if (selectLine) {
+    selectLine.addEventListener('change', function () {
+        draw_minute_graph(selectMetricGraph.value, this.value);
+    });
+}
 
 
 function init() {
-    draw_minute_graph(selectMetricGraph.value, selectLine.value)
-    init_warnings()
-    const cycleButton = document.getElementById('cycleButton')
-    cycleButton.innerHTML = `Cycle<br>(current: daily_max)`
+    if (selectMetricGraph && selectLine) {
+        draw_minute_graph(selectMetricGraph.value, selectLine.value)
+        init_warnings()
+        const cycleButton = document.getElementById('cycleButton')
+        cycleButton.innerHTML = `Cycle<br>(current: daily_max)`
+    }
 }
 
 
@@ -294,25 +300,27 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = `/data_report/${newDate}`
     });
 
-    const cycleKeys = ['daily_max', 'daily_avg']
-    let currentKeyIndex = 0
-    const cycleButton = document.getElementById('cycleButton')
-    cycleButton.addEventListener('click', function () {
-        currentKeyIndex = (currentKeyIndex + 1) % cycleKeys.length
+    if (selectMetricGraph && selectLine) {
+        const cycleKeys = ['daily_max', 'daily_avg']
+        let currentKeyIndex = 0
+        const cycleButton = document.getElementById('cycleButton')
+        cycleButton.addEventListener('click', function () {
+            currentKeyIndex = (currentKeyIndex + 1) % cycleKeys.length
+
+            for (let metric of Object.keys(minuteData)) {
+                if (metric !== 'DISK') {
+                    cycleButton.innerHTML = `Cycle<br>(current: ${cycleKeys[currentKeyIndex]})`
+                    draw_gauge_chart(metric, cycleKeys[currentKeyIndex])
+                }
+            }
+        });
 
         for (let metric of Object.keys(minuteData)) {
             if (metric !== 'DISK') {
-                cycleButton.innerHTML = `Cycle<br>(current: ${cycleKeys[currentKeyIndex]})`
+                let title = document.getElementById('gauge-title-' + metric)
+                title.textContent = metric + " (" + dailyData.find((data) => data[metric] !== undefined)[metric]['daily_counts'] + ")"
                 draw_gauge_chart(metric, cycleKeys[currentKeyIndex])
             }
-        }
-    });
-
-    for (let metric of Object.keys(minuteData)) {
-        if (metric !== 'DISK') {
-            let title = document.getElementById('gauge-title-' + metric)
-            title.textContent = metric + " (" + dailyData.find((data) => data[metric] !== undefined)[metric]['daily_counts'] + ")"
-            draw_gauge_chart(metric, cycleKeys[currentKeyIndex])
         }
     }
 });

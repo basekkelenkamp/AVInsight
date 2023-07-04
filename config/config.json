@@ -23,7 +23,7 @@
         },
         {
             "name": "interval",
-            "value": "0.5",
+            "value": "1",
             "description": "The frequency of when data points are recorded. WARNING: Do not go below 0.1 (DEFAULT=1)",
             "category": "metrics",
             "datatype": "float"
@@ -32,21 +32,21 @@
     "archive": [
         {
             "name": "archive_GPU",
-            "value": "true",
+            "value": "false",
             "description": "Decide whether or not to save GPU data to the archive. (DEFAULT=TRUE)",
             "category": "archive",
             "datatype": "boolean"
         },
         {
             "name": "archive_CPU",
-            "value": "true",
+            "value": "false",
             "description": "Decide whether or not to save CPU data to the archive. (DEFAULT=TRUE)",
             "category": "archive",
             "datatype": "boolean"
         },
         {
             "name": "archive_RAM",
-            "value": "true",
+            "value": "false",
             "description": "Decide whether or not to save RAM data to the archive. (DEFAULT=TRUE)",
             "category": "archive",
             "datatype": "boolean"

@@ -83,10 +83,13 @@ def calculate_data_report(metric_names, data, point_per_minute, thresholds):
         new_data[metric_type][minute].append((timestamp, value))
 
         # calculate spikes
-        if float(d["value"]) > int(thresholds[metric_type]):
-            spikes.append(
-                f"{d['timestamp'].split(' ')[1]}|{metric_type} threshold ({thresholds[metric_type]}) exceeded.|{d['value']}"
-            )
+        try:
+            if float(d["value"]) > int(thresholds[metric_type]):
+                spikes.append(
+                    f"{d['timestamp'].split(' ')[1]}|{metric_type} threshold ({thresholds[metric_type]}) exceeded.|{d['value']}"
+                )
+        except KeyError:
+            print(f"No threshold for key: {metric_type}")
 
         # Update daily totals and counts
         daily_totals[metric_type] += value
